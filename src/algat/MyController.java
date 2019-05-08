@@ -1,4 +1,4 @@
-package sample;
+package algat;
 
 import java.util.Optional;
 
