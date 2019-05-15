@@ -1,5 +1,7 @@
 package algat.hashtable;
 
+import algat.controller.ViewerController;
+
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -8,11 +10,16 @@ public class HashTable implements Iterable<Optional<HashTable.HashTableNode>> {
     private HashTableNode[] elements;
     private Hasher hasher;
     private final int step = 1;
+    private ViewerController viewer;
 
     public HashTable(int capacity, Hasher hasher) {
         this.capacity = capacity;
         this.elements = new HashTableNode[capacity];
         this.hasher = hasher;
+    }
+
+    public void setViewer(ViewerController viewer) {
+        this.viewer = viewer;
     }
 
     public int getCapacity() {

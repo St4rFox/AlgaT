@@ -48,7 +48,6 @@
       </AnchorPane>
    </right>
    <center>
-      <fx:include fx:id="viewer" source="Viewer.fxml" />
+      <fx:include source="Viewer.fxml" />
    </center>
-    <fx:include fx:id="newEntryDialog" source="NewEntry.fxml" />
 </BorderPane>
