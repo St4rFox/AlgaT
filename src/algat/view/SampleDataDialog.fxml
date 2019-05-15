@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints fillHeight="false" minHeight="50.0" valignment="CENTER" />
+    <RowConstraints vgrow="NEVER" />
+    <RowConstraints vgrow="NEVER" />
+      <RowConstraints vgrow="NEVER" />
+      <RowConstraints vgrow="NEVER" />
+  </rowConstraints>
+   <children>
+      <HBox fillHeight="false">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Do you like to load some data into the table?" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Helvetica Neue Medium" size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <RadioButton fx:id="randomData" mnemonicParsing="false" text="Yes, fill it with some random data" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
+          <toggleGroup>
+              <ToggleGroup fx:id="loadOptions" />
+          </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="customData" toggleGroup="$loadOptions" mnemonicParsing="false" text="Yes, I would like to specify some custom data" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
+      </RadioButton>
+      <RadioButton fx:id="noData" toggleGroup="$loadOptions" mnemonicParsing="false" text="No, thanks. I prefer to insert data manually" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
+      </RadioButton>
+      <HBox alignment="CENTER_RIGHT" fillHeight="false" GridPane.columnSpan="2" GridPane.rowIndex="4">
+         <children>
+            <Button minWidth="80.0" mnemonicParsing="false" text="Next" />
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</GridPane>

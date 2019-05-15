@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane hgap="14.0" vgap="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.NewEntryController">
+    <children>
+        <HBox alignment="BOTTOM_RIGHT" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <children>
+                <Button fx:id="cancelButton" cancelButton="true" minWidth="80.0" mnemonicParsing="false" text="Cancel" HBox.hgrow="NEVER">
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="confirmButton" minWidth="80.0" mnemonicParsing="false" text="Ok" />
+            </children>
+        </HBox>
+        <Label text="Key" GridPane.columnIndex="1" />
+        <Label text="Value" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="keyField" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <TextField fx:id="valueField" GridPane.columnIndex="2" />
+    </children>
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
+        <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="50.0" />
+        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="+Infinity" minWidth="-Infinity" />
+    </columnConstraints>
+    <padding>
+        <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+    </padding>
+    <rowConstraints>
+        <RowConstraints maxHeight="+Infinity" valignment="CENTER" />
+        <RowConstraints maxHeight="Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="NEVER" />
+    </rowConstraints>
+</GridPane>
