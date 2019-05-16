@@ -1,5 +1,6 @@
 package algat.controller;
 
+import algat.model.Record;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,8 +17,11 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import algat.controller.SampleDataDialogController.SampleDataOption;
 
 public class PlaygroundController implements Initializable {
     // FXML Fields
@@ -27,14 +31,25 @@ public class PlaygroundController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            Parent content = FXMLLoader.load(getClass().getResource("/algat/view/SampleDataDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/algat/view/SampleDataDialog.fxml"));
+            Parent content = loader.load();
             final Scene scene = new Scene(content);
+
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
             stage.setScene(scene);
 
-            Platform.runLater(stage::show);
+            SampleDataDialogController dialogController = loader.getController();
+            dialogController.setStage(stage);
+
+            Platform.runLater(() -> {
+                stage.showAndWait();
+                SampleDataOption option = dialogController.getSelectedOption();
+                List<Record> data = dialogController.getData();
+                System.out.println(option);
+                data.forEach(System.out::println); //TODO: check for null/empty data
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }

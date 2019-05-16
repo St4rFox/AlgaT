@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.SampleDataDialogController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="341.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.SampleDataDialogController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
@@ -16,7 +15,8 @@
     <RowConstraints vgrow="NEVER" />
     <RowConstraints vgrow="NEVER" />
       <RowConstraints vgrow="NEVER" />
-      <RowConstraints vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="BOTTOM" vgrow="NEVER" />
+      <RowConstraints vgrow="ALWAYS" />
   </rowConstraints>
    <children>
       <HBox fillHeight="false">
@@ -46,18 +46,26 @@
             <Insets left="10.0" />
          </GridPane.margin>
       </RadioButton>
-      <HBox alignment="CENTER_RIGHT" GridPane.columnSpan="2" GridPane.rowIndex="4">
+      <HBox alignment="BOTTOM_RIGHT" GridPane.columnSpan="2" GridPane.rowIndex="5">
          <children>
-            <Button fx:id="nextButton" defaultButton="true" onAction="#nextButtonPressed" mnemonicParsing="false" prefWidth="80.0" text="Next">
+            <Button fx:id="nextButton" defaultButton="true" mnemonicParsing="false" onAction="#nextButtonPressed" prefWidth="80.0" text="Finish">
                <font>
                   <Font name="Helvetica Neue" size="14.0" />
                </font>
             </Button>
          </children>
          <GridPane.margin>
-            <Insets top="15.0" />
+            <Insets />
          </GridPane.margin>
       </HBox>
+      <CheckBox mnemonicParsing="false" selected="true" text="Always ask on startup" GridPane.rowIndex="4">
+         <font>
+            <Font size="11.0" />
+         </font>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </CheckBox>
    </children>
    <padding>
       <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
