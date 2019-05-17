@@ -15,7 +15,7 @@ public class Main extends Application {
         Parent playground = FXMLLoader.load(getClass().getResource("view/Playground.fxml"));
         primaryStage.setTitle("AlgaT");
         primaryStage.setScene(new Scene(playground));
-        primaryStage.setMaximized(true);
+        //primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

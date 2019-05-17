@@ -25,13 +25,14 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LoadFromFileDialogController implements Initializable {
+public class UploadDataDialogController implements Initializable {
     @FXML private TextField selectedFilePath;
     @FXML private Button folderButton;
     @FXML private TableView<Record> tableView;
     @FXML private TableColumn<Record, String> keyColumn;
     @FXML private TableColumn<Record, String> valueColumn;
-    private SampleDataDialogController parentController;
+
+    private OnConfigCompleted callback;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,7 +47,7 @@ public class LoadFromFileDialogController implements Initializable {
 
     public void finishButtonPressed(ActionEvent event) {
         List<Record> records = tableView.getItems();
-        parentController.closeStage(records);
+        this.callback.configCompleted(records);
     }
 
     public void folderButtonPressed(ActionEvent event) {
@@ -67,6 +68,10 @@ public class LoadFromFileDialogController implements Initializable {
         }
     }
 
+    void onConfigCompleted(OnConfigCompleted callback) {
+        this.callback = callback;
+    }
+
     private LinkedList<Record> getDataFromFile(File file) {
         LinkedList<Record> records = null;
         try {
@@ -82,9 +87,5 @@ public class LoadFromFileDialogController implements Initializable {
         }
 
         return records;
-    }
-
-    void setParentController(SampleDataDialogController parentController) {
-        this.parentController = parentController;
     }
 }
