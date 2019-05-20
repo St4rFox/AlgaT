@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.floor;
+import static java.lang.Math.sqrt;
 
 public enum Hasher {
     NAIVE {
@@ -60,7 +61,7 @@ public enum Hasher {
             for (int j = 0; j < key.length(); j++) {
                 i = (64 * i + key.charAt(j));
             }
-            return (int)floor(64*(i*(0.33) - floor(i*(0.33))));
+            return (int)floor(256*(i*((sqrt(5)-1)/2) - floor(i*((sqrt(5)-1)/2))));
         }
 
         @Override
