@@ -1,23 +1,26 @@
 package algat.controller;
 
+import javafx.beans.NamedArg;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-public class TableNodeComponent extends GridPane {
-    @FXML private Label key;
-    @FXML private Label value;
+public class TableNode extends HBox {
+    @FXML private Text key;
+    @FXML private Text value;
 
-    TableNodeComponent() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/algat/view/TableNodeComponent.fxml"));
+    TableNode(@NamedArg("key") String key, @NamedArg("value") String value) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/algat/view/TableNode.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
         try {
             fxmlLoader.load();
+            this.key.setText(key);
+            this.value.setText(value);
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
