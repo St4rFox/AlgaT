@@ -12,6 +12,10 @@ public class HashTable implements Iterable<Optional<HashTable.HashTableNode>> {
     private final int step = 1;
     private ViewerController viewer;
 
+    public HashTable() {
+
+    }
+
     public HashTable(int capacity, Hasher hasher) {
         this.capacity = capacity;
         this.elements = new HashTableNode[capacity];

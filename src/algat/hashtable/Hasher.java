@@ -15,6 +15,11 @@ public enum Hasher {
         public int hash(String key, int modulus) {
             return (key.charAt(0) - 97) % modulus;
         }
+
+        @Override
+        public String toString() {
+            return "Naive";
+        }
     },
 
     EXTRACTION {
@@ -23,6 +28,11 @@ public enum Hasher {
             String binary = Util.toBinary(key);
             int middle = binary.length() / 2;
             return parseInt(binary.subSequence(middle - 4,middle + 4).toString(),2) % modulus;
+        }
+
+        @Override
+        public String toString() {
+            return "Extraction";
         }
     },
 
@@ -35,12 +45,22 @@ public enum Hasher {
             }
             return xorEsaminated % modulus;
         }
+
+        @Override
+        public String toString() {
+            return "Xor";
+        }
     },
 
     MULTIPLICATION {
         @Override
         public int hash(String key, int modulus) {
             return 3;
+        }
+
+        @Override
+        public String toString() {
+            return "Multiplication";
         }
     },
 
@@ -52,6 +72,11 @@ public enum Hasher {
                 h = (64 * h + key.charAt(i)) % 383;
             }
             return h % modulus;
+        }
+
+        @Override
+        public String toString() {
+            return "Division";
         }
     };
 
