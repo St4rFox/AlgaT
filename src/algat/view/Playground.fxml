@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -48,6 +47,6 @@
       </AnchorPane>
    </right>
    <center>
-      <fx:include source="Viewer.fxml" />
+      <fx:include fx:id="viewer" source="Viewer.fxml" />
    </center>
 </BorderPane>
