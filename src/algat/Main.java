@@ -1,12 +1,16 @@
 package algat;
 
 import algat.controller.PlaygroundController;
+import algat.hashtable.Hasher;
+import algat.utils.Util;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import javax.swing.plaf.synth.SynthTextAreaUI;
 
 public class Main extends Application {
 
@@ -21,6 +25,10 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        Hasher hasher = Hasher.DIVISION;
+        System.out.println(hasher.hash("weber ", 20));
+        System.out.println(hasher.hash("weber ", 20));
+        System.out.println((char)1);
         launch(args);
     }
 }
