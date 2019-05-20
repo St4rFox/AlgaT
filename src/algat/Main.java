@@ -10,8 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
-
 public class Main extends Application {
 
     @Override
@@ -19,16 +17,13 @@ public class Main extends Application {
         Parent playground = FXMLLoader.load(getClass().getResource("view/Playground.fxml"));
         primaryStage.setTitle("AlgaT");
         primaryStage.setScene(new Scene(playground));
-        //primaryStage.setMaximized(true);
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 
 
     public static void main(String[] args) {
-        Hasher hasher = Hasher.DIVISION;
-        System.out.println(hasher.hash("weber ", 20));
-        System.out.println(hasher.hash("weber ", 20));
-        System.out.println((char)1);
+
         launch(args);
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -25,29 +26,38 @@
             </padding>
         </HBox>
     </top>
-   <left>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <TitledPane animated="false" layoutX="8.0" text="untitled" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </TitledPane>
-         </children>
-      </AnchorPane>
-   </left>
-   <right>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <TitledPane animated="false" prefHeight="351.0" prefWidth="202.0" text="untitled" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </TitledPane>
-         </children>
-      </AnchorPane>
-   </right>
    <center>
       <fx:include source="Viewer.fxml" />
    </center>
+   <right>
+      <VBox alignment="TOP_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Configurazione Tabella" wrappingWidth="141.22900390625" />
+            <VBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacità Massima" />
+                  <TextField fx:id="capacitySelect" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </VBox>
+            <VBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Funzione Hash" />
+                  <ChoiceBox fx:id="hasherSelect" prefWidth="150.0" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" spacing="5.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Metodo di Scansione" />
+                  <ChoiceBox fx:id="scannerSelect" prefWidth="150.0" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </VBox>
+   </right>
 </BorderPane>

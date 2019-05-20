@@ -17,8 +17,11 @@ public class Config {
         configInstance.hashFunction = hashFunction;
     }
 
+    public static void setScanMethod(ScanMethod scanMethod) { configInstance.scanMethod = scanMethod; }
+
     private int tableCapacity;
     private Hasher hashFunction;
+    private ScanMethod scanMethod;
 
     private Config() {
     }

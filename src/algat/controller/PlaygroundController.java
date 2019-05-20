@@ -1,8 +1,11 @@
 package algat.controller;
 
 import algat.Config;
+import algat.ScanMethod;
+import algat.hashtable.Hasher;
 import algat.model.Record;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,9 +31,19 @@ public class PlaygroundController implements Initializable {
     // FXML Fields
     @FXML private Slider slider;
     @FXML private ViewerController viewerController;
+    @FXML private TextField capacitySelect;
+    @FXML private ChoiceBox<Hasher> hasherSelect;
+    @FXML private ChoiceBox<ScanMethod> scannerSelect;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ObservableList<Hasher> items = hasherSelect.getItems();
+        items.addAll(Hasher.values());
+        hasherSelect.setValue(Hasher.values()[0]);
+        hasherSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldHasher, newHasher) -> {
+            Config.setHashFunction(newHasher);
+        });
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/algat/view/InitialConfigDialog.fxml"));
             Parent content = loader.load();

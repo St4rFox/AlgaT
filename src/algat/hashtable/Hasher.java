@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Math.floor;
 
 public enum Hasher {
     NAIVE {
@@ -55,7 +56,11 @@ public enum Hasher {
     MULTIPLICATION {
         @Override
         public int hash(String key, int modulus) {
-            return 3;
+            Integer i = 0;
+            for (int j = 0; j < key.length(); j++) {
+                i = (64 * i + key.charAt(j));
+            }
+            return (int)floor(64*(i*(0.33) - floor(i*(0.33))));
         }
 
         @Override
