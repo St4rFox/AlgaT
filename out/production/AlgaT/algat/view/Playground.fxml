@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.text.*?>
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -63,11 +64,7 @@
       </VBox>
    </right>
    <center>
-       <StackPane prefHeight="200.0" prefWidth="200.0">
-           <children>
-               <VBox fx:id="tableViewer" minWidth="200.0" spacing="10.0" />
-           </children>
-       </StackPane>
+      <fx:include fx:id="viewer" source="Viewer.fxml" />
    </center>
    <left>
       <VBox prefHeight="286.0" prefWidth="186.0" BorderPane.alignment="CENTER">

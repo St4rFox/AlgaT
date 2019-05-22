@@ -1,9 +1,6 @@
-.viewer-cell > VBox {
+.viewer-cell {
     -fx-background-color: slateblue;
     -fx-alignment: center;
     -fx-padding: 10px;
-}
-
-.viewer-cell.active > VBox {
-    -fx-background-color: gold;
+    -fx-max-width: Infinity;
 }

@@ -1,15 +1,16 @@
 package algat.hashtable;
 
-import algat.controller.ViewerController;
+import algat.controller.HashTableDelegate;
 
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 public class HashTable implements Iterable<HashTable.HashTableNode> {
     private int capacity;
     private HashTableNode[] elements;
     private Hasher hasher;
     private final int step = 1;
-    private ViewerController viewer;
+    public HashTableDelegate delegate;
 
     public HashTable(int capacity, Hasher hasher) {
         this.capacity = capacity;
@@ -17,25 +18,22 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
         this.hasher = hasher;
     }
 
-    public void setViewer(ViewerController viewer) {
-        this.viewer = viewer;
-    }
-
     public int getCapacity() {
         return capacity;
     }
 
     public boolean contains(String key) {
-        HashTableNode node = this.elements[this.scan(key)];
+        ScanTuple result = this.scan(key);
+        HashTableNode node = result.node;
         return node != null && !node.deleted && node.key.equals(key);
     }
 
     public void put(String key, String value) {
-        int idx = this.scan(key);
-        HashTableNode node = this.elements[idx];
+        ScanTuple result = this.scan(key);
+        HashTableNode node = result.node;
 
         if (node == null)
-            this.elements[idx] = new HashTableNode(key, value);
+            this.elements[result.position] = new HashTableNode(key, value);
         else if (node.deleted || node.key.equals(key)) {
             node.key = key;
             node.value = value;
@@ -45,7 +43,8 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
     }
 
     public String get(String key) {
-        HashTableNode node = this.elements[this.scan(key)];
+        ScanTuple result = this.scan(key);
+        HashTableNode node = result.node;
 
         if (node != null && !node.deleted)
             return node.value;
@@ -54,8 +53,8 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
     }
 
     public String remove(String key) {
-        int idx = this.scan(key);
-        HashTableNode node = this.elements[idx];
+        ScanTuple result = this.scan(key);
+        HashTableNode node = result.node;
 
         if (node != null && node.key.equals(key)) {
             node.deleted = true;
@@ -84,14 +83,19 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
         return new HashTableIterator();
     }
 
-    private int scan(String key) {
+    private ScanTuple scan(String key) {
         int start = this.hasher.hash(key, this.capacity);
         int position = start;
         int deletedPosition = this.capacity;
         boolean deletedFound = false;
 
+        boolean hasDelegate = this.delegate != null;
+        if (hasDelegate) delegate.onHashComputation(start);
+
         for (int i = 0; i < this.capacity; i++) {
             HashTableNode current = this.elements[position];
+            if (hasDelegate) this.delegate.onNodeInspection(position, current);
+
             if (current == null || current.key.equals(key))
                 break;
 
@@ -106,7 +110,9 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
         if (deletedFound && !this.elements[position].key.equals(key))
             position = deletedPosition;
 
-        return position;
+        ScanTuple result = new ScanTuple(position, this.elements[position]);
+        if (hasDelegate) this.delegate.onNodeInspection(result.position, result.node);
+        return result;
     }
 
     public class HashTableNode {
@@ -121,12 +127,31 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
             this.value = value;
         }
 
+        public String getValue() {
+            return this.value;
+        }
+
         public String getKey() {
             return this.key;
         }
 
-        public String getValue() {
-            return this.value;
+        public boolean isDeleted() {
+            return this.deleted;
+        }
+
+        @Override
+        public String toString() {
+            return this.key + " => " + this.value;
+        }
+    }
+
+    private class ScanTuple {
+        int position;
+        HashTableNode node;
+
+        ScanTuple(int position, HashTableNode node) {
+            this.position = position;
+            this.node = node;
         }
     }
 

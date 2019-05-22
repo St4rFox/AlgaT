@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+
+
+<fx:root type="javafx.scene.layout.HBox" stylesheets="@../resources/styles/styles.css" styleClass="viewer-cell" alignment="CENTER" minWidth="150.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox minHeight="36.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Text fx:id="key" strokeType="OUTSIDE" strokeWidth="0.0" text="Key" />
+            </children>
+        </VBox>
+        <VBox minHeight="36.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Text fx:id="value" strokeType="OUTSIDE" strokeWidth="0.0" text="Value" />
+            </children>
+        </VBox>
+    </children>
+</fx:root>

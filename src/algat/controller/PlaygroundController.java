@@ -4,29 +4,33 @@ import algat.Config;
 import algat.ScanMethod;
 import algat.hashtable.Hasher;
 import algat.hashtable.HashTable;
-
+import algat.model.Record;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
-public class PlaygroundController implements Initializable {
+
+public class PlaygroundController implements Initializable, HashTableDelegate {
     // FXML Fields
     @FXML private Slider slider;
     @FXML private StackPane viewer;
-    @FXML private ViewerController viewerController;
     @FXML private TextField capacitySelect;
     @FXML private ChoiceBox<Hasher> hasherSelect;
     @FXML private ChoiceBox<ScanMethod> scannerSelect;
@@ -35,8 +39,7 @@ public class PlaygroundController implements Initializable {
     @FXML private TextArea deletedVal;
     @FXML private TextArea factorVal;
     @FXML private TextArea positionVal;
-
-
+    @FXML private VBox tableViewer;
 
     // Instance fields
     private HashTable table;
@@ -92,9 +95,9 @@ public class PlaygroundController implements Initializable {
 
             Platform.runLater(() -> {
                 stage.showAndWait();
-                this.viewerController.initTable(dialogController.getData());
-                this.viewerController.render();
                 capacitySelect.textProperty().setValue(Integer.toString(Config.getTableCapacity()));
+                this.initTable(dialogController.getData());
+                this.initViewer();
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,46 +126,77 @@ public class PlaygroundController implements Initializable {
     }
 
     public void insertButtonPressed(ActionEvent event) {
-//        Dialog<Pair<String, String>> newEntryDialog = new Dialog<>();
-//        newEntryDialog.setTitle("New Entry");
-//        newEntryDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
-//
-//        GridPane grid = new GridPane();
-//        grid.setHgap(10);
-//        grid.setVgap(10);
-//        grid.setPadding(new Insets(20, 150, 10, 10));
-//
-//        TextField key = new TextField();
-//        key.setPromptText("Key");
-//        TextField value = new TextField();
-//        value.setPromptText("Value");
-//
-//        grid.add(new Label("Key"), 0, 0);
-//        grid.add(key, 1, 0);
-//        grid.add(new Label("Value"), 0, 1);
-//        grid.add(value, 1, 1);
-//
-//        newEntryDialog.getDialogPane().setContent(grid);
-//
-//        newEntryDialog.setResultConverter(button -> {
-//            if (button == ButtonType.OK) {
-//                return new Pair<>(key.getText(), value.getText());
-//            }
-//            return null;
-//        });
-//
-//        Optional<Pair<String, String>> result = newEntryDialog.showAndWait();
-//
-//        result.ifPresent(entry -> {
-//            viewerController.onInsert(entry.getKey(), entry.getValue());
-//        });
+
     }
 
     public void findButtonPressed(ActionEvent event) {
+        Dialog<String> newEntryDialog = new Dialog<>();
+        newEntryDialog.setTitle("New Entry");
+        newEntryDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
 
+        GridPane grid = new GridPane();
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField keyField = new TextField();
+        keyField.setPromptText("Key");
+
+        grid.add(new Label("Key"), 0, 0);
+        grid.add(keyField, 1, 0);
+
+        newEntryDialog.getDialogPane().setContent(grid);
+
+        newEntryDialog.setResultConverter(button -> {
+            if (button == ButtonType.OK) {
+                return keyField.getText();
+            }
+            return null;
+        });
+
+        newEntryDialog.showAndWait().ifPresent(key -> {
+            System.out.println(this.table.contains(key));
+        });
     }
 
     public void uploadButtonPressed(ActionEvent event) {
 
+    }
+
+    private void initTable(List<Record> data) {
+        Hasher hashFunction = Config.getHashFunction();
+
+        if (data != null) {
+            Config.setTableCapacity(data.size());
+            this.table = new HashTable(Config.getTableCapacity(), hashFunction);
+
+            for (Record record : data) {
+                this.table.put(record.getKey(), record.getValue());
+            }
+        } else {
+            this.table = new HashTable(Config.getTableCapacity(), hashFunction);
+        }
+    }
+
+    private void initViewer() {
+        for (HashTable.HashTableNode node : this.table) {
+            TableNode tableNode = new TableNode(node.getKey(), node.getValue());
+            this.tableViewer.getChildren().add(tableNode);
+        }
+
+        this.table.delegate = this;
+    }
+
+    @Override
+    public void onHashComputation(int hashValue) {
+        System.out.println("Hash value: " + hashValue);
+    }
+
+    @Override
+    public void onNodeInspection(int index, HashTable.HashTableNode node) {
+        System.out.println("Index: " + index);
+        System.out.println("Node Inspected: " + node);
+
+        TableNode inspected = (TableNode) this.tableViewer.getChildren().get(index);
+        inspected.getStyleClass().add("active");
     }
 }
