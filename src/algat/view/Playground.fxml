@@ -32,7 +32,10 @@
    <right>
       <VBox alignment="TOP_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Configurazione Tabella" wrappingWidth="141.22900390625" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Configurazione Tabella" wrappingWidth="141.22900390625">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin></Text>
             <VBox alignment="CENTER" spacing="5.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacità Massima" />
@@ -60,4 +63,57 @@
          </padding>
       </VBox>
    </right>
+   <center>
+      <fx:include fx:id="viewer" source="Viewer.fxml" />
+   </center>
+   <left>
+      <VBox prefHeight="286.0" prefWidth="186.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="12.0" prefWidth="146.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stato Tabella" textAlignment="CENTER" wrappingWidth="80.79931640625">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="5.0" />
+                     </VBox.margin>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </VBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key:" wrappingWidth="38.90771484375" />
+            <TextArea fx:id="keyVal" prefHeight="25.0" prefWidth="150.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </TextArea>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Value:" />
+            <TextArea fx:id="valVal" prefHeight="25.0" prefWidth="150.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </TextArea>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Deleted:" />
+            <TextArea fx:id="deletedVal" prefHeight="25.0" prefWidth="150.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </TextArea>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Posizione Attuale:" />
+            <TextArea fx:id="positionVal" prefHeight="25.0" prefWidth="150.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </TextArea>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fattore di Carico:" />
+            <TextArea fx:id="factorVal" prefHeight="25.0" prefWidth="150.0" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+      </VBox>
+   </left>
 </BorderPane>

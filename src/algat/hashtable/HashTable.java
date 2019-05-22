@@ -3,18 +3,13 @@ package algat.hashtable;
 import algat.controller.ViewerController;
 
 import java.util.Iterator;
-import java.util.Optional;
 
-public class HashTable implements Iterable<Optional<HashTable.HashTableNode>> {
+public class HashTable implements Iterable<HashTable.HashTableNode> {
     private int capacity;
     private HashTableNode[] elements;
     private Hasher hasher;
     private final int step = 1;
     private ViewerController viewer;
-
-    public HashTable() {
-
-    }
 
     public HashTable(int capacity, Hasher hasher) {
         this.capacity = capacity;
@@ -85,7 +80,7 @@ public class HashTable implements Iterable<Optional<HashTable.HashTableNode>> {
     }
 
     @Override
-    public Iterator<Optional<HashTableNode>> iterator() {
+    public Iterator<HashTableNode> iterator() {
         return new HashTableIterator();
     }
 
@@ -117,12 +112,13 @@ public class HashTable implements Iterable<Optional<HashTable.HashTableNode>> {
     public class HashTableNode {
         private String key;
         private String value;
-        private boolean deleted;
+        private boolean deleted = false;
+
+        HashTableNode() {}
 
         HashTableNode(String key, String value) {
             this.key = key;
             this.value = value;
-            this.deleted = false;
         }
 
         public String getKey() {
@@ -134,7 +130,7 @@ public class HashTable implements Iterable<Optional<HashTable.HashTableNode>> {
         }
     }
 
-    private class HashTableIterator implements Iterator<Optional<HashTableNode>> {
+    private class HashTableIterator implements Iterator<HashTableNode> {
         private int cursor = -1;
 
         @Override
@@ -143,8 +139,9 @@ public class HashTable implements Iterable<Optional<HashTable.HashTableNode>> {
         }
 
         @Override
-        public Optional<HashTableNode> next() {
-            return Optional.ofNullable(HashTable.this.elements[++this.cursor]);
+        public HashTableNode next() {
+            HashTableNode node = HashTable.this.elements[++this.cursor];
+            return node == null ? new HashTableNode() : node;
         }
     }
 }

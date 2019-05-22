@@ -9,12 +9,19 @@ public class Config {
 
     public static Config get() { return configInstance; }
 
-    public static void setTableCapacity(int tableCapacity) {
-        configInstance.tableCapacity = tableCapacity;
-    }
-
+    public static int getTableCapacity() { return configInstance.tableCapacity; }
+    public static Hasher getHashFunction() { return configInstance.hashFunction; }
+    public static void setTableCapacity(int tableCapacity) { configInstance.tableCapacity = getNearestCapacity(tableCapacity); }
     public static void setHashFunction(Hasher hashFunction) {
         configInstance.hashFunction = hashFunction;
+    }
+    private static int getNearestCapacity(int tableCapacity) {
+        int tenth = 10;
+
+        while (tenth < tableCapacity)
+            tenth += 10;
+
+        return tenth;
     }
 
     public static void setScanMethod(ScanMethod scanMethod) { configInstance.scanMethod = scanMethod; }

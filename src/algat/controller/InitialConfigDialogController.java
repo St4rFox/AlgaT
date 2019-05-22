@@ -64,8 +64,8 @@ public class InitialConfigDialogController implements Initializable {
         }
     }
 
-    Optional<List<Record>> getData() {
-        return Optional.ofNullable(this.data);
+    List<Record> getData() {
+        return this.data;
     }
 
     private void close() {
@@ -80,10 +80,5 @@ public class InitialConfigDialogController implements Initializable {
 
     void setStage(Stage stage) {
         this.stage = stage;
-    }
-
-    enum SampleDataOption {
-        CUSTOM_DATA,
-        NO_DATA
     }
 }

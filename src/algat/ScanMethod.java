@@ -1,10 +1,12 @@
 package algat;
 
+import algat.hashtable.Hasher;
+
 public enum ScanMethod {
     LINEARE {
         @Override
         public int scan() {
-            //TO_DO
+            //TODO
             return 1;
         }
 
@@ -18,7 +20,7 @@ public enum ScanMethod {
     QUADRATICA {
         @Override
         public int scan() {
-            //TO_DO
+            //TODO
             return 2;
         }
 
@@ -32,7 +34,7 @@ public enum ScanMethod {
     PSEUDOCASUALE {
         @Override
         public int scan() {
-            //TO_DO
+            //TODO
             return 3;
         }
 
@@ -46,7 +48,7 @@ public enum ScanMethod {
      HASHING_DOPPIO {
          @Override
          public int scan() {
-             //TO_DO
+             //TODO
              return 4;
          }
 

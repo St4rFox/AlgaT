@@ -1,0 +1,6 @@
+.viewer-cell {
+    -fx-background-color: slateblue;
+    -fx-alignment: center;
+    -fx-padding: 10px;
+    -fx-max-width: Infinity;
+}
