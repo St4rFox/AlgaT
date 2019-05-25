@@ -16,8 +16,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -30,15 +30,14 @@ import java.util.ResourceBundle;
 public class PlaygroundController implements Initializable, HashTableDelegate {
     // FXML Fields
     @FXML private Slider slider;
-    @FXML private StackPane viewer;
     @FXML private TextField capacitySelect;
     @FXML private ChoiceBox<Hasher> hasherSelect;
     @FXML private ChoiceBox<ScanMethod> scannerSelect;
-    @FXML private TextArea keyVal;
-    @FXML private TextArea valVal;
-    @FXML private TextArea deletedVal;
-    @FXML private TextArea factorVal;
-    @FXML private TextArea positionVal;
+    @FXML private Text keyVal;
+    @FXML private Text valVal;
+    @FXML private Text deletedVal;
+    @FXML private Text factorVal;
+    @FXML private Text positionVal;
     @FXML private VBox tableViewer;
 
     // Instance fields
@@ -46,23 +45,16 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
-        keyVal.setEditable(false);
-        valVal.setEditable(false);
-        deletedVal.setEditable(false);
-        factorVal.setEditable(false);
-        positionVal.setEditable(false);
-
         capacitySelect.setOnAction((clicked) -> {
             int newCapacity = 0;
-                try{
-                    newCapacity = Integer.parseInt(capacitySelect.getCharacters().toString());
-                } catch (NumberFormatException e) {
-                    capacitySelect.textProperty().setValue("0");
-                }
-                Config.setTableCapacity(newCapacity);
-                System.out.println(newCapacity);
+
+            try {
+                newCapacity = Integer.parseInt(capacitySelect.getCharacters().toString());
+            } catch (NumberFormatException e) {
+                capacitySelect.textProperty().setValue("0");
+            }
+
+            Config.setTableCapacity(newCapacity);
         });
 
         ObservableList<ScanMethod> scanItems = scannerSelect.getItems();

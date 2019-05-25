@@ -5,9 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.PlaygroundController">
+<BorderPane stylesheets="@../resources/styles/main.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.PlaygroundController">
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <HBox styleClass="toolbar" alignment="CENTER_LEFT" spacing="10.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#fastBackwardButtonPressed" text="&lt;--" />
                 <Button mnemonicParsing="false" onAction="#stepBackwardButtonPressed" text="&lt;-" />
@@ -82,31 +82,30 @@
                </VBox.margin>
             </VBox>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key:" wrappingWidth="38.90771484375" />
-            <TextArea fx:id="keyVal" prefHeight="25.0" prefWidth="150.0">
+            <Text fx:id="keyVal">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
-            </TextArea>
+            </Text>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Value:" />
-            <TextArea fx:id="valVal" prefHeight="25.0" prefWidth="150.0">
+            <Text fx:id="valVal">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
-            </TextArea>
+            </Text>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Deleted:" />
-            <TextArea fx:id="deletedVal" prefHeight="25.0" prefWidth="150.0">
+            <Text fx:id="deletedVal">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
-            </TextArea>
+            </Text>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Posizione Attuale:" />
-            <TextArea fx:id="positionVal" prefHeight="25.0" prefWidth="150.0">
+            <Text fx:id="positionVal">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
-            </TextArea>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fattore di Carico:" />
-            <TextArea fx:id="factorVal" prefHeight="25.0" prefWidth="150.0" />
+            </Text>
+            <Text fx:id="factorVal" strokeType="OUTSIDE" strokeWidth="0.0" text="Fattore di Carico:" />
          </children>
          <BorderPane.margin>
             <Insets />

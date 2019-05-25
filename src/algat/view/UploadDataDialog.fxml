@@ -10,14 +10,14 @@
     <children>
         <VBox alignment="TOP_CENTER" layoutX="220.0" layoutY="122.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
             <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select the text files where you have your data">
-               <font>
-                  <Font name="Lato Bold" size="18.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="20.0" />
-               </VBox.margin>
-            </Text>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select the text files where you have your data">
+                    <font>
+                        <Font name="Lato Bold" size="18.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="20.0" />
+                    </VBox.margin>
+                </Text>
                 <HBox prefWidth="200.0">
                     <children>
                         <TextField fx:id="selectedFilePath" editable="false" style="-fx-background-radius: 0 0 0 0;" HBox.hgrow="ALWAYS" />
@@ -47,11 +47,11 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
-            <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
-               <children>
-                  <Button onAction="#finishButtonPressed" defaultButton="true" mnemonicParsing="false" prefWidth="80.0" text="Finish" />
-               </children>
-            </HBox>
+                <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                    <children>
+                        <Button onAction="#finishButtonPressed" defaultButton="true" mnemonicParsing="false" prefWidth="80.0" text="Finish" />
+                    </children>
+                </HBox>
             </children>
         </VBox>
     </children>
