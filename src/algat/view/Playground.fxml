@@ -25,9 +25,6 @@
             </padding>
         </HBox>
     </top>
-   <center>
-      <fx:include source="Viewer.fxml" />
-   </center>
    <right>
       <VBox alignment="TOP_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
