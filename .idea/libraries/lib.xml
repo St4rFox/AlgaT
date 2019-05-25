@@ -1,16 +1,16 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
-      <root url="file:///Library/Java/JavaVirtualMachines/javafx/lib" />
+      <root url="file://$JAVAFX$" />
     </CLASSES>
     <JAVADOC />
     <NATIVE>
-      <root url="file:///Library/Java/JavaVirtualMachines/javafx/lib" />
+      <root url="file://$JAVAFX$" />
     </NATIVE>
     <SOURCES>
-      <root url="file:///Library/Java/JavaVirtualMachines/javafx/lib" />
+      <root url="file://$JAVAFX$" />
     </SOURCES>
-    <jarDirectory url="file:///Library/Java/JavaVirtualMachines/javafx/lib" recursive="false" />
-    <jarDirectory url="file:///Library/Java/JavaVirtualMachines/javafx/lib" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$JAVAFX$" recursive="false" />
+    <jarDirectory url="file://$JAVAFX$" recursive="false" type="SOURCES" />
   </library>
 </component>
