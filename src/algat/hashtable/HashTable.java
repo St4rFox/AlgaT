@@ -1,5 +1,6 @@
 package algat.hashtable;
 
+import algat.ScanMethod;
 import algat.controller.HashTableDelegate;
 
 import java.util.Iterator;
@@ -8,7 +9,7 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
     private int capacity;
     private HashTableNode[] elements;
     private Hasher hasher;
-    private final int step = 1;
+    private ScanMethod scanMethod;
     public HashTableDelegate delegate;
 
     public HashTable(int capacity, Hasher hasher) {
@@ -91,7 +92,9 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
         boolean hasDelegate = this.delegate != null;
         if (hasDelegate) delegate.onHashComputation(start);
 
-        for (int i = 0; i < this.capacity; i++) {
+        int i = 0;
+        while(i < this.capacity) {
+            position = (start + i) % this.capacity;
             HashTableNode current = this.elements[position];
             if (hasDelegate) this.delegate.onNodeInspection(position, current);
 
@@ -103,7 +106,7 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
                 deletedPosition = position;
             }
 
-            position = (start + i * step) % this.capacity;
+            i = scanMethod.nextIndex(i);
         }
 
         if (deletedFound && !this.elements[position].key.equals(key))
