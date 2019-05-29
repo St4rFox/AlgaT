@@ -1,7 +1,7 @@
 package algat.hashtable;
 
-import algat.ScanMethod;
 import algat.controller.HashTableDelegate;
+import algat.hashtable.scanmethods.ScanMethod;
 
 import java.util.Iterator;
 
@@ -171,4 +171,5 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
             return node == null ? new HashTableNode() : node;
         }
     }
+
 }

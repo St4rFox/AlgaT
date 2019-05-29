@@ -1,7 +1,6 @@
 package algat.controller;
 
 import algat.Config;
-import algat.ScanMethod;
 import algat.hashtable.Hasher;
 import algat.hashtable.HashTable;
 import algat.model.Record;
