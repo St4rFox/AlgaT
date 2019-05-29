@@ -1,12 +1,10 @@
 package algat;
 
-import algat.hashtable.Hasher;
 
 public enum ScanMethod {
     LINEARE {
         @Override
         public int scan() {
-            //TODO
             return 1;
         }
 
