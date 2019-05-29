@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -36,6 +37,14 @@ public class UploadDataDialogController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tableView.setOnKeyPressed(keyEvent -> {
+            Record selected = tableView.getSelectionModel().getSelectedItem();
+
+            if (keyEvent.getCode() == KeyCode.BACK_SPACE && selected != null) {
+                tableView.getItems().remove(selected);
+            }
+        });
+
         keyColumn.setCellValueFactory(new PropertyValueFactory<>("key"));
         keyColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         keyColumn.setOnEditCommit(e -> e.getTableView().getItems().get(e.getTablePosition().getRow()).setKey(e.getNewValue()));

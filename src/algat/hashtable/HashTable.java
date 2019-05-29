@@ -17,7 +17,7 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
         this.hasher = hasher;
     }
 
-    public int getCapacity() {
+    public int size() {
         return capacity;
     }
 

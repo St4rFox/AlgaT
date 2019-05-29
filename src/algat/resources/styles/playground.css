@@ -1,0 +1,21 @@
+#tableViewer {
+    -fx-alignment: center;
+    -fx-spacing: 5;
+}
+
+.node {
+    -fx-min-width: 200;
+}
+
+.key, .value {
+    -fx-alignment: center;
+    -fx-padding: 0 10 0 10;
+}
+
+.key {
+    -fx-background-color: slateblue;
+}
+
+.value {
+    -fx-background-color: salmon;
+}

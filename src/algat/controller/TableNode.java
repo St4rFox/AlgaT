@@ -3,12 +3,13 @@ package algat.controller;
 import javafx.beans.NamedArg;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-public class TableNode extends HBox {
+public class TableNode extends GridPane {
     @FXML private Text key;
     @FXML private Text value;
 
