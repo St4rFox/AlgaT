@@ -1,10 +1,11 @@
 package algat.controller;
 
-import algat.Config;
-import algat.ScanMethod;
+import algat.*;
+import algat.hashtable.HashTableNode;
 import algat.hashtable.Hasher;
 import algat.hashtable.HashTable;
 import algat.model.Record;
+import algat.utils.Util;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,9 +22,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -42,6 +47,8 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
     // Instance fields
     private HashTable table;
+    private ArrayList<Pair<Integer, HashTableNode>> scanSequence = new ArrayList<>();
+    private int cursor = -1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -96,31 +103,6 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         }
     }
 
-
-    public void stepBackwardButtonPressed(ActionEvent event) {
-
-    }
-
-    public void stepForwardButtonPressed(ActionEvent event) {
-
-    }
-
-    public void fastBackwardButtonPressed(ActionEvent event) {
-
-    }
-
-    public void fastForwardButtonPressed(ActionEvent event) {
-
-    }
-
-    public void removeButtonPressed(ActionEvent event) {
-
-    }
-
-    public void insertButtonPressed(ActionEvent event) {
-
-    }
-
     public void findButtonPressed(ActionEvent event) {
         Dialog<String> newEntryDialog = new Dialog<>();
         newEntryDialog.setTitle("New Entry");
@@ -170,7 +152,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     }
 
     private void initViewer() {
-        for (HashTable.HashTableNode node : this.table) {
+        for (HashTableNode node : this.table) {
             TableNode tableNode = new TableNode(node.getKey(), node.getValue());
             this.tableViewer.getChildren().add(tableNode);
         }
@@ -179,16 +161,63 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     }
 
     @Override
-    public void onHashComputation(int hashValue) {
+    public void onHashCreated(int hashValue) {
         System.out.println("Hash value: " + hashValue);
     }
 
     @Override
-    public void onNodeInspection(int index, HashTable.HashTableNode node) {
-        System.out.println("Index: " + index);
-        System.out.println("Node Inspected: " + node);
+    public void onScan(int index, HashTableNode node) {
+        this.scanSequence.add(new Pair<>(index, node));
+    }
 
-        TableNode inspected = (TableNode) this.tableViewer.getChildren().get(index);
-        inspected.getStyleClass().add("active");
+    @Override
+    public void onFinish(int index, HashTableNode selectedNode) {
+
+    }
+
+    public void stepBackwardButtonPressed(ActionEvent event) {
+        if (this.cursor > -1) {
+            ObservableList<Node> children = this.tableViewer.getChildren();
+            int prevNode = this.scanSequence.get(this.cursor).getKey();
+            children.get(prevNode).getStyleClass().remove("inspected");
+
+            if (this.cursor - 1 >= 0) {
+                int nextNode = this.scanSequence.get(this.cursor - 1).getKey();
+                children.get(nextNode).getStyleClass().add("inspected");
+            }
+
+            this.cursor--;
+        }
+    }
+
+    public void stepForwardButtonPressed(ActionEvent event) {
+        if (this.cursor < this.scanSequence.size() - 1) {
+            ObservableList<Node> children = this.tableViewer.getChildren();
+
+            if (this.cursor > -1) {
+                int prevNode = this.scanSequence.get(this.cursor).getKey();
+                children.get(prevNode).getStyleClass().remove("inspected");
+            }
+
+            int nextNode = this.scanSequence.get(this.cursor + 1).getKey();
+            children.get(nextNode).getStyleClass().add("inspected");
+            this.cursor++;
+        }
+    }
+
+    public void fastBackwardButtonPressed(ActionEvent event) {
+
+    }
+
+    public void fastForwardButtonPressed(ActionEvent event) {
+
+    }
+
+    public void removeButtonPressed(ActionEvent event) {
+
+    }
+
+    public void insertButtonPressed(ActionEvent event) {
+
     }
 }

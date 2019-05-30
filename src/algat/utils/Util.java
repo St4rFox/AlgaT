@@ -1,5 +1,7 @@
 package algat.utils;
 
+import javafx.scene.Node;
+
 public class Util {
 
     public static String toBinary(String key) {

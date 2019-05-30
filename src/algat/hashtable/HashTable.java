@@ -1,15 +1,14 @@
 package algat.hashtable;
 
-import algat.ScanMethod;
 import algat.controller.HashTableDelegate;
 
 import java.util.Iterator;
 
-public class HashTable implements Iterable<HashTable.HashTableNode> {
+public class HashTable implements Iterable<HashTableNode> {
     private int capacity;
     private HashTableNode[] elements;
     private Hasher hasher;
-    private ScanMethod scanMethod;
+    private final int step = 1;
     public HashTableDelegate delegate;
 
     public HashTable(int capacity, Hasher hasher) {
@@ -90,13 +89,11 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
         boolean deletedFound = false;
 
         boolean hasDelegate = this.delegate != null;
-        if (hasDelegate) delegate.onHashComputation(start);
+        if (hasDelegate) delegate.onHashCreated(start);
 
-        int i = 0;
-        while(i < this.capacity) {
-            position = (start + i) % this.capacity;
+        for (int i = 1; i < this.capacity; i++) {
             HashTableNode current = this.elements[position];
-            if (hasDelegate) this.delegate.onNodeInspection(position, current);
+            if (hasDelegate) this.delegate.onScan(position, current);
 
             if (current == null || current.key.equals(key))
                 break;
@@ -106,45 +103,15 @@ public class HashTable implements Iterable<HashTable.HashTableNode> {
                 deletedPosition = position;
             }
 
-            i = scanMethod.nextIndex(i);
+            position = (start + i * step) % this.capacity;
         }
 
         if (deletedFound && !this.elements[position].key.equals(key))
             position = deletedPosition;
 
         ScanTuple result = new ScanTuple(position, this.elements[position]);
-        if (hasDelegate) this.delegate.onNodeInspection(result.position, result.node);
+        if (hasDelegate) this.delegate.onFinish(result.position, result.node);
         return result;
-    }
-
-    public class HashTableNode {
-        private String key;
-        private String value;
-        private boolean deleted = false;
-
-        HashTableNode() {}
-
-        HashTableNode(String key, String value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        public String getValue() {
-            return this.value;
-        }
-
-        public String getKey() {
-            return this.key;
-        }
-
-        public boolean isDeleted() {
-            return this.deleted;
-        }
-
-        @Override
-        public String toString() {
-            return this.key + " => " + this.value;
-        }
     }
 
     private class ScanTuple {

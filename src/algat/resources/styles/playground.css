@@ -16,6 +16,10 @@
     -fx-background-color: slateblue;
 }
 
+.inspected > .key {
+    -fx-background-color: yellow;
+}
+
 .value {
     -fx-background-color: salmon;
 }
