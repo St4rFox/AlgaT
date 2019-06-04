@@ -1,4 +1,4 @@
-package algat.hashtable;
+package algat.lib.hashtable;
 
 public class HashTableNode {
     String key;

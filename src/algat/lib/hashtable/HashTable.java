@@ -1,4 +1,4 @@
-package algat.hashtable;
+package algat.lib.hashtable;
 
 import algat.controller.HashTableDelegate;
 
@@ -138,4 +138,5 @@ public class HashTable implements Iterable<HashTableNode> {
             return node == null ? new HashTableNode() : node;
         }
     }
+
 }

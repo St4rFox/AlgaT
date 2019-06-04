@@ -1,6 +1,4 @@
-package algat.utils;
-
-import javafx.scene.Node;
+package algat.lib;
 
 public class Util {
 

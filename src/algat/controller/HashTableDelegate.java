@@ -1,6 +1,6 @@
 package algat.controller;
 
-import algat.hashtable.HashTableNode;
+import algat.lib.hashtable.HashTableNode;
 
 public interface HashTableDelegate {
     void onHashCreated(int hashValue);

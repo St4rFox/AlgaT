@@ -1,11 +1,12 @@
 package algat.controller;
 
-import algat.*;
-import algat.hashtable.HashTableNode;
-import algat.hashtable.Hasher;
-import algat.hashtable.HashTable;
+import algat.Config;
+import algat.lib.ScanAnimation;
+import algat.lib.hashtable.Hasher;
+import algat.lib.hashtable.HashTable;
+import algat.lib.hashtable.HashTableNode;
+import algat.lib.scanmethods.*;
 import algat.model.Record;
-import algat.utils.Util;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,12 +23,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -65,8 +66,13 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         });
 
         ObservableList<ScanMethod> scanItems = scannerSelect.getItems();
-        scanItems.addAll(ScanMethod.values());
-        scannerSelect.setValue(ScanMethod.values()[0]);
+        scanItems.addAll(
+                new LinearScanMethod(1),
+                new QuadraticScanMethod(1),
+                new RandomScanMethod(),
+                new DoubleHashScanMethod(Hasher.NAIVE)
+        );
+        scannerSelect.setValue(scanItems.get(0));
         scannerSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldScanner, newScanner) -> {
             Config.setScanMethod(newScanner);
         });
@@ -167,6 +173,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
     @Override
     public void onScan(int index, HashTableNode node) {
+        ScanAnimation.addNode((TableNode) this.tableViewer.getChildren().get(index));
         this.scanSequence.add(new Pair<>(index, node));
     }
 
@@ -210,7 +217,8 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     }
 
     public void fastForwardButtonPressed(ActionEvent event) {
-
+        ScanAnimation.withDuration(Duration.millis(1000));
+        ScanAnimation.getAnimation().play();
     }
 
     public void removeButtonPressed(ActionEvent event) {
