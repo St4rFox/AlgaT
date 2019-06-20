@@ -27,17 +27,20 @@ public class HashTable implements Iterable<HashTableNode> {
         return node != null && !node.deleted && node.key.equals(key);
     }
 
-    public void put(String key, String value) {
+    public int put(String key, String value) {
         ScanTuple result = this.scan(key);
         HashTableNode node = result.node;
 
-        if (node == null)
+        if (node == null) {
             this.elements[result.position] = new HashTableNode(key, value);
-        else if (node.deleted || node.key.equals(key)) {
+            return result.position;
+        } else if (node.deleted || node.key.equals(key)) {
             node.key = key;
             node.value = value;
+            return result.position;
         } else {
             //TODO: restructure table
+            return -1;
         }
     }
 

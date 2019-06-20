@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,6 +26,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -88,19 +90,21 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         hasher.setVisible(false);
         step.setVisible(false);
 
+        positionVal.setTextAlignment(TextAlignment.CENTER);
+
         scannerSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldScanner, newScanner) -> {
             Config.setScanMethod(newScanner);
-            switch (newScanner.toString()){
+            switch (newScanner.toString()) {
 
                 case "Scansione Lineare":
                     step.setOnAction((clicked) -> {
                         int stepInserted = 1;
                         try {
                             stepInserted = Integer.parseInt(step.getCharacters().toString());
-                        } catch(NumberFormatException e) {
+                        } catch (NumberFormatException e) {
                             step.textProperty().setValue("1");
                         }
-                        ((LinearScanMethod)newScanner).setStep(stepInserted);
+                        ((LinearScanMethod) newScanner).setStep(stepInserted);
 
                     });
                     break;
@@ -110,10 +114,10 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
                         int stepInserted = 1;
                         try {
                             stepInserted = Integer.parseInt(step.getCharacters().toString());
-                        } catch(NumberFormatException e) {
+                        } catch (NumberFormatException e) {
                             step.textProperty().setValue("1");
                         }
-                        ((QuadraticScanMethod)newScanner).setStep(stepInserted);
+                        ((QuadraticScanMethod) newScanner).setStep(stepInserted);
 
                     });
                     break;
@@ -123,7 +127,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
                 case "Hashing Doppio":
                     hasherSelect.getSelectionModel().selectedItemProperty().addListener((obsVal, oldHash, newHash) -> {
-                        ((DoubleHashScanMethod)newScanner).setHasher(newHash);
+                        ((DoubleHashScanMethod) newScanner).setHasher(newHash);
                     });
                     break;
             }
@@ -162,30 +166,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     }
 
     public void findButtonPressed(ActionEvent event) {
-        Dialog<String> newEntryDialog = new Dialog<>();
-        newEntryDialog.setTitle("New Entry");
-        newEntryDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
-
-        GridPane grid = new GridPane();
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        TextField keyField = new TextField();
-        keyField.setPromptText("Key");
-
-        grid.add(new Label("Key"), 0, 0);
-        grid.add(keyField, 1, 0);
-
-        newEntryDialog.getDialogPane().setContent(grid);
-
-        newEntryDialog.setResultConverter(button -> {
-            if (button == ButtonType.OK) {
-                return keyField.getText();
-            }
-            return null;
-        });
-
-        newEntryDialog.showAndWait().ifPresent(key -> {
+        getDialog("Find Key").showAndWait().ifPresent(key -> {
             System.out.println(this.table.contains(key));
         });
     }
@@ -227,10 +208,28 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     public void onScan(int index, HashTableNode node) {
         this.animation.addNode((TableNode) this.tableViewer.getChildren().get(index));
         this.scanSequence.add(new Pair<>(index, node));
+        modifyStatus(index,node);
     }
 
     @Override
     public void onFinish(int index, HashTableNode selectedNode) {
+        modifyStatus(index,selectedNode);
+
+    }
+
+    private void modifyStatus(int index, HashTableNode selectedNode){
+
+        if (selectedNode != null && !selectedNode.isDeleted()) {
+            positionVal.setText(String.valueOf(index));
+            keyVal.setText(selectedNode.getKey());
+            valVal.setText(selectedNode.getValue());
+            deletedVal.setText("False");
+        } else {
+            positionVal.setText("NOT FOUND");
+            keyVal.setText("NOT FOUND");
+            valVal.setText("NOT FOUND");
+            deletedVal.setText("True");
+        }
 
     }
 
@@ -253,10 +252,76 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     }
 
     public void removeButtonPressed(ActionEvent event) {
+        getDialog("Remove").showAndWait().ifPresent(key -> {
+            if(this.table.contains(key)){
+                this.table.remove(key);
+            }
+        });
 
     }
 
     public void insertButtonPressed(ActionEvent event) {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Insert Node");
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
 
+        GridPane grid = new GridPane();
+        grid.setVgap(10);
+        grid.setPadding(new Insets(10, 10, 10, 10));
+
+        TextField keyField = new TextField();
+        keyField.setPromptText("Key");
+        keyField.setAlignment(Pos.CENTER_LEFT);
+
+        TextField valField = new TextField();
+        valField.setPromptText("Value");
+        keyField.setAlignment(Pos.CENTER_LEFT);
+
+        grid.add(keyField, 0, 0);
+        grid.add(valField,0,1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(button -> {
+            if (button == ButtonType.OK) {
+                return new Pair<>(keyField.getText(), valField.getText());
+            }
+            return null;
+        });
+
+        dialog.showAndWait().ifPresent(node -> {
+            int index = this.table.put(node.getKey(), node.getValue());
+            TableNode nodus = (TableNode) tableViewer.getChildren().get(index);
+            nodus.setKey(node.getKey());
+            nodus.setValue(node.getValue());
+        });
+
+    }
+
+    private Dialog<String> getDialog(String title) {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle(title);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+
+        GridPane grid = new GridPane();
+        grid.setVgap(10);
+        grid.setPadding(new Insets(10, 10, 10, 10));
+
+        TextField keyField = new TextField();
+        keyField.setPromptText("Key");
+        keyField.setAlignment(Pos.CENTER_LEFT);
+
+        grid.add(keyField, 1, 0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(button -> {
+            if (button == ButtonType.OK) {
+                return keyField.getText();
+            }
+            return null;
+        });
+
+        return dialog;
     }
 }
