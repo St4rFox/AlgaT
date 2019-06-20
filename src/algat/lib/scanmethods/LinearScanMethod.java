@@ -4,11 +4,7 @@ public class LinearScanMethod implements ScanMethod{
 
     private int step;
 
-<<<<<<< HEAD:src/algat/hashtable/scanmethods/LinearScanMethod.java
-    public void setStep(int step){
-=======
-    public LinearScanMethod(int step){
->>>>>>> d2a669a9f69c738b4ff857283aee80db55797a6c:src/algat/lib/scanmethods/LinearScanMethod.java
+    public void setStep(int step) {
         this.step = step;
     }
 

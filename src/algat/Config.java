@@ -1,12 +1,7 @@
 package algat;
 
-<<<<<<< HEAD
-import algat.hashtable.Hasher;
-import algat.hashtable.scanmethods.ScanMethod;
-=======
 import algat.lib.hashtable.Hasher;
 import algat.lib.scanmethods.ScanMethod;
->>>>>>> d2a669a9f69c738b4ff857283aee80db55797a6c
 
 public class Config {
     private static Config configInstance = new Config();
