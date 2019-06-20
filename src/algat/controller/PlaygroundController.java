@@ -1,9 +1,17 @@
 package algat.controller;
 
 import algat.Config;
+<<<<<<< HEAD
 import algat.hashtable.Hasher;
 import algat.hashtable.HashTable;
 import algat.hashtable.scanmethods.*;
+=======
+import algat.lib.ScanAnimation;
+import algat.lib.hashtable.Hasher;
+import algat.lib.hashtable.HashTable;
+import algat.lib.hashtable.HashTableNode;
+import algat.lib.scanmethods.*;
+>>>>>>> d2a669a9f69c738b4ff857283aee80db55797a6c
 import algat.model.Record;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -12,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,10 +33,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.util.Pair;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -48,6 +60,8 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
     // Instance fields
     private HashTable table;
+    private ArrayList<Pair<Integer, HashTableNode>> scanSequence = new ArrayList<>();
+    private int cursor = -1;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,6 +78,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         });
 
         ObservableList<ScanMethod> scanItems = scannerSelect.getItems();
+<<<<<<< HEAD
         scanItems.addAll(new LinearScanMethod(), new QuadraticScanMethod(), new RandomScanMethod(), new DoubleHashScanMethod());
         scannerSelect.setValue(scannerSelect.getItems().get(2));
 
@@ -79,6 +94,15 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         hasher.setVisible(false);
         step.setVisible(false);
 
+=======
+        scanItems.addAll(
+                new LinearScanMethod(1),
+                new QuadraticScanMethod(1),
+                new RandomScanMethod(),
+                new DoubleHashScanMethod(Hasher.NAIVE)
+        );
+        scannerSelect.setValue(scanItems.get(0));
+>>>>>>> d2a669a9f69c738b4ff857283aee80db55797a6c
         scannerSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldScanner, newScanner) -> {
             Config.setScanMethod(newScanner);
             switch (newScanner.toString()){
@@ -152,31 +176,6 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         }
     }
 
-
-    public void stepBackwardButtonPressed(ActionEvent event) {
-
-    }
-
-    public void stepForwardButtonPressed(ActionEvent event) {
-
-    }
-
-    public void fastBackwardButtonPressed(ActionEvent event) {
-
-    }
-
-    public void fastForwardButtonPressed(ActionEvent event) {
-
-    }
-
-    public void removeButtonPressed(ActionEvent event) {
-
-    }
-
-    public void insertButtonPressed(ActionEvent event) {
-
-    }
-
     public void findButtonPressed(ActionEvent event) {
         Dialog<String> newEntryDialog = new Dialog<>();
         newEntryDialog.setTitle("New Entry");
@@ -226,7 +225,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     }
 
     private void initViewer() {
-        for (HashTable.HashTableNode node : this.table) {
+        for (HashTableNode node : this.table) {
             TableNode tableNode = new TableNode(node.getKey(), node.getValue());
             this.tableViewer.getChildren().add(tableNode);
         }
@@ -235,16 +234,65 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     }
 
     @Override
-    public void onHashComputation(int hashValue) {
+    public void onHashCreated(int hashValue) {
         System.out.println("Hash value: " + hashValue);
     }
 
     @Override
-    public void onNodeInspection(int index, HashTable.HashTableNode node) {
-        System.out.println("Index: " + index);
-        System.out.println("Node Inspected: " + node);
+    public void onScan(int index, HashTableNode node) {
+        ScanAnimation.addNode((TableNode) this.tableViewer.getChildren().get(index));
+        this.scanSequence.add(new Pair<>(index, node));
+    }
 
-        TableNode inspected = (TableNode) this.tableViewer.getChildren().get(index);
-        inspected.getStyleClass().add("active");
+    @Override
+    public void onFinish(int index, HashTableNode selectedNode) {
+
+    }
+
+    public void stepBackwardButtonPressed(ActionEvent event) {
+        if (this.cursor > -1) {
+            ObservableList<Node> children = this.tableViewer.getChildren();
+            int prevNode = this.scanSequence.get(this.cursor).getKey();
+            children.get(prevNode).getStyleClass().remove("inspected");
+
+            if (this.cursor - 1 >= 0) {
+                int nextNode = this.scanSequence.get(this.cursor - 1).getKey();
+                children.get(nextNode).getStyleClass().add("inspected");
+            }
+
+            this.cursor--;
+        }
+    }
+
+    public void stepForwardButtonPressed(ActionEvent event) {
+        if (this.cursor < this.scanSequence.size() - 1) {
+            ObservableList<Node> children = this.tableViewer.getChildren();
+
+            if (this.cursor > -1) {
+                int prevNode = this.scanSequence.get(this.cursor).getKey();
+                children.get(prevNode).getStyleClass().remove("inspected");
+            }
+
+            int nextNode = this.scanSequence.get(this.cursor + 1).getKey();
+            children.get(nextNode).getStyleClass().add("inspected");
+            this.cursor++;
+        }
+    }
+
+    public void fastBackwardButtonPressed(ActionEvent event) {
+
+    }
+
+    public void fastForwardButtonPressed(ActionEvent event) {
+        ScanAnimation.withDuration(Duration.millis(1000));
+        ScanAnimation.getAnimation().play();
+    }
+
+    public void removeButtonPressed(ActionEvent event) {
+
+    }
+
+    public void insertButtonPressed(ActionEvent event) {
+
     }
 }

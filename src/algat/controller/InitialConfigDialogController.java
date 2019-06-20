@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-import algat.hashtable.Hasher;
+import algat.lib.hashtable.Hasher;
 import algat.model.Record;
 import algat.Config;
 

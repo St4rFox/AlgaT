@@ -1,4 +1,4 @@
-package algat.utils;
+package algat.lib;
 
 public class Util {
 

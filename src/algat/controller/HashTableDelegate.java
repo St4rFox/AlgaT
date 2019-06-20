@@ -1,8 +1,9 @@
 package algat.controller;
 
-import algat.hashtable.HashTable;
+import algat.lib.hashtable.HashTableNode;
 
 public interface HashTableDelegate {
-    void onHashComputation(int hashValue);
-    void onNodeInspection(int index, HashTable.HashTableNode node);
+    void onHashCreated(int hashValue);
+    void onScan(int index, HashTableNode node);
+    void onFinish(int index, HashTableNode selectedNode);
 }

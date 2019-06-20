@@ -1,6 +1,6 @@
-package algat.hashtable.scanmethods;
+package algat.lib.scanmethods;
 
-import algat.hashtable.Hasher;
+import algat.lib.hashtable.Hasher;
 
 public class DoubleHashScanMethod implements ScanMethod {
 

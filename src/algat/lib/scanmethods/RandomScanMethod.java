@@ -1,4 +1,4 @@
-package algat.hashtable.scanmethods;
+package algat.lib.scanmethods;
 
 public class RandomScanMethod implements ScanMethod {
 
