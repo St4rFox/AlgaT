@@ -1,17 +1,11 @@
 package algat.controller;
 
 import algat.Config;
-<<<<<<< HEAD
-import algat.hashtable.Hasher;
-import algat.hashtable.HashTable;
-import algat.hashtable.scanmethods.*;
-=======
 import algat.lib.ScanAnimation;
 import algat.lib.hashtable.Hasher;
 import algat.lib.hashtable.HashTable;
 import algat.lib.hashtable.HashTableNode;
 import algat.lib.scanmethods.*;
->>>>>>> d2a669a9f69c738b4ff857283aee80db55797a6c
 import algat.model.Record;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -78,7 +72,6 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         });
 
         ObservableList<ScanMethod> scanItems = scannerSelect.getItems();
-<<<<<<< HEAD
         scanItems.addAll(new LinearScanMethod(), new QuadraticScanMethod(), new RandomScanMethod(), new DoubleHashScanMethod());
         scannerSelect.setValue(scannerSelect.getItems().get(2));
 
@@ -94,15 +87,6 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         hasher.setVisible(false);
         step.setVisible(false);
 
-=======
-        scanItems.addAll(
-                new LinearScanMethod(1),
-                new QuadraticScanMethod(1),
-                new RandomScanMethod(),
-                new DoubleHashScanMethod(Hasher.NAIVE)
-        );
-        scannerSelect.setValue(scanItems.get(0));
->>>>>>> d2a669a9f69c738b4ff857283aee80db55797a6c
         scannerSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldScanner, newScanner) -> {
             Config.setScanMethod(newScanner);
             switch (newScanner.toString()){
