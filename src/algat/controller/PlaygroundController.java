@@ -56,6 +56,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     private HashTable table;
     private ArrayList<Pair<Integer, HashTableNode>> scanSequence = new ArrayList<>();
     private int cursor = -1;
+    private ScanAnimation animation = new ScanAnimation();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -224,7 +225,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
     @Override
     public void onScan(int index, HashTableNode node) {
-        ScanAnimation.addNode((TableNode) this.tableViewer.getChildren().get(index));
+        this.animation.addNode((TableNode) this.tableViewer.getChildren().get(index));
         this.scanSequence.add(new Pair<>(index, node));
     }
 
@@ -234,42 +235,21 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     }
 
     public void stepBackwardButtonPressed(ActionEvent event) {
-        if (this.cursor > -1) {
-            ObservableList<Node> children = this.tableViewer.getChildren();
-            int prevNode = this.scanSequence.get(this.cursor).getKey();
-            children.get(prevNode).getStyleClass().remove("inspected");
-
-            if (this.cursor - 1 >= 0) {
-                int nextNode = this.scanSequence.get(this.cursor - 1).getKey();
-                children.get(nextNode).getStyleClass().add("inspected");
-            }
-
-            this.cursor--;
-        }
+        animation.stepBackward();
     }
 
     public void stepForwardButtonPressed(ActionEvent event) {
-        if (this.cursor < this.scanSequence.size() - 1) {
-            ObservableList<Node> children = this.tableViewer.getChildren();
-
-            if (this.cursor > -1) {
-                int prevNode = this.scanSequence.get(this.cursor).getKey();
-                children.get(prevNode).getStyleClass().remove("inspected");
-            }
-
-            int nextNode = this.scanSequence.get(this.cursor + 1).getKey();
-            children.get(nextNode).getStyleClass().add("inspected");
-            this.cursor++;
-        }
+        animation.stepForward();
     }
 
     public void fastBackwardButtonPressed(ActionEvent event) {
-
+        this.animation.setRate(-1.0);
+        this.animation.play();
     }
 
     public void fastForwardButtonPressed(ActionEvent event) {
-        ScanAnimation.withDuration(Duration.millis(1000));
-        ScanAnimation.getAnimation().play();
+        this.animation.setRate(1.0);
+        this.animation.play();
     }
 
     public void removeButtonPressed(ActionEvent event) {
