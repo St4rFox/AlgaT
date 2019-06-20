@@ -63,7 +63,7 @@
                                         <Insets bottom="10.0" />
                                     </VBox.margin>
                                 </Text>
-                                <RadioButton fx:id="customData" mnemonicParsing="false" selected="true" text="Yes, I would like to provide some custom data">
+                                <RadioButton fx:id="customData" mnemonicParsing="false" text="Yes, I would like to provide some custom data">
                                     <VBox.margin>
                                         <Insets bottom="15.0" />
                                     </VBox.margin>
@@ -71,7 +71,7 @@
                                         <ToggleGroup fx:id="initialDataOption" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="noData" mnemonicParsing="false" text="No, thanks. I prefer to enter data manually" toggleGroup="$initialDataOption" />
+                                <RadioButton fx:id="noData" mnemonicParsing="false" selected="true" text="No, thanks. I prefer to enter data manually" toggleGroup="$initialDataOption" />
                             </children>
                             <VBox.margin>
                                 <Insets bottom="20.0" />

@@ -8,7 +8,7 @@ public class DoubleHashScanMethod implements ScanMethod {
     private int modul;
     private Hasher hasher;
 
-    public DoubleHashScanMethod(Hasher hasher) {
+    public void setHasher(Hasher hasher){
         this.hasher = hasher;
     }
 

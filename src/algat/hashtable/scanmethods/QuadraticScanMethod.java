@@ -4,7 +4,7 @@ public class QuadraticScanMethod implements ScanMethod {
 
     private int step;
 
-    public QuadraticScanMethod(int step) {
+    public void setStep(int step){
         this.step = step;
     }
 

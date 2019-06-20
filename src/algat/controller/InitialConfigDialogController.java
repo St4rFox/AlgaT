@@ -30,7 +30,7 @@ public class InitialConfigDialogController implements Initializable {
     // Instance fields
     private Stage stage;
     private List<Record> data = null;
-    private String selectedOption = "customData";
+    private String selectedOption = "noData";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

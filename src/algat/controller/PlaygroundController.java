@@ -3,6 +3,7 @@ package algat.controller;
 import algat.Config;
 import algat.hashtable.Hasher;
 import algat.hashtable.HashTable;
+import algat.hashtable.scanmethods.*;
 import algat.model.Record;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -14,12 +15,17 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -38,6 +44,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     @FXML private Text factorVal;
     @FXML private Text positionVal;
     @FXML private VBox tableViewer;
+    @FXML private VBox configurationTab;
 
     // Instance fields
     private HashTable table;
@@ -57,10 +64,60 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         });
 
         ObservableList<ScanMethod> scanItems = scannerSelect.getItems();
-        scanItems.addAll(ScanMethod.values());
-        scannerSelect.setValue(ScanMethod.values()[0]);
+        scanItems.addAll(new LinearScanMethod(), new QuadraticScanMethod(), new RandomScanMethod(), new DoubleHashScanMethod());
+        scannerSelect.setValue(scannerSelect.getItems().get(2));
+
+        TextField step = new TextField();
+        step.setPromptText("Step");
+
+        ChoiceBox<Hasher> hasher = new ChoiceBox<>();
+        hasher.getItems().addAll(Hasher.values());
+        hasherSelect.setValue(Hasher.values()[0]);
+
+        configurationTab.getChildren().add(step);
+        configurationTab.getChildren().add(hasher);
+        hasher.setVisible(false);
+        step.setVisible(false);
+
         scannerSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldScanner, newScanner) -> {
             Config.setScanMethod(newScanner);
+            switch (newScanner.toString()){
+
+                case "Scansione Lineare":
+                    step.setOnAction((clicked) -> {
+                        int stepInserted = 1;
+                        try {
+                            stepInserted = Integer.parseInt(step.getCharacters().toString());
+                        } catch(NumberFormatException e) {
+                            step.textProperty().setValue("1");
+                        }
+                        ((LinearScanMethod)newScanner).setStep(stepInserted);
+
+                    });
+                    break;
+
+                case "Scansione Quadratica":
+                    step.setOnAction((clicked) -> {
+                        int stepInserted = 1;
+                        try {
+                            stepInserted = Integer.parseInt(step.getCharacters().toString());
+                        } catch(NumberFormatException e) {
+                            step.textProperty().setValue("1");
+                        }
+                        ((QuadraticScanMethod)newScanner).setStep(stepInserted);
+
+                    });
+                    break;
+
+                case "Scasione PseudoCasuale":
+                    break;
+
+                case "Hashing Doppio":
+                    hasherSelect.getSelectionModel().selectedItemProperty().addListener((obsVal, oldHash, newHash) -> {
+                        ((DoubleHashScanMethod)newScanner).setHasher(newHash);
+                    });
+                    break;
+            }
         });
 
         ObservableList<Hasher> hashItems = hasherSelect.getItems();
