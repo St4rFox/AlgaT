@@ -2,37 +2,32 @@ package algat.controller;
 
 import algat.Config;
 import algat.lib.ScanAnimation;
-import algat.lib.hashtable.Hasher;
+import algat.lib.ScanMethods;
 import algat.lib.hashtable.HashTable;
 import algat.lib.hashtable.HashTableNode;
-import algat.lib.scanmethods.*;
+import algat.lib.hashtable.Hasher;
+import algat.lib.scanmethods.DoubleHashingScanMethod;
+import algat.lib.scanmethods.LinearScanMethod;
+import algat.lib.scanmethods.QuadraticScanMethod;
 import algat.model.Record;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.util.Pair;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,18 +36,28 @@ import java.util.ResourceBundle;
 
 
 public class PlaygroundController implements Initializable, HashTableDelegate {
-    // FXML Fields
+    // Toolbar
     @FXML private Slider slider;
+
+    // Configuration Sidebar
     @FXML private TextField capacitySelect;
-    @FXML private ChoiceBox<Hasher> hasherSelect;
-    @FXML private ChoiceBox<ScanMethod> scannerSelect;
+    @FXML private ChoiceBox<Hasher> hasherMenu;
+    @FXML private ChoiceBox<ScanMethods.Names> scanMethodMenu;
+    @FXML private VBox additionalParams;
+    @FXML private VBox stepFieldContainer;
+    @FXML private TextField stepField;
+    @FXML private VBox secondHasherContainer;
+    @FXML private ChoiceBox<Hasher> secondHasherMenu;
+
+    // Status Sidebar
     @FXML private Text keyVal;
     @FXML private Text valVal;
     @FXML private Text deletedVal;
     @FXML private Text factorVal;
     @FXML private Text positionVal;
+
+    // Others
     @FXML private VBox tableViewer;
-    @FXML private VBox configurationTab;
 
     // Instance fields
     private HashTable table;
@@ -62,83 +67,9 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        capacitySelect.setOnAction((clicked) -> {
-            int newCapacity = 0;
-
-            try {
-                newCapacity = Integer.parseInt(capacitySelect.getCharacters().toString());
-            } catch (NumberFormatException e) {
-                capacitySelect.textProperty().setValue("0");
-            }
-
-            Config.setTableCapacity(newCapacity);
-        });
-
-        ObservableList<ScanMethod> scanItems = scannerSelect.getItems();
-        scanItems.addAll(new LinearScanMethod(), new QuadraticScanMethod(), new RandomScanMethod(), new DoubleHashScanMethod());
-        scannerSelect.setValue(scannerSelect.getItems().get(2));
-
-        TextField step = new TextField();
-        step.setPromptText("Step");
-
-        ChoiceBox<Hasher> hasher = new ChoiceBox<>();
-        hasher.getItems().addAll(Hasher.values());
-        hasherSelect.setValue(Hasher.values()[0]);
-
-        configurationTab.getChildren().add(step);
-        configurationTab.getChildren().add(hasher);
-        hasher.setVisible(false);
-        step.setVisible(false);
-
+        this.initUI();
+        this.initListeners();
         positionVal.setTextAlignment(TextAlignment.CENTER);
-
-        scannerSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldScanner, newScanner) -> {
-            Config.setScanMethod(newScanner);
-            switch (newScanner.toString()) {
-
-                case "Scansione Lineare":
-                    step.setOnAction((clicked) -> {
-                        int stepInserted = 1;
-                        try {
-                            stepInserted = Integer.parseInt(step.getCharacters().toString());
-                        } catch (NumberFormatException e) {
-                            step.textProperty().setValue("1");
-                        }
-                        ((LinearScanMethod) newScanner).setStep(stepInserted);
-
-                    });
-                    break;
-
-                case "Scansione Quadratica":
-                    step.setOnAction((clicked) -> {
-                        int stepInserted = 1;
-                        try {
-                            stepInserted = Integer.parseInt(step.getCharacters().toString());
-                        } catch (NumberFormatException e) {
-                            step.textProperty().setValue("1");
-                        }
-                        ((QuadraticScanMethod) newScanner).setStep(stepInserted);
-
-                    });
-                    break;
-
-                case "Scasione PseudoCasuale":
-                    break;
-
-                case "Hashing Doppio":
-                    hasherSelect.getSelectionModel().selectedItemProperty().addListener((obsVal, oldHash, newHash) -> {
-                        ((DoubleHashScanMethod) newScanner).setHasher(newHash);
-                    });
-                    break;
-            }
-        });
-
-        ObservableList<Hasher> hashItems = hasherSelect.getItems();
-        hashItems.addAll(Hasher.values());
-        hasherSelect.setValue(Hasher.values()[0]);
-        hasherSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldHash, newHash) -> {
-            Config.setHashFunction(newHash);
-        });
 
         try {
             FXMLLoader dialogLoader = new FXMLLoader(getClass().getResource("/algat/view/InitialConfigDialog.fxml"));
@@ -156,7 +87,7 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
             Platform.runLater(() -> {
                 stage.showAndWait();
-                capacitySelect.textProperty().setValue(Integer.toString(Config.getTableCapacity()));
+                capacitySelect.textProperty().setValue(Integer.toString(Config.getCapacity()));
                 this.initTable(dialogController.getData());
                 this.initViewer();
             });
@@ -165,28 +96,70 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         }
     }
 
-    public void findButtonPressed(ActionEvent event) {
-        getDialog("Find Key").showAndWait().ifPresent(key -> {
-            System.out.println(this.table.contains(key));
-        });
+    private void initUI() {
+        scanMethodMenu.getItems().addAll(ScanMethods.Names.values());
+        scanMethodMenu.setValue(ScanMethods.Names.values()[0]);
+
+        hasherMenu.getItems().addAll(Hasher.values());
+        hasherMenu.setValue(Hasher.values()[0]);
+
+        additionalParams.setVisible(false);
+        stepFieldContainer.managedProperty().bindBidirectional(stepFieldContainer.visibleProperty());
+        secondHasherContainer.managedProperty().bindBidirectional(secondHasherContainer.visibleProperty());
     }
 
-    public void uploadButtonPressed(ActionEvent event) {
+    private void initListeners() {
+        capacitySelect.setOnAction(clicked -> {
+            try {
+                Config.setCapacity(Integer.parseInt(capacitySelect.getText()));
+            } catch (NumberFormatException e) {
+                capacitySelect.setText("0");
+            }
+        });
 
+        hasherMenu.getSelectionModel().selectedItemProperty().addListener((observableValue, oldHasher, newHasher) -> {
+            Config.setHasher(newHasher);
+        });
+
+        scanMethodMenu.getSelectionModel().selectedItemProperty().addListener((observable, oldMethod, newMethod) -> {
+            Config.setScanMethod(newMethod);
+            stepFieldContainer.setVisible(newMethod == ScanMethods.Names.LINEAR || newMethod == ScanMethods.Names.QUADRATIC);
+            secondHasherContainer.setVisible(newMethod == ScanMethods.Names.DOUBLE_HASHING);
+        });
+
+        stepField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                try {
+                    int step = Integer.parseInt(stepField.getText());
+                    ScanMethods.Names methodName = Config.getScanMethod();
+
+                    if (methodName == ScanMethods.Names.LINEAR)
+                        Config.setScanMethod(new LinearScanMethod(Config.getCapacity(), step));
+                    else
+                        Config.setScanMethod(new QuadraticScanMethod(Config.getCapacity(), step));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        secondHasherMenu.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldHasher, newHasher) -> {
+            Config.setScanMethod(new DoubleHashingScanMethod(Config.getCapacity(), newHasher, "Chiave a caso"));
+        }));
     }
 
     private void initTable(List<Record> data) {
-        Hasher hashFunction = Config.getHashFunction();
+        Hasher hashFunction = Config.getHasher();
 
         if (data != null) {
-            Config.setTableCapacity(data.size());
-            this.table = new HashTable(Config.getTableCapacity(), hashFunction);
+            Config.setCapacity(data.size());
+            this.table = new HashTable(data.size(), hashFunction);
 
             for (Record record : data) {
                 this.table.put(record.getKey(), record.getValue());
             }
         } else {
-            this.table = new HashTable(Config.getTableCapacity(), hashFunction);
+            this.table = new HashTable(Config.getCapacity(), hashFunction);
         }
     }
 
@@ -208,16 +181,16 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     public void onScan(int index, HashTableNode node) {
         this.animation.addNode((TableNode) this.tableViewer.getChildren().get(index));
         this.scanSequence.add(new Pair<>(index, node));
-        modifyStatus(index,node);
+        modifyStatus(index, node);
     }
 
     @Override
     public void onFinish(int index, HashTableNode selectedNode) {
-        modifyStatus(index,selectedNode);
+        modifyStatus(index, selectedNode);
 
     }
 
-    private void modifyStatus(int index, HashTableNode selectedNode){
+    private void modifyStatus(int index, HashTableNode selectedNode) {
 
         if (selectedNode != null && !selectedNode.isDeleted()) {
             positionVal.setText(String.valueOf(index));
@@ -233,6 +206,38 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
     }
 
+    // ==================================
+    // === LISTENERS ====================
+    // ==================================
+    public void insertButtonPressed(ActionEvent event) {
+        ActionDialog dialog = new ActionDialog(
+                "Insert Dialog",
+                "Insert a new entry into the table",
+                true
+        );
+
+        dialog.showAndWait().ifPresent(System.out::println);
+    }
+
+    public void removeButtonPressed(ActionEvent event) {
+        ActionDialog dialog = new ActionDialog(
+                "Remove Dialog",
+                "Remove an entry from the table"
+        );
+
+        dialog.showAndWait().ifPresent(System.out::println);
+    }
+
+    public void findButtonPressed(ActionEvent event) {
+        ActionDialog dialog = new ActionDialog(
+                "Contains Dialog",
+                "Check if the table contains a given key"
+        );
+
+        dialog.showAndWait().ifPresent(System.out::println);
+    }
+
+    //TODO: Better implement animation
     public void stepBackwardButtonPressed(ActionEvent event) {
         animation.stepBackward();
     }
@@ -249,79 +254,5 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     public void fastForwardButtonPressed(ActionEvent event) {
         this.animation.setRate(1.0);
         this.animation.play();
-    }
-
-    public void removeButtonPressed(ActionEvent event) {
-        getDialog("Remove").showAndWait().ifPresent(key -> {
-            if(this.table.contains(key)){
-                this.table.remove(key);
-            }
-        });
-
-    }
-
-    public void insertButtonPressed(ActionEvent event) {
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Insert Node");
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
-
-        GridPane grid = new GridPane();
-        grid.setVgap(10);
-        grid.setPadding(new Insets(10, 10, 10, 10));
-
-        TextField keyField = new TextField();
-        keyField.setPromptText("Key");
-        keyField.setAlignment(Pos.CENTER_LEFT);
-
-        TextField valField = new TextField();
-        valField.setPromptText("Value");
-        keyField.setAlignment(Pos.CENTER_LEFT);
-
-        grid.add(keyField, 0, 0);
-        grid.add(valField,0,1);
-
-        dialog.getDialogPane().setContent(grid);
-
-        dialog.setResultConverter(button -> {
-            if (button == ButtonType.OK) {
-                return new Pair<>(keyField.getText(), valField.getText());
-            }
-            return null;
-        });
-
-        dialog.showAndWait().ifPresent(node -> {
-            int index = this.table.put(node.getKey(), node.getValue());
-            TableNode nodus = (TableNode) tableViewer.getChildren().get(index);
-            nodus.setKey(node.getKey());
-            nodus.setValue(node.getValue());
-        });
-
-    }
-
-    private Dialog<String> getDialog(String title) {
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle(title);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
-
-        GridPane grid = new GridPane();
-        grid.setVgap(10);
-        grid.setPadding(new Insets(10, 10, 10, 10));
-
-        TextField keyField = new TextField();
-        keyField.setPromptText("Key");
-        keyField.setAlignment(Pos.CENTER_LEFT);
-
-        grid.add(keyField, 1, 0);
-
-        dialog.getDialogPane().setContent(grid);
-
-        dialog.setResultConverter(button -> {
-            if (button == ButtonType.OK) {
-                return keyField.getText();
-            }
-            return null;
-        });
-
-        return dialog;
     }
 }

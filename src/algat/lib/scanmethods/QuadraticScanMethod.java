@@ -1,19 +1,21 @@
 package algat.lib.scanmethods;
 
-public class QuadraticScanMethod implements ScanMethod {
-
+public class QuadraticScanMethod extends ScanMethod {
     private int step;
 
-    public void setStep(int step){
+    public QuadraticScanMethod(int capacity, int step) {
+        super(capacity);
         this.step = step;
     }
 
     @Override
-    public int nextIndex(int i) {
-        if(i < 2) return 2;
-        else {
-            return i * i * step;
-        }
+    public int[] getScanSequence(int from) {
+        int[] sequence = new int[capacity];
+
+        for (int i = 0; i * i < capacity; i++)
+            sequence[i] = (from + (i * i * step)) % capacity;
+
+        return sequence;
     }
 
     @Override

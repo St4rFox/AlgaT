@@ -1,11 +1,21 @@
 package algat.lib.scanmethods;
 
-public class RandomScanMethod implements ScanMethod {
+import algat.lib.Util;
+
+public class RandomScanMethod extends ScanMethod {
+
+    public RandomScanMethod(int capacity) {
+        super(capacity);
+    }
 
     @Override
-    public int nextIndex(int i) {
-        int randomNumber = (int)Math.round(Math.random() * 10);
-        return i + randomNumber;
+    public int[] getScanSequence(int from) {
+        int[] sequence = Util.getShuffledRange(capacity);
+
+        for (int i = 0; i < capacity; i++)
+            sequence[i] = (from + sequence[i]) % capacity;
+
+        return sequence;
     }
 
     @Override

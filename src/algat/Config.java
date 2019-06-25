@@ -5,37 +5,44 @@ import algat.lib.scanmethods.ScanMethod;
 
 public class Config {
     private static Config configInstance = new Config();
+    public static Integer[] DEFAULT_CAPACITIES = {10, 20, 30, 40, 50};
 
-    public final static Integer[] TABLE_CAPACITIES = {10, 20, 30, 40, 50};
-
-    public static Config get() { return configInstance; }
-
-    public static int getTableCapacity() { return configInstance.tableCapacity; }
-    public static Hasher getHashFunction() { return configInstance.hashFunction; }
-    public static void setTableCapacity(int tableCapacity) { configInstance.tableCapacity = getNearestCapacity(tableCapacity); }
-    public static void setHashFunction(Hasher hashFunction) {
-        configInstance.hashFunction = hashFunction;
-    }
-    private static int getNearestCapacity(int tableCapacity) {
-        int tenth = 10;
-
-        while (tenth < tableCapacity)
-            tenth += 10;
-
-        return tenth;
+    // Config GETTERS
+    public static int getCapacity() {
+        return configInstance.capacity;
     }
 
-    public static void setScanMethod(ScanMethod scanMethod) { configInstance.scanMethod = scanMethod; }
+    public static Hasher getHasher() {
+        return configInstance.hasher;
+    }
 
-    private int tableCapacity;
-    private Hasher hashFunction;
+    public static ScanMethod getScanMethod() {
+        return configInstance.scanMethod;
+    }
+
+
+    // Config SETTERS
+    public static void setCapacity(int capacity) {
+        configInstance.capacity = capacity;
+    }
+
+    public static void setHasher(Hasher hasher) {
+        configInstance.hasher = hasher;
+    }
+
+    public static void setScanMethod(ScanMethod scanMethod) {
+        configInstance.scanMethod = scanMethod;
+    }
+
+    public static void setScanSequence(int[] scanSequence) {
+        configInstance.scanSequence = scanSequence;
+    }
+
+    private int capacity;
+    private Hasher hasher;
     private ScanMethod scanMethod;
+    private int[] scanSequence;
 
     private Config() {
-    }
-
-    @Override
-    public String toString() {
-        return "{\n\ttableCapacity: " + this.tableCapacity + ",\n\t" + "hashingFunction: " + this.hashFunction + "\n}";
     }
 }

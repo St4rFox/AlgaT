@@ -1,5 +1,8 @@
 package algat.controller;
 
+import algat.Config;
+import algat.lib.hashtable.Hasher;
+import algat.model.Record;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,11 +17,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
-
-import algat.lib.hashtable.Hasher;
-import algat.model.Record;
-import algat.Config;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class InitialConfigDialogController implements Initializable {
     // FXML Variables
@@ -35,8 +35,8 @@ public class InitialConfigDialogController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Integer> capacityItems = this.capacitySelect.getItems();
-        capacityItems.addAll(Config.TABLE_CAPACITIES);
-        capacitySelect.setValue(Config.TABLE_CAPACITIES[0]);
+        capacityItems.addAll(Config.DEFAULT_CAPACITIES);
+        capacitySelect.setValue(Config.DEFAULT_CAPACITIES[0]);
 
         ObservableList<Hasher> hashingItems = this.hashingSelect.getItems();
         hashingItems.addAll(Hasher.values());
@@ -72,8 +72,8 @@ public class InitialConfigDialogController implements Initializable {
         int selectedCapacity = capacitySelect.getValue();
         Hasher selectedHasher = hashingSelect.getValue();
 
-        Config.setHashFunction(selectedHasher);
-        Config.setTableCapacity(selectedCapacity);
+        Config.setHasher(selectedHasher);
+        Config.setCapacity(selectedCapacity);
 
         this.stage.close();
     }

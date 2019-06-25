@@ -1,7 +1,9 @@
 package algat.lib.scanmethods;
 
-public interface ScanMethod {
+public abstract class ScanMethod {
+    int capacity;
 
-    int nextIndex(int i);
+    ScanMethod(int capacity) { this.capacity = capacity; }
 
+    public abstract int[] getScanSequence(int from);
 }
