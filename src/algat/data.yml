@@ -1,0 +1,42 @@
+---
+title: "Lezione 1"                   #In ciccio:"fileName", ciccio non è tipo ma nome del campo
+fileName: "lesson1.html"
+questions:                           #NBB questa grafia descrive un "array" di nome questions
+- text: "Testo q1"                   #il trattino, così identato, descrive un suo elemento
+  answer: 1 #indice risposta corretta
+  answers:
+  - "Risposta 1" #rimanenti domande
+  - "Risposta 2"
+- text: "Testo q1 2"
+  answer: 2 #indice risposta corretta
+  answers:
+  - "Risposta 1" #rimanenti domande
+  - "Risposta 2"
+---
+title: "Lezione 2"                   #In ciccio:"fileName", ciccio non è tipo ma nome del campo
+fileName: "lesson2.html"
+questions:                           #NBB questa grafia descrive un "array" di nome questions
+- text: "Testo q2"                   #il trattino, così identato, descrive un suo elemento
+  answer: 1 #indice risposta corretta
+  answers:
+  - "Risposta 1" #rimanenti domande
+  - "Risposta 2"
+- text: "Testo q2 2"
+  answer: 2 #indice risposta corretta
+  answers:
+  - "Risposta 1" #rimanenti domande
+  - "Risposta 2"
+---
+title: "Lezione 3"                   #In ciccio:"fileName", ciccio non è tipo ma nome del campo
+fileName: "lesson3.html"
+questions:                           #NBB questa grafia descrive un "array" di nome questions
+- text: "Testo q3"                   #il trattino, così identato, descrive un suo elemento
+  answer: 1 #indice risposta corretta
+  answers:
+  - "Risposta 1" #rimanenti domande
+  - "Risposta 2"
+- text: "Testo q3 2"
+  answer: 2 #indice risposta corretta
+  answers:
+  - "Risposta 1" #rimanenti domande
+  - "Risposta 2"

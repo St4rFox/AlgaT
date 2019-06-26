@@ -10,9 +10,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent playground = FXMLLoader.load(getClass().getResource("view/Playground.fxml"));
+        Parent lessons = FXMLLoader.load(getClass().getResource("view/LessonsLayout.fxml"));
         primaryStage.setTitle("AlgaT");
-        primaryStage.setScene(new Scene(playground));
+        primaryStage.setScene(new Scene(lessons));
         primaryStage.setMaximized(true);
         primaryStage.show();
     }
