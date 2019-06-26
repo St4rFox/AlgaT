@@ -24,7 +24,7 @@
         </HBox>
     </top>
     <right>
-        <VBox alignment="TOP_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
+        <VBox fx:id="configSideBar" alignment="TOP_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
             <children>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Configurazione Tabella" wrappingWidth="141.22900390625">
                     <VBox.margin>
