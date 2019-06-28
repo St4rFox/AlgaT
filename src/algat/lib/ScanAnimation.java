@@ -1,15 +1,13 @@
 package algat.lib;
 
-import algat.controller.TableNode;
+import algat.controller.BucketComponent;
 import javafx.animation.Transition;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public class ScanAnimation extends Transition {
-    private ArrayList<TableNode> scanSequence = new ArrayList<>();
+    private ArrayList<BucketComponent> scanSequence = new ArrayList<>();
     private Integer cursor = -1;
 
     public ScanAnimation() {
@@ -30,7 +28,7 @@ public class ScanAnimation extends Transition {
         }
     }
 
-    public void addNode(TableNode node) {
+    public void addNode(BucketComponent node) {
         this.scanSequence.add(node);
     }
 

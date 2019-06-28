@@ -10,13 +10,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent lessons = FXMLLoader.load(getClass().getResource("view/LessonsLayout.fxml"));
+        Parent playground = FXMLLoader.load(getClass().getResource("view/Playground.fxml"));
         primaryStage.setTitle("AlgaT");
-        primaryStage.setScene(new Scene(lessons));
+        primaryStage.setScene(new Scene(playground));
         primaryStage.setMaximized(true);
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

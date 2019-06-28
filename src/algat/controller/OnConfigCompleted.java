@@ -1,10 +1,10 @@
 package algat.controller;
 
-import algat.model.Record;
+import algat.model.Bucket;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @FunctionalInterface
 public interface OnConfigCompleted {
-    void configCompleted(List<Record> data);
+    void configCompleted(ArrayList<Bucket> data);
 }

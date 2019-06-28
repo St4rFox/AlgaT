@@ -1,90 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-
-<AnchorPane fx:controller="algat.controller.InitialConfigDialogController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <VBox alignment="TOP_CENTER" layoutX="274.0" layoutY="98.0" prefWidth="100.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Before start play with the table, we need to configure it!">
+<?import javafx.scene.text.*?>
+<AnchorPane fx:controller="algat.controller.InitialConfigDialogController" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <VBox alignment="TOP_CENTER" layoutX="274.0" layoutY="98.0" prefWidth="100.0" AnchorPane.bottomAnchor="25.0"
+          AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Before start play with the table, we need to configure it!">
+            <font>
+                <Font name="Lato Bold" size="18.0"/>
+            </font>
+            <VBox.margin>
+                <Insets bottom="20.0"/>
+            </VBox.margin>
+        </Text>
+        <VBox prefWidth="100.0" VBox.vgrow="ALWAYS">
+            <VBox prefWidth="100.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Choose a maximum capacity">
                     <font>
-                        <Font name="Lato Bold" size="18.0" />
+                        <Font size="14.0"/>
                     </font>
                     <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets bottom="10.0"/>
                     </VBox.margin>
                 </Text>
-                <VBox prefWidth="100.0" VBox.vgrow="ALWAYS">
-                    <children>
-                        <VBox prefWidth="100.0">
-                            <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Choose a maximum capacity">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" />
-                                    </VBox.margin>
-                                </Text>
-                                <ChoiceBox fx:id="capacitySelect" prefWidth="150.0">
-                                    <VBox.margin>
-                                        <Insets />
-                                    </VBox.margin>
-                                </ChoiceBox>
-                            </children>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
-                        </VBox>
-                        <VBox prefWidth="100.0" spacing="10.0">
-                            <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Select an hashing function (you can still change it later)">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                </Text>
-                                <ChoiceBox fx:id="hashingSelect" prefWidth="150.0" />
-                            </children>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
-                        </VBox>
-                        <VBox prefWidth="100.0" VBox.vgrow="ALWAYS">
-                            <children>
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Do you like to fill the table with some initial data?">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" />
-                                    </VBox.margin>
-                                </Text>
-                                <RadioButton fx:id="customData" mnemonicParsing="false" text="Yes, I would like to provide some custom data">
-                                    <VBox.margin>
-                                        <Insets bottom="15.0" />
-                                    </VBox.margin>
-                                    <toggleGroup>
-                                        <ToggleGroup fx:id="initialDataOption" />
-                                    </toggleGroup>
-                                </RadioButton>
-                                <RadioButton fx:id="noData" mnemonicParsing="false" selected="true" text="No, thanks. I prefer to enter data manually" toggleGroup="$initialDataOption" />
-                            </children>
-                            <VBox.margin>
-                                <Insets bottom="20.0" />
-                            </VBox.margin>
-                        </VBox>
-                        <VBox alignment="CENTER_RIGHT" prefWidth="100.0" VBox.vgrow="NEVER">
-                            <children>
-                                <Button fx:id="nextButton" onAction="#nextButtonPressed" defaultButton="true" mnemonicParsing="false" prefWidth="80.0" text="Next" />
-                            </children>
-                        </VBox>
-                    </children>
-                </VBox>
-            </children>
+                <TextField fx:id="capacityField" prefWidth="150.0">
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                </TextField>
+                <VBox.margin>
+                    <Insets bottom="20.0"/>
+                </VBox.margin>
+            </VBox>
+            <VBox prefWidth="100.0" spacing="10.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="2. Select an hashing function (you can still change it later)">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Text>
+                <ChoiceBox fx:id="hashingSelect" prefWidth="150.0"/>
+                <VBox.margin>
+                    <Insets bottom="20.0"/>
+                </VBox.margin>
+            </VBox>
+            <VBox prefWidth="100.0" VBox.vgrow="ALWAYS">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="3. Do you like to fill the table with some initial data?">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0"/>
+                    </VBox.margin>
+                </Text>
+                <RadioButton fx:id="customData" mnemonicParsing="false"
+                             text="Yes, I would like to provide some custom data">
+                    <VBox.margin>
+                        <Insets bottom="15.0"/>
+                    </VBox.margin>
+                    <toggleGroup>
+                        <ToggleGroup fx:id="initialDataOption"/>
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="noData" mnemonicParsing="false" selected="true"
+                             text="No, thanks. I prefer to enter data manually" toggleGroup="$initialDataOption"/>
+                <VBox.margin>
+                    <Insets bottom="20.0"/>
+                </VBox.margin>
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" prefWidth="100.0" VBox.vgrow="NEVER">
+                <Button fx:id="nextButton" onAction="#nextButtonPressed" defaultButton="true" mnemonicParsing="false"
+                        prefWidth="80.0" text="Next"/>
+            </VBox>
         </VBox>
-    </children>
+    </VBox>
 </AnchorPane>

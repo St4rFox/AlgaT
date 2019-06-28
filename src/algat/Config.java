@@ -1,48 +1,55 @@
 package algat;
 
+import algat.lib.ScanMethod;
 import algat.lib.hashtable.Hasher;
-import algat.lib.scanmethods.ScanMethod;
+
+import java.util.HashMap;
 
 public class Config {
-    private static Config configInstance = new Config();
-    public static Integer[] DEFAULT_CAPACITIES = {10, 20, 30, 40, 50};
+    private HashMap<Key, Object> storage = new HashMap<>();
 
-    // Config GETTERS
-    public static int getCapacity() {
-        return configInstance.capacity;
+    public enum Key {
+        CAPACITY,
+        HASHER,
+        SCAN_METHOD,
+        STEP,
+        SECOND_HASHER
     }
 
-    public static Hasher getHasher() {
-        return configInstance.hasher;
+    public void set(Key key, Object value) {
+        if (hasCorrectType(key, value))
+            storage.put(key, value);
     }
 
-    public static ScanMethod getScanMethod() {
-        return configInstance.scanMethod;
+    public int getInt(Key key) {
+        return (int) storage.get(key);
     }
 
-
-    // Config SETTERS
-    public static void setCapacity(int capacity) {
-        configInstance.capacity = capacity;
+    public Hasher getHasher(Key key) {
+        return (Hasher) storage.get(key);
     }
 
-    public static void setHasher(Hasher hasher) {
-        configInstance.hasher = hasher;
+    public ScanMethod getScanMethod(Key key) {
+        return (ScanMethod) storage.get(key);
     }
 
-    public static void setScanMethod(ScanMethod scanMethod) {
-        configInstance.scanMethod = scanMethod;
-    }
+    private boolean hasCorrectType(Key key, Object value) {
+        boolean hasCorrectType = false;
 
-    public static void setScanSequence(int[] scanSequence) {
-        configInstance.scanSequence = scanSequence;
-    }
+        switch (key) {
+            case CAPACITY:
+            case STEP:
+                hasCorrectType = value instanceof Integer;
+                break;
+            case HASHER:
+            case SECOND_HASHER:
+                hasCorrectType = value instanceof Hasher;
+                break;
+            case SCAN_METHOD:
+                hasCorrectType = value instanceof ScanMethod;
+                break;
+        }
 
-    private int capacity;
-    private Hasher hasher;
-    private ScanMethod scanMethod;
-    private int[] scanSequence;
-
-    private Config() {
+        return hasCorrectType;
     }
 }

@@ -1,6 +1,6 @@
 package algat.controller;
 
-import algat.model.Record;
+import algat.model.Bucket;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,8 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,16 +29,16 @@ import java.util.stream.Stream;
 public class UploadDataDialogController implements Initializable {
     @FXML private TextField selectedFilePath;
     @FXML private Button folderButton;
-    @FXML private TableView<Record> tableView;
-    @FXML private TableColumn<Record, String> keyColumn;
-    @FXML private TableColumn<Record, String> valueColumn;
+    @FXML private TableView<Bucket> tableView;
+    @FXML private TableColumn<Bucket, String> keyColumn;
+    @FXML private TableColumn<Bucket, String> valueColumn;
 
     private OnConfigCompleted callback;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tableView.setOnKeyPressed(keyEvent -> {
-            Record selected = tableView.getSelectionModel().getSelectedItem();
+            Bucket selected = tableView.getSelectionModel().getSelectedItem();
 
             if (keyEvent.getCode() == KeyCode.BACK_SPACE && selected != null) {
                 tableView.getItems().remove(selected);
@@ -55,8 +55,8 @@ public class UploadDataDialogController implements Initializable {
     }
 
     public void finishButtonPressed(ActionEvent event) {
-        List<Record> records = tableView.getItems();
-        this.callback.configCompleted(records);
+        ArrayList<Bucket> buckets = new ArrayList<>(tableView.getItems());
+        this.callback.configCompleted(buckets);
     }
 
     public void folderButtonPressed(ActionEvent event) {
@@ -68,11 +68,11 @@ public class UploadDataDialogController implements Initializable {
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
             selectedFilePath.setText(file.getAbsolutePath());
-            LinkedList<Record> records = getDataFromFile(file);
+            LinkedList<Bucket> buckets = getDataFromFile(file);
 
-            if (records != null) {
-                ObservableList<Record> items = tableView.getItems();
-                items.addAll(records);
+            if (buckets != null) {
+                ObservableList<Bucket> items = tableView.getItems();
+                items.addAll(buckets);
             }
         }
     }
@@ -81,20 +81,20 @@ public class UploadDataDialogController implements Initializable {
         this.callback = callback;
     }
 
-    private LinkedList<Record> getDataFromFile(File file) {
-        LinkedList<Record> records = null;
+    private LinkedList<Bucket> getDataFromFile(File file) {
+        LinkedList<Bucket> buckets = null;
         try {
             Stream<String> fileStream = Files.lines(file.toPath());
-            records = fileStream
+            buckets = fileStream
                     .map(line -> {
                         String[] parts = line.split("\\|");
-                        return new Record(parts[0], parts[1]);
+                        return new Bucket(parts[0], parts[1]);
                     })
                     .collect(Collectors.toCollection(LinkedList::new));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return records;
+        return buckets;
     }
 }

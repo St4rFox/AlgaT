@@ -2,15 +2,11 @@ package algat.controller;
 
 import algat.Config;
 import algat.lib.ScanAnimation;
-import algat.lib.ScanMethods;
+import algat.lib.ScanMethod;
 import algat.lib.hashtable.HashTable;
 import algat.lib.hashtable.HashTableNode;
 import algat.lib.hashtable.Hasher;
-import algat.lib.scanmethods.DoubleHashingScanMethod;
-import algat.lib.scanmethods.LinearScanMethod;
-import algat.lib.scanmethods.QuadraticScanMethod;
-import algat.lib.scanmethods.ScanMethod;
-import algat.model.Record;
+import algat.model.Bucket;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,10 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -33,7 +27,6 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -45,12 +38,13 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     @FXML private VBox configSideBar;
     @FXML private TextField capacitySelect;
     @FXML private ChoiceBox<Hasher> hasherMenu;
-    @FXML private ChoiceBox<ScanMethods.Names> scanMethodMenu;
+    @FXML private ChoiceBox<ScanMethod> scanMethodMenu;
     @FXML private VBox additionalParams;
     @FXML private VBox stepFieldContainer;
     @FXML private TextField stepField;
     @FXML private VBox secondHasherContainer;
     @FXML private ChoiceBox<Hasher> secondHasherMenu;
+    @FXML private Button lockButton;
 
     // Status Sidebar
     @FXML private Text keyVal;
@@ -59,8 +53,8 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     @FXML private Text factorVal;
     @FXML private Text positionVal;
 
-    // Others
-    @FXML private VBox tableViewer;
+    // Table
+    @FXML private HashTableController hashTableController;
 
     // Instance fields
     private HashTable table;
@@ -72,7 +66,6 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.initUI();
         this.initListeners();
-        positionVal.setTextAlignment(TextAlignment.CENTER);
 
         try {
             FXMLLoader dialogLoader = new FXMLLoader(getClass().getResource("/algat/view/InitialConfigDialog.fxml"));
@@ -90,9 +83,10 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
             Platform.runLater(() -> {
                 stage.showAndWait();
-                capacitySelect.textProperty().setValue(Integer.toString(Config.getCapacity()));
-                this.initTable(dialogController.getData());
-                this.initViewer();
+
+                Config initialConfig = dialogController.getConfig();
+                ArrayList<Bucket> initialData = dialogController.getData();
+                this.hashTableController.init(initialConfig, initialData);
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,70 +97,25 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         hasherMenu.getItems().addAll(Hasher.values());
         hasherMenu.setValue(Hasher.values()[0]);
 
-        scanMethodMenu.getItems().addAll(ScanMethods.Names.values());
-        scanMethodMenu.setValue(ScanMethods.Names.values()[0]);
-
-        stepField.setText("1");
-
-        secondHasherMenu.getItems().addAll(Hasher.values());
-        secondHasherMenu.setValue(Hasher.values()[0]);
+        scanMethodMenu.getItems().addAll(ScanMethod.values());
+        scanMethodMenu.setValue(ScanMethod.values()[0]);
 
         stepFieldContainer.managedProperty().bindBidirectional(stepFieldContainer.visibleProperty());
         secondHasherContainer.managedProperty().bindBidirectional(secondHasherContainer.visibleProperty());
         secondHasherContainer.setVisible(false);
 
-        Button lockButton = new Button("Lock");
-
-        lockButton.setOnAction(actionEvent -> {
-            Boolean locked = lockButton.getText().equals("Lock");
-            lockButton.setText(locked ? "Unlock" : "Lock");
-            setLocked(locked);
-        });
-
-        lockButton.setId("lockButton");
-        configSideBar.getChildren().add(lockButton);
-    }
-
-    private void setLocked(Boolean locked){
-        configSideBar.getChildren().forEach(node -> {
-            String id = node.getId();
-            if (id == null || !id.equals("lockButton")) node.setDisable(locked);
-        });
+        stepField.setText("1");
+        secondHasherMenu.getItems().addAll(Hasher.values());
+        secondHasherMenu.setValue(Hasher.values()[0]);
     }
 
     private void initListeners() {
-
         scanMethodMenu.getSelectionModel().selectedItemProperty().addListener((observable, oldMethod, newMethod) -> {
-            stepFieldContainer.setVisible(newMethod == ScanMethods.Names.LINEAR || newMethod == ScanMethods.Names.QUADRATIC);
-            secondHasherContainer.setVisible(newMethod == ScanMethods.Names.DOUBLE_HASHING);
-            additionalParams.setVisible(newMethod != ScanMethods.Names.RANDOM);
+            stepFieldContainer.setVisible(newMethod == ScanMethod.LINEAR || newMethod == ScanMethod.QUADRATIC);
+            secondHasherContainer.setVisible(newMethod == ScanMethod.DOUBLE_HASHING);
+            additionalParams.setVisible(newMethod != ScanMethod.RANDOM);
             stepField.setText("1");
         });
-
-    }
-
-    private void initTable(List<Record> data) {
-        Hasher hashFunction = Config.getHasher();
-
-        if (data != null) {
-            Config.setCapacity(data.size());
-            this.table = new HashTable(data.size(), hashFunction);
-
-            for (Record record : data) {
-                this.table.put(record.getKey(), record.getValue());
-            }
-        } else {
-            this.table = new HashTable(Config.getCapacity(), hashFunction);
-        }
-    }
-
-    private void initViewer() {
-        for (HashTableNode node : this.table) {
-            TableNode tableNode = new TableNode(node.getKey(), node.getValue());
-            this.tableViewer.getChildren().add(tableNode);
-        }
-
-        this.table.delegate = this;
     }
 
     @Override
@@ -176,9 +125,9 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
     @Override
     public void onScan(int index, HashTableNode node) {
-        this.animation.addNode((TableNode) this.tableViewer.getChildren().get(index));
-        this.scanSequence.add(new Pair<>(index, node));
-        modifyStatus(index, node);
+//        this.animation.addNode((BucketComponent) this.tableViewer.getChildren().get(index));
+//        this.scanSequence.add(new Pair<>(index, node));
+//        modifyStatus(index, node);
     }
 
     @Override
@@ -207,43 +156,67 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     // === LISTENERS ====================
     // ==================================
     public void insertButtonPressed(ActionEvent event) {
-        Button button = (Button)configSideBar.lookup("#lockButton");
-        button.fire();
+        this.prepareForAction();
+
         ActionDialog dialog = new ActionDialog(
                 "Insert Dialog",
                 "Insert a new entry into the table",
                 true
         );
 
-        dialog.showAndWait().ifPresent(System.out::println);
+        dialog.showAndWait().ifPresent(result -> hashTableController.insert(result.getKey(), result.getValue()));
     }
 
     public void removeButtonPressed(ActionEvent event) {
-        Button button = (Button)configSideBar.lookup("#lockButton");
-        button.fire();
+        this.prepareForAction();
+
         ActionDialog dialog = new ActionDialog(
                 "Remove Dialog",
                 "Remove an entry from the table"
         );
 
-        dialog.showAndWait().ifPresent(System.out::println);
+        dialog.showAndWait().ifPresent(result -> hashTableController.remove(result.getKey()));
     }
 
-    public void findButtonPressed(ActionEvent event) {
-        Button button = (Button)configSideBar.lookup("#lockButton");
-        button.fire();
+    public void hasKeyButtonPressed(ActionEvent event) {
+        this.prepareForAction();
+
         ActionDialog dialog = new ActionDialog(
-                "Contains Dialog",
+                "Has Key Dialog",
                 "Check if the table contains a given key"
         );
 
-        dialog.showAndWait().ifPresent(System.out::println);
+        dialog.showAndWait().ifPresent(result -> hashTableController.hasKey(result.getKey()));
     }
 
-    private void createConfig(){
-        Config.setCapacity(Integer.parseInt(capacitySelect.getText()));
-        //Config.setScanMethod(scanMethodMenu.getValue());
-        Config.setHasher(hasherMenu.getValue());
+    public void lockButtonPressed(ActionEvent event) {
+        boolean locked = lockButton.getText().equals("Lock");
+        lockButton.setText(locked ? "Unlock" : "Lock");
+
+        configSideBar.getChildren().forEach(node -> {
+            if (node != lockButton)
+                node.setDisable(locked);
+        });
+    }
+
+    private void prepareForAction() {
+        lockButton.fire();
+        Config config = createConfig();
+        hashTableController.setConfig(config);
+    }
+
+    private Config createConfig() {
+        int capacity = Integer.parseInt(capacitySelect.getText());
+        int step = Integer.parseInt(stepField.getText());
+
+        Config config = new Config();
+        config.set(Config.Key.CAPACITY, capacity);
+        config.set(Config.Key.HASHER, hasherMenu.getValue());
+        config.set(Config.Key.SCAN_METHOD, scanMethodMenu.getValue());
+        config.set(Config.Key.STEP, step);
+        config.set(Config.Key.SECOND_HASHER, secondHasherMenu.getValue());
+
+        return config;
     }
 
     //TODO: Better implement animation

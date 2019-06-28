@@ -1,6 +1,7 @@
 package algat.lib;
 
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class Util {
 
@@ -21,10 +22,7 @@ public class Util {
     // Returns a shuffled range of type 0..<ofLength
     public static int[] getShuffledRange(int ofLength) {
         Random random = new Random();
-        int[] ints = new int[ofLength];
-
-        for (int i = 0; i < ofLength; i++)
-            ints[i] = i;
+        int[] ints = IntStream.range(0, ofLength).toArray();
 
         for (int i = ofLength - 1; i > 0; i--) {
             int index = random.nextInt(i + 1);
