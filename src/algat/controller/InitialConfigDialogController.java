@@ -1,6 +1,5 @@
 package algat.controller;
 
-import algat.Config;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
 import javafx.collections.ObservableList;
@@ -28,7 +27,8 @@ public class InitialConfigDialogController implements Initializable {
     private Stage stage;
     private ArrayList<Bucket> data = null;
     private String selectedOption = "noData";
-    private Config config = new Config();
+    private int capacity;
+    private Hasher hasher;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,9 +39,6 @@ public class InitialConfigDialogController implements Initializable {
     }
 
     private void initListeners() {
-        hashingSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldHasher, newHasher) ->
-                this.config.set(Config.Key.HASHER, newHasher));
-
         this.initialDataOption.selectedToggleProperty().addListener((observableValue, oldToggle, newToggle) -> {
             RadioButton selectedToggle = (RadioButton) newToggle.getToggleGroup().getSelectedToggle();
             this.selectedOption = selectedToggle.getId();
@@ -70,14 +67,13 @@ public class InitialConfigDialogController implements Initializable {
         return this.data;
     }
 
-    Config getConfig() {
-        return this.config;
-    }
+    int getCapacity() { return capacity; }
+
+    Hasher getHasher() { return hashingSelect.getValue(); }
 
     private boolean capacityIsValid() {
         try {
-            int capacity = Integer.parseInt(capacityField.getText());
-            this.config.set(Config.Key.CAPACITY, capacity);
+            capacity = Integer.parseInt(capacityField.getText());
             return true;
         } catch (NumberFormatException e) {
             e.printStackTrace();

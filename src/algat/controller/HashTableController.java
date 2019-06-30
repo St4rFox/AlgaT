@@ -1,6 +1,7 @@
 package algat.controller;
 
 import algat.Config;
+import algat.lib.NotEnoughSpaceException;
 import algat.lib.ScanMethod;
 import algat.lib.Util;
 import algat.lib.hashtable.Hasher;
@@ -17,7 +18,7 @@ public class HashTableController {
     private int capacity;
     private Config config;
     private ArrayList<Bucket> buckets = new ArrayList<>();
-    private int[] scanSequence;
+    private int[] probeSequence;
 
     void init(Config config, List<Bucket> data) {
         if (data == null) {
@@ -32,10 +33,12 @@ public class HashTableController {
     }
 
     void setConfig(Config config) {
-        this.config = config;
-        this.capacity = config.getInt(Config.Key.CAPACITY);
-        this.scanSequence = new int[capacity];
-        this.buildTable();
+        if (this.config == null || !this.config.equals(config)) {
+            this.config = config;
+            this.capacity = config.getInt(Config.Key.CAPACITY);
+            this.probeSequence = new int[capacity];
+            this.buildTable();
+        }
     }
 
     private void buildTable() {
@@ -48,15 +51,57 @@ public class HashTableController {
     }
 
     void insert(String key, String value) {
-        this.createSequence(key);
+        int probeIndex = this.probe(key);
+
+        if (probeIndex == capacity)
+            throw new NotEnoughSpaceException("Maximum table capacity (=" + capacity + ") was reached");
+
+        System.out.println(probeSequence[probeIndex]);
+        Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
+        selectedBucket.setKey(key);
+        selectedBucket.setValue(value);
+
+        if (selectedBucket.isDeleted())
+            selectedBucket.setDeleted(false);
     }
 
     void remove(String key) {
-        this.createSequence(key);
+        int probeIndex = this.probe(key);
+        Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
+        selectedBucket.setDeleted(true);
     }
 
-    void hasKey(String key) {
+    boolean hasKey(String key) {
+        int probeIndex = this.probe(key);
+        Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
+        return !selectedBucket.isEmpty() && !selectedBucket.isDeleted() && selectedBucket.getKey().equals(key);
+    }
+
+    private int probe(String key) {
         this.createSequence(key);
+        boolean deletedFound = false;
+        int bucketIndex = 0;
+        int deletedIndex = -1;
+
+        while (bucketIndex < capacity) {
+            Bucket probedBucket = buckets.get(probeSequence[bucketIndex]);
+            String bucketKey = probedBucket.getKey();
+
+            if (probedBucket.isEmpty() || bucketKey.equals(key))
+                break;
+
+            if (probedBucket.isDeleted() && !deletedFound) {
+                deletedFound = true;
+                deletedIndex = bucketIndex;
+            }
+
+            bucketIndex++;
+        }
+
+        if (deletedFound && !buckets.get(bucketIndex % capacity).getKey().equals(key))
+            bucketIndex = deletedIndex;
+
+        return bucketIndex;
     }
 
     private void createSequence(String key) {
@@ -67,12 +112,16 @@ public class HashTableController {
         switch (scanMethod) {
             case LINEAR:
                 this.linear(hash);
+                break;
             case QUADRATIC:
                 this.quadratic(hash);
+                break;
             case RANDOM:
                 this.random(hash);
+                break;
             case DOUBLE_HASHING:
                 this.doubleHashing(hash, key);
+                break;
         }
     }
 
@@ -83,21 +132,21 @@ public class HashTableController {
         int step = this.config.getInt(Config.Key.STEP);
 
         for (int i = 0; i < capacity; i++)
-            scanSequence[i] = (hash + (i * step)) % capacity;
+            probeSequence[i] = (hash + (i * step)) % capacity;
     }
 
     private void quadratic(int hash) {
         int step = this.config.getInt(Config.Key.STEP);
 
         for (int i = 0; i * i < capacity; i++)
-            scanSequence[i] = (hash + (i * i * step)) % capacity;
+            probeSequence[i] = (hash + (i * i * step)) % capacity;
     }
 
     private void random(int hash) {
         int[] sequence = Util.getShuffledRange(capacity);
 
         for (int i = 0; i < capacity; i++)
-            scanSequence[i] = (hash + sequence[i]) % capacity;
+            probeSequence[i] = (hash + sequence[i]) % capacity;
 
     }
 
@@ -106,6 +155,6 @@ public class HashTableController {
         int step = secondHasher.hash(key, capacity);
 
         for (int i = 0; i < capacity; i++)
-            scanSequence[i] = (hash + i * step) % capacity;
+            probeSequence[i] = (hash + i * step) % capacity;
     }
 }

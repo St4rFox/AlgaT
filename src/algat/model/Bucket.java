@@ -44,6 +44,10 @@ public class Bucket {
         this.deleted.set(deleted);
     }
 
+    public boolean isEmpty() {
+        return this.key.isEmpty().get();
+    }
+
     // Properties
     public StringProperty keyProperty() {
         return key;

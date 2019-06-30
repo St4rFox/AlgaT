@@ -22,7 +22,7 @@
         <VBox alignment="CENTER">
             <HBox alignment="CENTER">
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DELETED: "/>
-                <Text fx:id="deleted" strokeType="OUTSIDE" strokeWidth="0.0"/>
+                <Text fx:id="deleted" strokeType="OUTSIDE" strokeWidth="0.0" text="false"/>
             </HBox>
             <Line endX="51.0" startX="-100.0" style="-fx-stroke: #ff8916;"/>
         </VBox>

@@ -33,6 +33,6 @@ public class BucketComponent extends AnchorPane {
     private void bindModel() {
         key.textProperty().bind(bucket.keyProperty());
         value.textProperty().bind(bucket.valueProperty());
-        bucket.deletedProperty().addListener((observableValue, oldValue, newValue) -> deleted.setText(newValue.toString()));
+        deleted.textProperty().bind(bucket.deletedProperty().asString());
     }
 }

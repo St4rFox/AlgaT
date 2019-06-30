@@ -26,7 +26,6 @@ public class ActionDialog extends Dialog<Pair<String, String>> {
         this.key.bind(keyField.textProperty());
         content.addRow(0, keyLabel, keyField);
 
-
         if (isInsertDialog) {
             Label valueLabel = new Label("Value");
             TextField valueField = new TextField();

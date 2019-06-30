@@ -16,6 +16,13 @@ public class Config {
         SECOND_HASHER
     }
 
+    public Config() {}
+
+    public Config(int capacity, Hasher hasher) {
+        storage.put(Key.CAPACITY, capacity);
+        storage.put(Key.HASHER, hasher);
+    }
+
     public void set(Key key, Object value) {
         if (hasCorrectType(key, value))
             storage.put(key, value);
@@ -51,5 +58,16 @@ public class Config {
         }
 
         return hasCorrectType;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null || this.getClass() != obj.getClass())
+            return false;
+
+        return storage.equals(((Config) obj).storage);
     }
 }

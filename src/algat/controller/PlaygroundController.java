@@ -3,7 +3,6 @@ package algat.controller;
 import algat.Config;
 import algat.lib.ScanAnimation;
 import algat.lib.ScanMethod;
-import algat.lib.hashtable.HashTable;
 import algat.lib.hashtable.HashTableNode;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
@@ -57,7 +56,6 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     @FXML private HashTableController hashTableController;
 
     // Instance fields
-    private HashTable table;
     private ArrayList<Pair<Integer, HashTableNode>> scanSequence = new ArrayList<>();
     private int cursor = -1;
     private ScanAnimation animation = new ScanAnimation();
@@ -84,9 +82,12 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
             Platform.runLater(() -> {
                 stage.showAndWait();
 
-                Config initialConfig = dialogController.getConfig();
                 ArrayList<Bucket> initialData = dialogController.getData();
-                this.hashTableController.init(initialConfig, initialData);
+                int capacity = dialogController.getCapacity();
+                Hasher hasher = dialogController.getHasher();
+                this.capacitySelect.setText(Integer.toString(capacity));
+                this.hasherMenu.setValue(hasher);
+                this.hashTableController.init(new Config(capacity, hasher), initialData);
             });
         } catch (IOException e) {
             e.printStackTrace();
