@@ -1,11 +1,11 @@
 package algat.controller;
 
 import algat.Config;
-import algat.lib.ScanAnimation;
+import algat.lib.ProbeAnimation;
 import algat.lib.ScanMethod;
-import algat.lib.hashtable.HashTableNode;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
+import javafx.animation.Animation;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,11 +17,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,9 +30,10 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
-public class PlaygroundController implements Initializable, HashTableDelegate {
+public class PlaygroundController implements Initializable {
     // Toolbar
     @FXML private Slider slider;
+    @FXML private Button playButton;
 
     // Configuration Sidebar
     @FXML private VBox configSideBar;
@@ -54,11 +56,6 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
 
     // Table
     @FXML private HashTableController hashTableController;
-
-    // Instance fields
-    private ArrayList<Pair<Integer, HashTableNode>> scanSequence = new ArrayList<>();
-    private int cursor = -1;
-    private ScanAnimation animation = new ScanAnimation();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -111,6 +108,24 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
     }
 
     private void initListeners() {
+        hashTableController.getAnimation().statusProperty().addListener((observableValue, oldStatus, newStatus) -> {
+            ImageView graphic = (ImageView) playButton.getGraphic();
+
+            switch (newStatus) {
+                case STOPPED:
+                    graphic.setImage(playIcon);
+                    break;
+                case RUNNING:
+                    graphic.setImage(stopIcon);
+                    break;
+                case PAUSED:
+                    graphic.setImage(pauseIcon);
+                    break;
+            }
+
+            playButton.setGraphic(graphic);
+        });
+
         scanMethodMenu.getSelectionModel().selectedItemProperty().addListener((observable, oldMethod, newMethod) -> {
             stepFieldContainer.setVisible(newMethod == ScanMethod.LINEAR || newMethod == ScanMethod.QUADRATIC);
             secondHasherContainer.setVisible(newMethod == ScanMethod.DOUBLE_HASHING);
@@ -119,39 +134,9 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         });
     }
 
-    @Override
-    public void onHashCreated(int hashValue) {
-        System.out.println("Hash value: " + hashValue);
-    }
-
-    @Override
-    public void onScan(int index, HashTableNode node) {
-//        this.animation.addNode((BucketComponent) this.tableViewer.getChildren().get(index));
-//        this.scanSequence.add(new Pair<>(index, node));
-//        modifyStatus(index, node);
-    }
-
-    @Override
-    public void onFinish(int index, HashTableNode selectedNode) {
-        modifyStatus(index, selectedNode);
-
-    }
-
-    private void modifyStatus(int index, HashTableNode selectedNode) {
-
-        if (selectedNode != null && !selectedNode.isDeleted()) {
-            positionVal.setText(String.valueOf(index));
-            keyVal.setText(selectedNode.getKey());
-            valVal.setText(selectedNode.getValue());
-            deletedVal.setText("False");
-        } else {
-            positionVal.setText("NOT FOUND");
-            keyVal.setText("NOT FOUND");
-            valVal.setText("NOT FOUND");
-            deletedVal.setText("True");
-        }
-
-    }
+    private final Image playIcon = new Image(getClass().getResourceAsStream("/algat/resources/icons/play.png"));
+    private final Image pauseIcon = new Image(getClass().getResourceAsStream("/algat/resources/icons/pause.png"));
+    private final Image stopIcon = new Image(getClass().getResourceAsStream("/algat/resources/icons/stop.png"));
 
     // ==================================
     // === LISTENERS ====================
@@ -220,22 +205,64 @@ public class PlaygroundController implements Initializable, HashTableDelegate {
         return config;
     }
 
-    //TODO: Better implement animation
+    public void playButtonPressed(ActionEvent event) {
+        ProbeAnimation animation = hashTableController.getAnimation();
+        Animation.Status status = animation.getStatus();
+        System.out.println(status);
+
+        if (status == Animation.Status.RUNNING)
+            animation.stop();
+        else
+            animation.play();
+    }
+
+    public void rewindButtonPressed(ActionEvent event) {
+        hashTableController.getAnimation().rewind();
+    }
+
     public void stepBackwardButtonPressed(ActionEvent event) {
-        animation.stepBackward();
+        hashTableController.getAnimation().stepBackward();
     }
 
     public void stepForwardButtonPressed(ActionEvent event) {
-        animation.stepForward();
-    }
-
-    public void fastBackwardButtonPressed(ActionEvent event) {
-        this.animation.setRate(-1.0);
-        this.animation.play();
+        hashTableController.getAnimation().stepForward();
     }
 
     public void fastForwardButtonPressed(ActionEvent event) {
-        this.animation.setRate(1.0);
-        this.animation.play();
+        hashTableController.getAnimation().play();
     }
+
+//    @Override
+//    public void onHashCreated(int hashValue) {
+//        System.out.println("Hash value: " + hashValue);
+//    }
+//
+//    @Override
+//    public void onScan(int index, HashTableNode node) {
+////        this.animation.addNode((BucketComponent) this.tableViewer.getChildren().get(index));
+////        this.scanSequence.add(new Pair<>(index, node));
+////        modifyStatus(index, node);
+//    }
+//
+//    @Override
+//    public void onFinish(int index, HashTableNode selectedNode) {
+//        modifyStatus(index, selectedNode);
+//
+//    }
+//
+//    private void modifyStatus(int index, HashTableNode selectedNode) {
+//
+//        if (selectedNode != null && !selectedNode.isDeleted()) {
+//            positionVal.setText(String.valueOf(index));
+//            keyVal.setText(selectedNode.getKey());
+//            valVal.setText(selectedNode.getValue());
+//            deletedVal.setText("False");
+//        } else {
+//            positionVal.setText("NOT FOUND");
+//            keyVal.setText("NOT FOUND");
+//            valVal.setText("NOT FOUND");
+//            deletedVal.setText("True");
+//        }
+//
+//    }
 }

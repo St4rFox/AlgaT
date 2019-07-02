@@ -35,4 +35,11 @@ public class BucketComponent extends AnchorPane {
         value.textProperty().bind(bucket.valueProperty());
         deleted.textProperty().bind(bucket.deletedProperty().asString());
     }
+
+    @Override
+    public String toString() {
+        return "BucketComponent{" +
+                "bucket=" + bucket +
+                '}';
+    }
 }

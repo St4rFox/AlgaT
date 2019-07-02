@@ -1,25 +1,15 @@
-#tableViewer {
-    -fx-alignment: center;
-    -fx-spacing: 5;
+.Key {
+    -fx-background-color: #ff8916;
 }
 
-.node {
-    -fx-min-width: 200;
-}
-
-.key, .value {
-    -fx-alignment: center;
-    -fx-padding: 0 10 0 10;
-}
-
-.key {
-    -fx-background-color: slateblue;
-}
-
-.inspected > .key {
+.selected > .Key {
     -fx-background-color: yellow;
 }
 
-.value {
-    -fx-background-color: salmon;
+Line {
+    -fx-stroke: #ff8916;
+}
+
+.selected > Line {
+    -fx-stroke: yellow;
 }

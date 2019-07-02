@@ -63,6 +63,10 @@ public class Bucket {
 
     @Override
     public String toString() {
-        return this.key.get() + " = " + this.value.get();
+        return "Bucket{" +
+                "key=" + key +
+                ", value=" + value +
+                ", deleted=" + deleted +
+                '}';
     }
 }

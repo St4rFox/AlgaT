@@ -1,12 +1,16 @@
 package algat.controller;
 
 import algat.Config;
-import algat.lib.NotEnoughSpaceException;
+import algat.lib.ProbeAnimation;
 import algat.lib.ScanMethod;
 import algat.lib.Util;
+import algat.lib.exceptions.NoSuchKeyException;
+import algat.lib.exceptions.NotEnoughSpaceException;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
@@ -19,6 +23,8 @@ public class HashTableController {
     private Config config;
     private ArrayList<Bucket> buckets = new ArrayList<>();
     private int[] probeSequence;
+
+    private ProbeAnimation currentAnimation = new ProbeAnimation();
 
     void init(Config config, List<Bucket> data) {
         if (data == null) {
@@ -41,6 +47,8 @@ public class HashTableController {
         }
     }
 
+    ProbeAnimation getAnimation() { return currentAnimation; }
+
     private void buildTable() {
         bucketsContainer.getChildren().clear();
 
@@ -56,25 +64,39 @@ public class HashTableController {
         if (probeIndex == capacity)
             throw new NotEnoughSpaceException("Maximum table capacity (=" + capacity + ") was reached");
 
-        System.out.println(probeSequence[probeIndex]);
         Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
-        selectedBucket.setKey(key);
-        selectedBucket.setValue(value);
+        this.configureAnimation(probeIndex);
+        currentAnimation.setOnFinished(event -> {
+            selectedBucket.setKey(key);
+            selectedBucket.setValue(value);
 
-        if (selectedBucket.isDeleted())
-            selectedBucket.setDeleted(false);
+            if (selectedBucket.isDeleted())
+                selectedBucket.setDeleted(false);
+        });
     }
 
     void remove(String key) {
         int probeIndex = this.probe(key);
+
+        if (probeIndex == capacity)
+            throw new NoSuchKeyException("Key " + key + " does not exist");
+
         Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
-        selectedBucket.setDeleted(true);
+        this.configureAnimation(probeIndex);
+        currentAnimation.setOnFinished(event -> selectedBucket.setDeleted(true));
     }
 
-    boolean hasKey(String key) {
+    void hasKey(String key) {
         int probeIndex = this.probe(key);
+
+        if (probeIndex == capacity)
+            throw new NoSuchKeyException("Key " + key + " does not exist");
+
         Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
-        return !selectedBucket.isEmpty() && !selectedBucket.isDeleted() && selectedBucket.getKey().equals(key);
+        this.configureAnimation(probeIndex);
+        currentAnimation.setOnFinished(event -> {
+            System.out.println(!selectedBucket.isEmpty() && !selectedBucket.isDeleted() && selectedBucket.getKey().equals(key));
+        });
     }
 
     private int probe(String key) {
@@ -123,6 +145,18 @@ public class HashTableController {
                 this.doubleHashing(hash, key);
                 break;
         }
+    }
+
+    private void configureAnimation(int probeIndex) {
+        ObservableList<Node> children = bucketsContainer.getChildren();
+        ArrayList<BucketComponent> animSequence = new ArrayList<>(capacity);
+
+        for (int i = 0; i <= probeIndex; i++) {
+            BucketComponent bucket = (BucketComponent) children.get(probeSequence[i]);
+            animSequence.add(bucket);
+        }
+
+        currentAnimation.setAnimSequence(animSequence);
     }
 
     // =================================
