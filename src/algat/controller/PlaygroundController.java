@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -47,12 +48,9 @@ public class PlaygroundController implements Initializable {
     @FXML private ChoiceBox<Hasher> secondHasherMenu;
     @FXML private Button lockButton;
 
-    // Status Sidebar
-    @FXML private Text keyVal;
-    @FXML private Text valVal;
-    @FXML private Text deletedVal;
-    @FXML private Text factorVal;
-    @FXML private Text positionVal;
+    // Error Text
+    @FXML private Text stepError;
+    @FXML private Text capacityError;
 
     // Table
     @FXML private HashTableController hashTableController;
@@ -150,7 +148,9 @@ public class PlaygroundController implements Initializable {
                 true
         );
 
-        dialog.showAndWait().ifPresent(result -> hashTableController.insert(result.getKey(), result.getValue()));
+        dialog.showAndWait().ifPresent(result -> {
+            hashTableController.insert(result.getKey(), result.getValue());
+        });
     }
 
     public void removeButtonPressed(ActionEvent event) {
@@ -192,6 +192,9 @@ public class PlaygroundController implements Initializable {
     }
 
     private Config createConfig() {
+        if(!valid("capacityError") && !valid("stepError"))
+            return null;
+
         int capacity = Integer.parseInt(capacitySelect.getText());
         int step = Integer.parseInt(stepField.getText());
 
@@ -232,37 +235,14 @@ public class PlaygroundController implements Initializable {
         hashTableController.getAnimation().play();
     }
 
-//    @Override
-//    public void onHashCreated(int hashValue) {
-//        System.out.println("Hash value: " + hashValue);
-//    }
-//
-//    @Override
-//    public void onScan(int index, HashTableNode node) {
-////        this.animation.addNode((BucketComponent) this.tableViewer.getChildren().get(index));
-////        this.scanSequence.add(new Pair<>(index, node));
-////        modifyStatus(index, node);
-//    }
-//
-//    @Override
-//    public void onFinish(int index, HashTableNode selectedNode) {
-//        modifyStatus(index, selectedNode);
-//
-//    }
-//
-//    private void modifyStatus(int index, HashTableNode selectedNode) {
-//
-//        if (selectedNode != null && !selectedNode.isDeleted()) {
-//            positionVal.setText(String.valueOf(index));
-//            keyVal.setText(selectedNode.getKey());
-//            valVal.setText(selectedNode.getValue());
-//            deletedVal.setText("False");
-//        } else {
-//            positionVal.setText("NOT FOUND");
-//            keyVal.setText("NOT FOUND");
-//            valVal.setText("NOT FOUND");
-//            deletedVal.setText("True");
-//        }
-//
-//    }
+    private boolean valid(String id) {
+        TextField field = (TextField)configSideBar.lookup(id);
+        try {
+            Integer val = Integer.parseInt(field.getText());
+            return true;
+        }catch (NumberFormatException e) {
+            field.setVisible(true);
+            return false;
+        }
+    }
 }

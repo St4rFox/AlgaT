@@ -1,57 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="algat.controller.PlaygroundController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.PlaygroundController">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <Button mnemonicParsing="false" onAction="#rewindButtonPressed">
                 <graphic>
                     <ImageView fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons/rewind.png"/>
+                        <Image url="@../resources/icons/rewind.png" />
                     </ImageView>
                 </graphic>
                 <padding>
-                    <Insets bottom="4.0" left="10.0" right="10.0" top="4.0"/>
+                    <Insets bottom="4.0" left="10.0" right="10.0" top="4.0" />
                 </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#stepBackwardButtonPressed" prefHeight="30.0" prefWidth="42.0"
-                    text="&lt;-"/>
-            <Button mnemonicParsing="false" fx:id="playButton" onAction="#playButtonPressed">
+            <Button mnemonicParsing="false" onAction="#stepBackwardButtonPressed" prefHeight="30.0" prefWidth="42.0" text="&lt;-" />
+            <Button fx:id="playButton" mnemonicParsing="false" onAction="#playButtonPressed">
                 <graphic>
                     <ImageView fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons/play.png"/>
+                        <Image url="@../resources/icons/play.png" />
                     </ImageView>
                 </graphic>
                 <padding>
-                    <Insets bottom="4.0" left="10.0" right="10.0" top="4.0"/>
+                    <Insets bottom="4.0" left="10.0" right="10.0" top="4.0" />
                 </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#stepForwardButtonPressed" prefHeight="30.0" prefWidth="42.0"
-                    text="-&gt;"/>
+            <Button mnemonicParsing="false" onAction="#stepForwardButtonPressed" prefHeight="30.0" prefWidth="42.0" text="-&gt;" />
             <Button mnemonicParsing="false" onAction="#fastForwardButtonPressed">
                 <graphic>
                     <ImageView fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../resources/icons/fast-forward.png"/>
+                        <Image url="@../resources/icons/fast-forward.png" />
                     </ImageView>
                 </graphic>
                 <padding>
-                    <Insets bottom="4.0" left="10.0" right="10.0" top="4.0"/>
+                    <Insets bottom="4.0" left="10.0" right="10.0" top="4.0" />
                 </padding>
             </Button>
-            <Slider fx:id="slider" showTickLabels="true" showTickMarks="true" min="0.25" max="2.0" majorTickUnit="0.25"
-                    value="1.0"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Button mnemonicParsing="false" onAction="#insertButtonPressed" text="Insert"/>
-            <Button mnemonicParsing="false" onAction="#removeButtonPressed" text="Remove"/>
-            <Button mnemonicParsing="false" onAction="#hasKeyButtonPressed" text="Has Key?"/>
+            <Slider fx:id="slider" majorTickUnit="0.25" max="2.0" min="0.25" showTickLabels="true" showTickMarks="true" value="1.0" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#insertButtonPressed" text="Insert" />
+            <Button mnemonicParsing="false" onAction="#removeButtonPressed" text="Remove" />
+            <Button mnemonicParsing="false" onAction="#hasKeyButtonPressed" text="Has Key?" />
             <padding>
-                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
+                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
             </padding>
         </HBox>
     </top>
@@ -59,89 +63,52 @@
         <VBox fx:id="configSideBar" alignment="TOP_CENTER" spacing="30.0" BorderPane.alignment="CENTER">
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Configurazione Tabella" wrappingWidth="141.22900390625">
                 <VBox.margin>
-                    <Insets top="10.0"/>
+                    <Insets top="10.0" />
                 </VBox.margin>
             </Text>
             <VBox alignment="CENTER" spacing="5.0">
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacità Massima"/>
-                <TextField fx:id="capacitySelect"/>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacità Massima" />
+                <TextField fx:id="capacitySelect" prefHeight="16.0" prefWidth="167.0" />
+                <Text fx:id="capacityError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="La capacità deve essere un intero positivo!" textAlignment="CENTER" visible="false" wrappingWidth="120.0">
+                    <font>
+                        <Font size="9.0" />
+                    </font>
+                </Text>
                 <VBox.margin>
-                    <Insets/>
+                    <Insets />
                 </VBox.margin>
             </VBox>
             <VBox alignment="CENTER" spacing="5.0">
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Funzione Hash"/>
-                <ChoiceBox fx:id="hasherMenu" prefWidth="150.0"/>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Funzione Hash" />
+                <ChoiceBox fx:id="hasherMenu" prefWidth="150.0" />
             </VBox>
             <VBox alignment="TOP_CENTER" spacing="5.0">
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Metodo di Scansione"/>
-                <ChoiceBox fx:id="scanMethodMenu" prefWidth="150.0"/>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Metodo di Scansione" />
+                <ChoiceBox fx:id="scanMethodMenu" prefWidth="150.0" />
             </VBox>
             <VBox fx:id="additionalParams" alignment="TOP_CENTER" spacing="5.0">
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Parametri Aggiuntivi"/>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Parametri Aggiuntivi" />
                 <VBox fx:id="stepFieldContainer" alignment="TOP_CENTER" spacing="5.0">
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Passo"/>
-                    <TextField fx:id="stepField"/>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Passo" />
+                    <TextField fx:id="stepField" />
+               <Text fx:id="stepError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Il passo deve essere un intero positivo!" textAlignment="CENTER" visible="false" wrappingWidth="120.0">
+                  <font>
+                     <Font size="9.0" />
+                  </font>
+               </Text>
                 </VBox>
                 <VBox fx:id="secondHasherContainer" alignment="TOP_CENTER" spacing="5.0">
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Funzione Hash 2"/>
-                    <ChoiceBox fx:id="secondHasherMenu" prefWidth="150.0"/>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Funzione Hash 2" />
+                    <ChoiceBox fx:id="secondHasherMenu" prefWidth="150.0" />
                 </VBox>
             </VBox>
-            <Button fx:id="lockButton" minWidth="80.0" mnemonicParsing="false" onAction="#lockButtonPressed"
-                    text="Lock"/>
+            <Button fx:id="lockButton" minWidth="80.0" mnemonicParsing="false" onAction="#lockButtonPressed" text="Lock" />
             <padding>
-                <Insets left="20.0" right="20.0"/>
+                <Insets left="20.0" right="20.0" />
             </padding>
         </VBox>
     </right>
-    <left>
-        <VBox prefHeight="286.0" prefWidth="186.0" BorderPane.alignment="CENTER">
-            <VBox alignment="CENTER" prefHeight="12.0" prefWidth="146.0">
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stato Tabella" textAlignment="CENTER"
-                      wrappingWidth="80.79931640625">
-                    <VBox.margin>
-                        <Insets bottom="10.0" top="5.0"/>
-                    </VBox.margin>
-                </Text>
-                <VBox.margin>
-                    <Insets bottom="10.0"/>
-                </VBox.margin>
-            </VBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Key:" wrappingWidth="38.90771484375"/>
-            <Text fx:id="keyVal">
-                <VBox.margin>
-                    <Insets bottom="10.0"/>
-                </VBox.margin>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Value:"/>
-            <Text fx:id="valVal">
-                <VBox.margin>
-                    <Insets bottom="10.0"/>
-                </VBox.margin>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Deleted:"/>
-            <Text fx:id="deletedVal">
-                <VBox.margin>
-                    <Insets bottom="10.0"/>
-                </VBox.margin>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Posizione Attuale:"/>
-            <Text fx:id="positionVal">
-                <VBox.margin>
-                    <Insets bottom="10.0"/>
-                </VBox.margin>
-            </Text>
-            <Text fx:id="factorVal" strokeType="OUTSIDE" strokeWidth="0.0" text="Fattore di Carico:"/>
-            <BorderPane.margin>
-                <Insets/>
-            </BorderPane.margin>
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="10.0"/>
-            </padding>
-        </VBox>
-    </left>
     <center>
-        <fx:include fx:id="hashTable" source="HashTable.fxml"/>
+        <fx:include fx:id="hashTable" source="HashTable.fxml" />
     </center>
 </BorderPane>
