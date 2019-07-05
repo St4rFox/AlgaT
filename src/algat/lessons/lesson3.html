@@ -5,7 +5,53 @@
     <title>Lesson 3</title>
 </head>
 <body>
-<h1>Avanti popolo
+<h1>Tecniche di scansione
 </h1>
+<b1>
+    Date:<br>
+    -k la chiave;<br>
+    -i il numero di ispezione;<br>
+    -H(k) la funzione hash base:;<br>
+
+    SCANSIONE LINEARE
+    H(k,i) = (H(k)+ h*i) % m<br>
+
+    Il primo elemento determina l'intera sequenza.<br>
+    Sono possibili esattamente m sequenze di ispezione distinte.<br>
+    Questo metodo comporta l'insorgere di Agglomerazione Primaria (lunghe catene di
+    celle occupate seguite da ampie sezioni vuote), generando un aumento nei tempi
+    medi di inserimento e cancellazione.
+
+    SCANSIONE QUADRATICA
+    H(k,i) = (H(k) + h*i^2) mod m
+
+    L'ispezione inizia in H(k) e prosegue quadraticamente in base a (i); permette m
+    sequenze differenti.<br>
+    Questo metodo non restituisce una permutazione e assegna la medesima sequenza a chiavi
+    con la stessa ispezione iniziale (Agglomerazione Secondaria).
+
+    SCANSIONE PSEUDO-CASUALE
+    H(k,i)=(H(k)+r) mod m<br>
+
+    Si parte da H(k) per poi scorrere su base r (numero casuale tra 0 e m-1); sono
+    possibili m sequenze distinte, ma questa volta la sequenza risultante è una
+    permutazione.<br>
+    Permane l'Agglomerazione Secondaria.
+
+    SCANSIONE CON DOPPIO HASHING
+    H(k,i)=(H(k)+ i * H'(k)) mod m<br>
+
+    Gli sforzi congiunti di due funzioni hash (la base e l'ausiliaria, destinata a calcolare l'offset)
+    permettono di generare m^2 sequenze di ispezione distinte.<br>
+
+    Notevolmente, per garantire una permutazione quanto più completa possibile, H'(k)
+    ed m devono essere primi tra loro.
+
+    <h1>Cancellazione</h1>
+
+    Non si può sostituire la chiave da cancellare con un nil: ciò comporterebbe
+    il fallimento della ricerca di una chiave di sequenza passante per quella locazione.<br>
+    Si adotta un valore Deleted, letto come pieno dalla ricerca e vuoto dall'inserimento.
+</b1>
 </body>
 </html>

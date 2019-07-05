@@ -2,41 +2,66 @@
 title: "Lezione 1"                   #In ciccio:"fileName", ciccio non è tipo ma nome del campo
 fileName: "lesson1.html"
 questions:                           #NBB questa grafia descrive un "array" di nome questions
-- text: "Testo q1"                   #il trattino, così identato, descrive un suo elemento
+- text: "Cosa indica la notazione H(k)?"                   #il trattino, così identato, descrive un suo elemento
   answer: 1 #indice risposta corretta
   answers:
-  - "Risposta 1" #rimanenti domande
-  - "Risposta 2"
-- text: "Testo q1 2"
-  answer: 2 #indice risposta corretta
+  - "Il numero di chiavi k nel vettore hash H" #rimanenti domande
+  - "La posizione della cella assegnata a k nel vettore A"
+  - "L'elemento del quale k è la chiave associata"
+- text: "L'Estrazione associa ad H(k) la scrittura intera della sua rappresentazione binaria"
+  answer: 1 #indice risposta corretta
   answers:
-  - "Risposta 1" #rimanenti domande
-  - "Risposta 2"
+  - "Vero"
+  - "Falso"
+- text: "In cosa consiste la Divisione hash?"
+  answer: 3
+  answers:
+  - "Nella divisione binaria di un sottoisieme di bit di k per un secondo"
+  - "Nella scrittura intera della rappresentazione binaria di k"
+  - "Nella divisione della scrittura intera di k per m, il tutto mod m"
+  - "Nella scrittura intera della rappresentazione binaria di k, il tutto mod m"
 ---
-title: "Lezione 2"                   #In ciccio:"fileName", ciccio non è tipo ma nome del campo
+title: "Lezione 2"
 fileName: "lesson2.html"
-questions:                           #NBB questa grafia descrive un "array" di nome questions
-- text: "Testo q2"                   #il trattino, così identato, descrive un suo elemento
-  answer: 1 #indice risposta corretta
+questions:
+- text: "Quale rapposto restituisce C, ovvero il fattore di carico?"
+  answer: 0
   answers:
-  - "Risposta 1" #rimanenti domande
-  - "Risposta 2"
-- text: "Testo q2 2"
-  answer: 2 #indice risposta corretta
+  - "Il numero di chiavi memorizzate sulla dimensione della tabella"
+  - "La dimensione della tabella sul numero di chiavi memorizzate"
+  - "La scrittura intera di k sulla sua scrittura binaria"
+- text: "Poste due liste di trabocco A, B con n(A)=50, m(A)=400 e n(B)=12, m(B)=84:"
+  answer: 2
   answers:
-  - "Risposta 1" #rimanenti domande
-  - "Risposta 2"
+  - "Le operazioni hanno costo equivalente: la complessità di una lista di trabocco è costante"
+  - "Le operazioni sono più costose su A a causa del maggior numero di celle disponibili"
+  - "Le operazioni sono più costose su B poichè C(B)>C(A)"
+  - "Le operazioni sono più costose su A poichè C(B)>C(A)"
+- text: "L'indirizzamento aperto richiede 0 < C < 1. Perchè?"
+  answer: 1
+  answers:
+  - "Per minimizzare il costo delle operazioni"
+  - "Per evitare l'overflow della tabella"
+  - "Per grantire l'esistenza di valori reali di H(k)"
 ---
-title: "Lezione 3"                   #In ciccio:"fileName", ciccio non è tipo ma nome del campo
+title: "Lezione 3"
 fileName: "lesson3.html"
-questions:                           #NBB questa grafia descrive un "array" di nome questions
-- text: "Testo q3"                   #il trattino, così identato, descrive un suo elemento
-  answer: 1 #indice risposta corretta
+questions:
+- text: "Che cos'è l'agglomerazione secondaria?"
+  answer: 1
   answers:
-  - "Risposta 1" #rimanenti domande
-  - "Risposta 2"
-- text: "Testo q3 2"
-  answer: 2 #indice risposta corretta
+  - "La congruenza di tutti i valori H(k), caso pessimo della lista di trabocco"
+  - "Associare la stessa sequenza di ispezione a chiavi con uno stesso H(k)"
+  - "Il susseguirsi di lunghe sezioni occupate ad altrettanto lunghe sequenze vuote"
+- text: "Perchè è impossibile effettuare un semplice delete in una tabella hash?"
+  answer: 3
   answers:
-  - "Risposta 1" #rimanenti domande
-  - "Risposta 2"
+  - "Per ottimizzare le operazioni: conviene associare la cella precedente alla successiva"
+  - "Per evitare fenomeni di agglomerazione primaria"
+  - "Per garantire l'esistenza di un valore N associabile ad H(k)"
+  - "Per impedire passaggi nulli all'interno di sequenze di ispezione preesistenti"
+- text: "La scasione lineare permette la creazione di n sequenze differenti, posto n il numero di chiavi memorizzate."
+  answer: 1
+  answers:
+  - "Vero"
+  - "Falso"

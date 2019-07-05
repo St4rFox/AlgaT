@@ -1,0 +1,16 @@
+.red-radio-button .dot {
+-fx-mark-highlight-color: red;
+-fx-mark-color: red;
+}
+
+.green-radio-button .dot {
+-fx-mark-highlight-color: green;
+-fx-mark-color: green;
+}
+
+.red-radio-button .text {
+-fx-fill: red;
+}
+.green-radio-button .text {
+-fx-fill: green;
+}

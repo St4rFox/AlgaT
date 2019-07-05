@@ -5,6 +5,32 @@
     <title>Lesson 2</title>
 </head>
 <body>
-    <h1>The red brown fox</h1>
+    <h1>Liste di Trabocco ed Indirizzamento Aperto</h1>
+<b1>
+    Le Liste di Trabocco raccolgono in una lista tutte le chiavi col medesimo valore
+    hash per poi memorizzare un puntatore alla testa di tale lista; consentono l'
+    inserimento in testa, la ricerca di una chiave e la sua eliminazione (queste ultime
+    due richiedono una scansione completa della lista, mentre l'Insert ha costo costante).<br>
+    Posti n il numero di chiavi memorizzate nella tabella, m la dimensione della stessa e
+    C il Fattore di Carico n/m:
+
+    <h1>Complessità delle liste di Trabocco</h1>
+    Nel caso pessimo, tutte le chiavi sono in un'unica lista: mentre Insert richiede
+    O(1), Search e Delete impiegano O(n).<br>
+    Una ricerca con insuccesso richiede mediamente 1 + C accessi; in caso di successo,
+    il numero medio scende a 1 + C/2.<br>
+    Il Fattore di Carico, quindi, determina il costo computazionale delle operazioni
+    sulla tabella - indipendentemente dall'effettiva taglia.<br>
+    Se n=O(m), è=O(1) - e così il tempo medio di tutte le operazioni.<br>
+
+    <h1>Indirizzamento aperto</h1>
+    L'indirizzamento aperto consiste nel memorizzare tutte le chiavi nella tabella stessa.<br>
+    Il fattore di carico C è compreso tra 0 e 1 (per evitare l'overflow della tabella);
+    solitamente si sceglie un m tale che C = 0,5.
+
+    L'eventualità che più chiavi possano concorrere alla stessa posizione rende necessario
+    distribuire efficientemente questi doppioni: entrano in gioco le Tecniche di Scansione.
+
+</b1>
 </body>
 </html>

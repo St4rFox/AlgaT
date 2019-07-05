@@ -1,13 +1,34 @@
 <!DOCTYPE html>
 <!-- Radice del documento html (radice dell'albero, unico punto di accesso)-->
-<html lang="en">
+<html lang="it">
 <head>
 <!--Metadati (testo che parla della pagina, NON del contenuto)-->
     <meta charset="UTF-8">
     <title>Lesson 1</title>
 </head>
 <body>
-    <h1>Yadda yadda</h1>
+    <h1>Tabelle Hash</h1>
+    <b1>Una tabella hash è composta da un vettore A[m] ed una funzione hash H:
+    qust'ultima associa ad ogni chiave k un valore numerico H(k), che sarà la
+    cella di A assegnata a k.<br>
+    Nel caso in cui due H(k) coincidano, si verifica una collisione.<br>
+    Una buona funzione hash gode di Uniformità Semplice: ogni elemento ha uguale
+    probabilità di essere inserito in ciascun alloggiamento disponibile.<br>
+    </b1>
+    <h1>
+    Funzioni Hash
+    </h1>
+    <b1>
+    L'Estrazione rende H(k) la rappresentazione intera di un sottoinsieme di bit della
+    rappresentazione binaria di k;<br>
+    lo XOR rende la parte intera della somma bit a bit modulo 2 di molteplici sottoinsiemi
+    di bit della rappresentazione binaria di k;<br>
+    la Divisione rende la scrittura intera della rappresentazione binaria di k, il tutto
+    modulo m (è richiesto un m dispari e distante da potenze di 2 onde evitare collisioni)<br>
+
+    Questi accorgimenti riducono il problema delle collisioni, pur senza eliminarlo completamente:
+    due tecniche di risoluzione sono le Liste di Trabocco e l'Indirizzamento Aperto.
+    </b1>
 <!--hN con N <7 è la taglia del font in ordine decrescente-->
 </body>
 </html>
