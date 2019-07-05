@@ -53,14 +53,14 @@ public class LessonsController implements Initializable {
         InputStream inputStream = this.getClass().getResourceAsStream("/algat/data.yml");
 
         //loadAll MAPPA i campi di ogni dato di tipo lessons dopo che IS ha "letto"
-        int i=1;
+        int i=0;
         for (Object object: yaml.loadAll(inputStream)) {
             if (object instanceof Lesson) {                     //SE il dato lessons ha i campi del TIPO Lesson va avanti
                 Lesson lesson = (Lesson) object;                //Cast
                 //Creo un bottone
                 Button button = new Button(lesson.getTitle());  //NB NON uso this perchè porta a LessonController, dove sono ora
                 //Aggiungo il bottone alla lista di figli di leftbar
-                if (i != 1) {
+                if (i != 0) {
                     button.setVisible(false);
                     button.setDisable(true);
                 }
@@ -79,7 +79,7 @@ public class LessonsController implements Initializable {
                 Button button2 = SetQuestions(lesson, i);
                 leftbar.getChildren().addAll(button, button2); //Aggiunge un figlio al nodo leftbar dell'albero SceneTree
             }
-            i++;
+            i = i+2;
 
 
         }
@@ -94,8 +94,8 @@ public class LessonsController implements Initializable {
 
 
     private Button SetQuestions (Lesson lesson, int i) {
-        Button button2 = new Button("Domande " + i);
-        if (i != 1) {
+        Button button2 = new Button("Domande " + (i/2 + 1));
+        if (i != 0) {
             button2.setVisible(false);
             button2.setDisable(true);
         }
@@ -148,10 +148,10 @@ public class LessonsController implements Initializable {
                 }
                 if (allGood) {
                     //sblocca pulsanti successivi
-                    leftbar.getChildren().get(i+1).setDisable(false);
                     leftbar.getChildren().get(i+2).setDisable(false);
-                    leftbar.getChildren().get(i+1).setVisible(true);
+                    leftbar.getChildren().get(i+3).setDisable(false);
                     leftbar.getChildren().get(i+2).setVisible(true);
+                    leftbar.getChildren().get(i+3).setVisible(true);
                 }
             });
 
