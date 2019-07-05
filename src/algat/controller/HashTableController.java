@@ -9,12 +9,16 @@ import algat.lib.exceptions.NotEnoughSpaceException;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HashTableController {
     @FXML private GridPane bucketsContainer;
@@ -25,15 +29,17 @@ public class HashTableController {
     private int[] probeSequence;
 
     private ProbeAnimation currentAnimation = new ProbeAnimation();
+    private boolean animationsEnabled = true;
+
+    ProbeAnimation getAnimation() { return currentAnimation; }
+
+    void setAnimationsEnabled(boolean animationsEnabled) {
+        this.animationsEnabled = animationsEnabled;
+    }
 
     void init(Config config, List<Bucket> data) {
-        if (data == null) {
-            int capacity = config.getInt(Config.Key.CAPACITY);
-            for (int i = 0; i < capacity; i++)
-                buckets.add(new Bucket());
-        } else {
+        if (data != null)
             buckets = new ArrayList<>(data);
-        }
 
         setConfig(config);
     }
@@ -47,15 +53,51 @@ public class HashTableController {
         }
     }
 
-    ProbeAnimation getAnimation() { return currentAnimation; }
-
     private void buildTable() {
+        this.updateBuckets();
         bucketsContainer.getChildren().clear();
 
         for (int i = 0; i < capacity; i++) {
             Bucket bucket = buckets.get(i);
             bucketsContainer.addRow(i, new BucketComponent(bucket));
         }
+    }
+
+    private void updateBuckets() {
+        // Save old buckets data inside an hash map
+        HashMap<String, String> oldBucketsData = this.getBucketsData();
+
+        // Create and initialize new buckets list
+        buckets = new ArrayList<>(capacity);
+        for (int i = 0; i < capacity; i++)
+            buckets.add(new Bucket());
+
+        // If present, insert old buckets data into new buckets list
+        if (!oldBucketsData.isEmpty())
+            this.insertBucketsData(oldBucketsData);
+    }
+
+    private HashMap<String, String> getBucketsData() {
+        HashMap<String, String> bucketsData = new HashMap<>();
+
+        for (Bucket bucket : buckets) {
+            String key = bucket.getKey();
+
+            if (!key.isEmpty())
+                bucketsData.put(key, bucket.getValue());
+        }
+
+        return bucketsData;
+    }
+
+    private void insertBucketsData(HashMap<String, String> bucketsData) {
+        boolean animationsWereEnabled = animationsEnabled;
+        animationsEnabled = false;  // Disabilito temporaneamente le animazioni per aggiornare rapidamente la tabella
+
+        for (Map.Entry<String, String> entry : bucketsData.entrySet())
+            this.insert(entry.getKey(), entry.getValue());
+
+        animationsEnabled = animationsWereEnabled;
     }
 
     void insert(String key, String value) {
@@ -65,8 +107,7 @@ public class HashTableController {
             throw new NotEnoughSpaceException("Maximum table capacity (=" + capacity + ") was reached");
 
         Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
-        this.configureAnimation(probeIndex);
-        currentAnimation.setOnFinished(event -> {
+        this.animate(probeIndex, event -> {
             selectedBucket.setKey(key);
             selectedBucket.setValue(value);
 
@@ -82,8 +123,7 @@ public class HashTableController {
             throw new NoSuchKeyException("Key " + key + " does not exist");
 
         Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
-        this.configureAnimation(probeIndex);
-        currentAnimation.setOnFinished(event -> selectedBucket.setDeleted(true));
+        this.animate(probeIndex, event -> selectedBucket.setDeleted(true));
     }
 
     void hasKey(String key) {
@@ -93,8 +133,7 @@ public class HashTableController {
             throw new NoSuchKeyException("Key " + key + " does not exist");
 
         Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
-        this.configureAnimation(probeIndex);
-        currentAnimation.setOnFinished(event -> {
+        this.animate(probeIndex, event -> {
             System.out.println(!selectedBucket.isEmpty() && !selectedBucket.isDeleted() && selectedBucket.getKey().equals(key));
         });
     }
@@ -147,7 +186,12 @@ public class HashTableController {
         }
     }
 
-    private void configureAnimation(int probeIndex) {
+    private void animate(int probeIndex, EventHandler<ActionEvent> onFinishedHandler) {
+        if (!animationsEnabled) {
+            onFinishedHandler.handle(new ActionEvent());
+            return;
+        }
+
         ObservableList<Node> children = bucketsContainer.getChildren();
         ArrayList<BucketComponent> animSequence = new ArrayList<>(capacity);
 
@@ -157,6 +201,7 @@ public class HashTableController {
         }
 
         currentAnimation.setAnimSequence(animSequence);
+        currentAnimation.setOnFinished(onFinishedHandler);
     }
 
     // =================================

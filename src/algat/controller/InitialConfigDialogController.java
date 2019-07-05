@@ -47,7 +47,7 @@ public class InitialConfigDialogController implements Initializable {
     }
 
     public void nextButtonPressed(ActionEvent event) throws IOException {
-        if (capacityIsValid()) {
+        if (isCapacityValid()) {
             if (this.selectedOption.equals("customData")) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/algat/view/UploadDataDialog.fxml"));
                 Parent content = loader.load();
@@ -71,7 +71,7 @@ public class InitialConfigDialogController implements Initializable {
 
     Hasher getHasher() { return hashingSelect.getValue(); }
 
-    private boolean capacityIsValid() {
+    private boolean isCapacityValid() {
         try {
             capacity = Integer.parseInt(capacityField.getText());
             return true;

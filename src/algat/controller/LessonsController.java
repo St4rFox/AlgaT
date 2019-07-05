@@ -57,7 +57,6 @@ public class LessonsController implements Initializable {
                     //Corpo della funzione associata all'ActionEvent
                     try {
                         String filePath = getClass().getResource("/algat/lessons/" + lesson.getFileName()).getPath().substring(1).replaceAll("%20", " ");
-                        System.out.println(filePath);
                         String content = new String(Files.readAllBytes(new File(filePath).toPath()));
                         webView.getEngine().loadContent(content, "text/html");
                         webView.setVisible(true);

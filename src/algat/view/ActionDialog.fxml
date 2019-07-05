@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <children>
+            <Label text="Chiave">
+               <VBox.margin>
+                  <Insets bottom="2.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="keyField" promptText="Inserisci la chiave">
+               <VBox.margin>
+                  <Insets bottom="2.0" />
+               </VBox.margin>
+            </TextField>
+            <Text fx:id="keyError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Chiave non inserita!" visible="false">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </VBox>
+      <VBox fx:id="valueBox" visible="false">
+         <children>
+            <Label text="Valore">
+               <VBox.margin>
+                  <Insets bottom="2.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="valueField" promptText="Inserisci il valore">
+               <VBox.margin>
+                  <Insets bottom="2.0" />
+               </VBox.margin>
+            </TextField>
+            <Text fx:id="valueError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Valore non inserito!" visible="false">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+   </padding>
+</VBox>

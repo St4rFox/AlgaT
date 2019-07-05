@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.PlaygroundController">
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.PlaygroundController">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <Button mnemonicParsing="false" onAction="#rewindButtonPressed">
@@ -50,10 +41,29 @@
                 </padding>
             </Button>
             <Slider fx:id="slider" majorTickUnit="0.25" max="2.0" min="0.25" showTickLabels="true" showTickMarks="true" value="1.0" />
+            <CheckBox fx:id="animationsSettings" mnemonicParsing="false" selected="true" text="Animazioni abilitate" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#insertButtonPressed" text="Insert" />
-            <Button mnemonicParsing="false" onAction="#removeButtonPressed" text="Remove" />
-            <Button mnemonicParsing="false" onAction="#hasKeyButtonPressed" text="Has Key?" />
+            <Button mnemonicParsing="false" onAction="#insertButtonPressed" prefHeight="30.0" text="Insert">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+            <padding>
+               <Insets left="15.0" right="15.0" />
+            </padding></Button>
+            <Button mnemonicParsing="false" onAction="#removeButtonPressed" prefHeight="30.0" text="Remove">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+            <padding>
+               <Insets left="15.0" right="15.0" />
+            </padding></Button>
+            <Button mnemonicParsing="false" onAction="#hasKeyButtonPressed" prefHeight="30.0" text="Has Key?">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+            <padding>
+               <Insets left="15.0" right="15.0" />
+            </padding></Button>
             <padding>
                 <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
             </padding>
@@ -68,10 +78,10 @@
             </Text>
             <VBox alignment="CENTER" spacing="5.0">
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacità Massima" />
-                <TextField fx:id="capacitySelect" prefHeight="16.0" prefWidth="167.0" />
-                <Text fx:id="capacityError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="La capacità deve essere un intero positivo!" textAlignment="CENTER" visible="false" wrappingWidth="120.0">
+                <TextField fx:id="capacityField" prefHeight="16.0" prefWidth="167.0" />
+                <Text fx:id="capacityFieldError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="La capacità deve essere un intero positivo!" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
                     <font>
-                        <Font size="9.0" />
+                        <Font size="11.0" />
                     </font>
                 </Text>
                 <VBox.margin>
@@ -91,11 +101,11 @@
                 <VBox fx:id="stepFieldContainer" alignment="TOP_CENTER" spacing="5.0">
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Passo" />
                     <TextField fx:id="stepField" />
-               <Text fx:id="stepError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Il passo deve essere un intero positivo!" textAlignment="CENTER" visible="false" wrappingWidth="120.0">
-                  <font>
-                     <Font size="9.0" />
-                  </font>
-               </Text>
+                    <Text fx:id="stepFieldError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Il passo deve essere un intero positivo!" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
+                        <font>
+                            <Font size="11.0" />
+                        </font>
+                    </Text>
                 </VBox>
                 <VBox fx:id="secondHasherContainer" alignment="TOP_CENTER" spacing="5.0">
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Funzione Hash 2" />
