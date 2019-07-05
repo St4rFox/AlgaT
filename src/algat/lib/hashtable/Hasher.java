@@ -10,7 +10,7 @@ public enum Hasher {
     NAIVE {
         @Override
         public int hash(String key, int modulus) {
-            return (key.charAt(0) - 97) % modulus;
+            return key.charAt(0) % modulus;
         }
 
         @Override
