@@ -1,8 +1,10 @@
 package algat.controller;
 
 import algat.Config;
+import algat.lib.ErrorCodes;
 import algat.lib.ProbeAnimation;
 import algat.lib.ScanMethod;
+import algat.lib.exceptions.NoSuchKeyException;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
 import javafx.animation.Animation;
@@ -30,9 +32,10 @@ import java.util.ResourceBundle;
 
 public class PlaygroundController implements Initializable {
     // Toolbar
-    @FXML private Slider slider;
     @FXML private Button playButton;
     @FXML private CheckBox animationsSettings;
+
+    @FXML private TextArea errorMessages;
 
     // Configuration Sidebar
     @FXML private VBox configSideBar;
@@ -179,7 +182,16 @@ public class PlaygroundController implements Initializable {
                 "Remove an entry from the table"
         );
 
-        dialog.showAndWait().ifPresent(result -> hashTableController.remove(result.getKey()));
+        dialog.showAndWait().ifPresent(result -> {
+               try {
+                   hashTableController.remove(result.getKey());
+               } catch (NoSuchKeyException e) {
+                   String text = errorMessages.getText();
+                   errorMessages.setText((text.isEmpty() ? "" : text + "\n") +  "> " + ErrorCodes.KEY_NOT_FOUND.toString());
+                   errorMessages.setStyle("-fx-text-fill: red;");
+
+               }
+        });
     }
 
     public void hasKeyButtonPressed(ActionEvent event) {
@@ -191,7 +203,13 @@ public class PlaygroundController implements Initializable {
                 "Check if the table contains a given key"
         );
 
-        dialog.showAndWait().ifPresent(result -> hashTableController.hasKey(result.getKey()));
+        dialog.showAndWait().ifPresent(result -> {
+            try {
+                hashTableController.hasKey(result.getKey());
+            } catch (NoSuchKeyException e) {
+                //TODO
+            }
+        });
     }
 
     public void lockButtonPressed(ActionEvent event) {

@@ -170,6 +170,8 @@ public class HashTableController {
         ScanMethod scanMethod = this.config.getScanMethod(Config.Key.SCAN_METHOD);
         int hash = hasher.hash(key, capacity);
 
+
+
         switch (scanMethod) {
             case LINEAR:
                 this.linear(hash);
@@ -214,26 +216,26 @@ public class HashTableController {
             probeSequence[i] = (hash + (i * step)) % capacity;
     }
 
-    private void quadratic(int hash) {
-        int step = this.config.getInt(Config.Key.STEP);
+        private void quadratic(int hash) {
+            int step = this.config.getInt(Config.Key.STEP);
 
-        for (int i = 0; i * i < capacity; i++)
-            probeSequence[i] = (hash + (i * i * step)) % capacity;
-    }
+            for (int i = 0; i * i < capacity; i++)
+                probeSequence[i] = (hash + (i * i * step)) % capacity;
+        }
 
-    private void random(int hash) {
-        int[] sequence = Util.getShuffledRange(capacity);
+        private void random(int hash) {
+            int[] sequence = Util.getShuffledRange(capacity);
 
-        for (int i = 0; i < capacity; i++)
-            probeSequence[i] = (hash + sequence[i]) % capacity;
+            for (int i = 0; i < capacity; i++)
+                probeSequence[i] = (hash + sequence[i]) % capacity;
 
-    }
+        }
 
-    private void doubleHashing(int hash, String key) {
-        Hasher secondHasher = this.config.getHasher(Config.Key.SECOND_HASHER);
-        int step = secondHasher.hash(key, capacity);
+        private void doubleHashing(int hash, String key) {
+            Hasher secondHasher = this.config.getHasher(Config.Key.SECOND_HASHER);
+            int step = secondHasher.hash(key, capacity);
 
-        for (int i = 0; i < capacity; i++)
-            probeSequence[i] = (hash + i * step) % capacity;
+            for (int i = 0; i < capacity; i++)
+                probeSequence[i] = (hash + i * step) % capacity;
     }
 }
