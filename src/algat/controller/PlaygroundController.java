@@ -19,9 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -41,22 +39,20 @@ public class PlaygroundController implements Initializable {
 
     // Configuration Sidebar
     @FXML private VBox configSideBar;
-    @FXML private TextField capacityField;
+    @FXML private Slider capacityBar;
     @FXML private ChoiceBox<Hasher> hasherMenu;
     @FXML private ChoiceBox<ScanMethod> scanMethodMenu;
     @FXML private VBox additionalParams;
     @FXML private VBox stepFieldContainer;
-    @FXML private TextField stepField;
+    @FXML private Slider stepBar;
     @FXML private VBox secondHasherContainer;
     @FXML private ChoiceBox<Hasher> secondHasherMenu;
     @FXML private Button lockButton;
 
-    // Error Text
-    @FXML private Text stepFieldError;
-    @FXML private Text capacityFieldError;
-
     // Table
     @FXML private HashTableController hashTableController;
+
+    private Stage stage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -82,7 +78,8 @@ public class PlaygroundController implements Initializable {
 
                 ArrayList<Bucket> initialData = dialogController.getData();
                 Config initialConfig = dialogController.getInitialConfig();
-                this.capacityField.setText(Integer.toString(initialConfig.getInt(Config.Key.CAPACITY)));
+                this.capacityBar.setValue(initialConfig.getInt(Config.Key.CAPACITY));
+                this.stepBar.setValue(initialConfig.getInt(Config.Key.STEP));
                 this.hasherMenu.setValue(initialConfig.getHasher(Config.Key.HASHER));
                 this.scanMethodMenu.setValue(initialConfig.getScanMethod(Config.Key.SCAN_METHOD));
                 this.hashTableController.init(initialConfig, initialData);
@@ -103,12 +100,9 @@ public class PlaygroundController implements Initializable {
         secondHasherContainer.managedProperty().bindBidirectional(secondHasherContainer.visibleProperty());
         secondHasherContainer.setVisible(false);
 
-        stepField.setText("1");
         secondHasherMenu.getItems().addAll(Hasher.values());
         secondHasherMenu.setValue(Hasher.values()[0]);
 
-        capacityFieldError.managedProperty().bind(capacityFieldError.visibleProperty());
-        stepFieldError.managedProperty().bind(stepFieldError.visibleProperty());
     }
 
     private void initListeners() {
@@ -136,6 +130,9 @@ public class PlaygroundController implements Initializable {
         } ));
 
         hashTableController.getErrors().addListener((ListChangeListener<? super ErrorCodes>) change -> {
+            if (change.getList().isEmpty())
+                errorMessages.setText("");
+
             while (change.next()) {
                 for (ErrorCodes code : change.getAddedSubList()) {
                     String text = errorMessages.getText();
@@ -145,22 +142,10 @@ public class PlaygroundController implements Initializable {
             }
         });
 
-
-        capacityField.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER)
-                capacityFieldError.setVisible(isNotValid(capacityField.getText()));
-        });
-
-        stepField.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER)
-                stepFieldError.setVisible(isNotValid(stepField.getText()));
-        });
-
         scanMethodMenu.getSelectionModel().selectedItemProperty().addListener((observable, oldMethod, newMethod) -> {
             stepFieldContainer.setVisible(newMethod == ScanMethod.LINEAR || newMethod == ScanMethod.QUADRATIC);
             secondHasherContainer.setVisible(newMethod == ScanMethod.DOUBLE_HASHING);
             additionalParams.setVisible(newMethod != ScanMethod.RANDOM);
-            stepField.setText("1");
         });
     }
 
@@ -198,22 +183,16 @@ public class PlaygroundController implements Initializable {
         dialog.showAndWait().ifPresent(result -> hashTableController.remove(result.getKey()));
     }
 
-    public void hasKeyButtonPressed(ActionEvent event) {
-        if (this.hasToSkipAction())
-            return;
-
-        ActionDialog dialog = new ActionDialog(
-                "Has Key Dialog",
-                "Check if the table contains a given key"
-        );
-
-        dialog.showAndWait().ifPresent(result -> {
-            try {
-                hashTableController.hasKey(result.getKey());
-            } catch (NoSuchKeyException e) {
-                //TODO
-            }
-        });
+    public void lessonButtonPressed(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/algat/view/Lessons.fxml"));
+            Parent lessonContent = loader.load();
+            LessonsController controller = loader.getController();
+            controller.setStage(stage);
+            stage.getScene().setRoot(lessonContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void lockButtonPressed(ActionEvent event) {
@@ -240,20 +219,11 @@ public class PlaygroundController implements Initializable {
     }
 
     private Config createConfig() {
-        String capacity = capacityField.getText();
-        String step = stepField.getText();
+        int capacity = (int)capacityBar.getValue();
+        int step = (int)stepBar.getValue();
 
-        boolean isCapacityInvalid = isNotValid(capacity);
-        boolean isStepInvalid = isNotValid(step);
-
-        capacityFieldError.setVisible(isCapacityInvalid);
-        stepFieldError.setVisible(isStepInvalid);
-
-        if (isCapacityInvalid || isStepInvalid)
-            return null;
-
-        Config config = new Config(Integer.parseInt(capacity), hasherMenu.getValue(), scanMethodMenu.getValue());
-        config.set(Config.Key.STEP, Integer.parseInt(step));
+        Config config = new Config(capacity, hasherMenu.getValue(), scanMethodMenu.getValue());
+        config.set(Config.Key.STEP, step);
         config.set(Config.Key.SECOND_HASHER, secondHasherMenu.getValue());
 
         return config;
@@ -284,16 +254,13 @@ public class PlaygroundController implements Initializable {
     public void fastForwardButtonPressed(ActionEvent event) {
         hashTableController.getAnimation().play();
     }
-
-    private boolean isNotValid(String number) {
-        int value;
-
-        try {
-            value = Integer.parseInt(number);
-        } catch (NumberFormatException e) {
-            return true;
-        }
-
-        return value <= 0;
+    
+    public void setStage (Stage stage) {
+        this.stage = stage;
     }
+
+    public void trashButtonPressed(ActionEvent event) {
+        hashTableController.clearErrors();
+    }
+
 }
