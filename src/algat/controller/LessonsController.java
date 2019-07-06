@@ -67,7 +67,7 @@ public class LessonsController implements Initializable {
                 button.setOnAction(actionEvent -> {             //NB Lambda functions;passare f come parametri; actionevent ha una classe sua;
                     //Corpo della funzione associata all'ActionEvent
                     try {
-                        String filePath = getClass().getResource("/algat/lessons/" + lesson.getFileName()).getPath().substring(1).replaceAll("%20", " ");
+                        String filePath = getClass().getResource("/algat/lessons/" + lesson.getFileName()).getPath().replaceAll("%20", " ");
                         String content = new String(Files.readAllBytes(new File(filePath).toPath()));
                         webView.getEngine().loadContent(content, "text/html");
                         webView.setVisible(true);
@@ -166,8 +166,7 @@ public class LessonsController implements Initializable {
     public void goToPlayground(ActionEvent evento) {
         try {
             Parent playground = FXMLLoader.load(getClass().getResource("/algat/view/Playground.fxml"));
-            stage.setScene(new Scene(playground));
-            stage.setMaximized(true);
+            stage.getScene().setRoot(playground);
         } catch (IOException e) {
             e.printStackTrace();
         }

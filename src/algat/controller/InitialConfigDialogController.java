@@ -1,6 +1,7 @@
 package algat.controller;
 
 import algat.Config;
+import algat.lib.ErrorCodes;
 import algat.lib.ScanMethod;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
@@ -13,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class InitialConfigDialogController implements Initializable {
     // FXML Variables
-    @FXML private TextField capacityField;
+    @FXML private Slider capacityBar;
     @FXML private ChoiceBox<Hasher> hashingSelect;
     @FXML private ChoiceBox<ScanMethod> scanMethodSelect;
     @FXML private ToggleGroup initialDataOption;
@@ -72,7 +74,6 @@ public class InitialConfigDialogController implements Initializable {
     }
 
     public void nextButtonPressed(ActionEvent event) throws IOException {
-        if (isCapacityValid()) {
             if (this.selectedOption.equals("customData")) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/algat/view/UploadDataDialog.fxml"));
                 Parent content = loader.load();
@@ -85,7 +86,6 @@ public class InitialConfigDialogController implements Initializable {
             } else {
                 this.stage.close();
             }
-        }
     }
 
     ArrayList<Bucket> getData() {
@@ -97,16 +97,6 @@ public class InitialConfigDialogController implements Initializable {
         config.set(Config.Key.STEP, Integer.parseInt(stepField.getText()));
         config.set(Config.Key.SECOND_HASHER, secondHasher.getValue());
         return config;
-    }
-
-    private boolean isCapacityValid() {
-        try {
-            capacity = Integer.parseInt(capacityField.getText());
-            return true;
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
     void setStage(Stage stage) {

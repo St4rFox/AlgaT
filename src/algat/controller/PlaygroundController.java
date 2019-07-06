@@ -41,19 +41,15 @@ public class PlaygroundController implements Initializable {
 
     // Configuration Sidebar
     @FXML private VBox configSideBar;
-    @FXML private TextField capacityField;
+    @FXML private Slider capacityBar;
     @FXML private ChoiceBox<Hasher> hasherMenu;
     @FXML private ChoiceBox<ScanMethod> scanMethodMenu;
     @FXML private VBox additionalParams;
     @FXML private VBox stepFieldContainer;
-    @FXML private TextField stepField;
+    @FXML private Slider stepBar;
     @FXML private VBox secondHasherContainer;
     @FXML private ChoiceBox<Hasher> secondHasherMenu;
     @FXML private Button lockButton;
-
-    // Error Text
-    @FXML private Text stepFieldError;
-    @FXML private Text capacityFieldError;
 
     // Table
     @FXML private HashTableController hashTableController;
@@ -82,7 +78,7 @@ public class PlaygroundController implements Initializable {
 
                 ArrayList<Bucket> initialData = dialogController.getData();
                 Config initialConfig = dialogController.getInitialConfig();
-                this.capacityField.setText(Integer.toString(initialConfig.getInt(Config.Key.CAPACITY)));
+                this.capacityBar.setValue(initialConfig.getInt(Config.Key.CAPACITY));
                 this.hasherMenu.setValue(initialConfig.getHasher(Config.Key.HASHER));
                 this.scanMethodMenu.setValue(initialConfig.getScanMethod(Config.Key.SCAN_METHOD));
                 this.hashTableController.init(initialConfig, initialData);
@@ -103,12 +99,9 @@ public class PlaygroundController implements Initializable {
         secondHasherContainer.managedProperty().bindBidirectional(secondHasherContainer.visibleProperty());
         secondHasherContainer.setVisible(false);
 
-        stepField.setText("1");
         secondHasherMenu.getItems().addAll(Hasher.values());
         secondHasherMenu.setValue(Hasher.values()[0]);
 
-        capacityFieldError.managedProperty().bind(capacityFieldError.visibleProperty());
-        stepFieldError.managedProperty().bind(stepFieldError.visibleProperty());
     }
 
     private void initListeners() {
@@ -145,22 +138,10 @@ public class PlaygroundController implements Initializable {
             }
         });
 
-
-        capacityField.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER)
-                capacityFieldError.setVisible(isNotValid(capacityField.getText()));
-        });
-
-        stepField.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER)
-                stepFieldError.setVisible(isNotValid(stepField.getText()));
-        });
-
         scanMethodMenu.getSelectionModel().selectedItemProperty().addListener((observable, oldMethod, newMethod) -> {
             stepFieldContainer.setVisible(newMethod == ScanMethod.LINEAR || newMethod == ScanMethod.QUADRATIC);
             secondHasherContainer.setVisible(newMethod == ScanMethod.DOUBLE_HASHING);
             additionalParams.setVisible(newMethod != ScanMethod.RANDOM);
-            stepField.setText("1");
         });
     }
 
@@ -240,20 +221,11 @@ public class PlaygroundController implements Initializable {
     }
 
     private Config createConfig() {
-        String capacity = capacityField.getText();
-        String step = stepField.getText();
+        int capacity = (int)capacityBar.getValue();
+        int step = (int)stepBar.getValue();
 
-        boolean isCapacityInvalid = isNotValid(capacity);
-        boolean isStepInvalid = isNotValid(step);
-
-        capacityFieldError.setVisible(isCapacityInvalid);
-        stepFieldError.setVisible(isStepInvalid);
-
-        if (isCapacityInvalid || isStepInvalid)
-            return null;
-
-        Config config = new Config(Integer.parseInt(capacity), hasherMenu.getValue(), scanMethodMenu.getValue());
-        config.set(Config.Key.STEP, Integer.parseInt(step));
+        Config config = new Config(capacity, hasherMenu.getValue(), scanMethodMenu.getValue());
+        config.set(Config.Key.STEP, step);
         config.set(Config.Key.SECOND_HASHER, secondHasherMenu.getValue());
 
         return config;
@@ -285,15 +257,4 @@ public class PlaygroundController implements Initializable {
         hashTableController.getAnimation().play();
     }
 
-    private boolean isNotValid(String number) {
-        int value;
-
-        try {
-            value = Integer.parseInt(number);
-        } catch (NumberFormatException e) {
-            return true;
-        }
-
-        return value <= 0;
-    }
 }
