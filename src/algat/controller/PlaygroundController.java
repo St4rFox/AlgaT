@@ -34,6 +34,7 @@ public class PlaygroundController implements Initializable {
     // Toolbar
     @FXML private Button playButton;
     @FXML private CheckBox animationsSettings;
+    @FXML private RadioButton radioAnimation;
 
     @FXML private TextArea errorMessages;
 
@@ -128,10 +129,17 @@ public class PlaygroundController implements Initializable {
             playButton.setGraphic(graphic);
         });
 
-        animationsSettings.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+        radioAnimation.selectedProperty().addListener(((observableValue, oldValue, newValue) -> {
+            hashTableController.setAnimationsEnabled(newValue);
+            radioAnimation.setText(newValue ? "Animazioni abilitate" : "Animazioni disabilitate");
+        } ));
+
+        /*animationsSettings.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
             hashTableController.setAnimationsEnabled(newValue);
             animationsSettings.setText(newValue ? "Animazioni abilitate" : "Animazioni disabilitate");
         });
+        */
+
 
         capacityField.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER)

@@ -2,8 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -62,13 +62,11 @@
                     <Insets bottom="4.0" left="10.0" right="10.0" top="4.0" />
                 </padding>
             </Button>
-            <CheckBox fx:id="animationsSettings" mnemonicParsing="false" prefWidth="500.0" selected="true" text="Animazioni abilitate">
+         <RadioButton fx:id="radioAnimation" mnemonicParsing="false" selected="true" text="Animazioni abilitate ">
             <HBox.margin>
-               <Insets left="50.0" />
+               <Insets left="100.0" right="100.0" />
             </HBox.margin>
-            <font>
-               <Font name="Arial" size="13.0" />
-            </font></CheckBox>
+         </RadioButton>
             <Region HBox.hgrow="ALWAYS" />
             <Button mnemonicParsing="false" onAction="#insertButtonPressed" prefHeight="30.0" prefWidth="120.0" text="Insert">
             <HBox.margin>
@@ -98,14 +96,20 @@
     </top>
     <right>
         <VBox fx:id="configSideBar" alignment="TOP_CENTER" prefWidth="400.0" spacing="30.0" BorderPane.alignment="CENTER">
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Configurazione Tabella" wrappingWidth="141.22900390625">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Configurazione Tabella" wrappingWidth="225.22900390625">
                 <VBox.margin>
                     <Insets top="10.0" />
                 </VBox.margin>
+            <font>
+               <Font size="20.0" />
+            </font>
             </Text>
             <VBox alignment="CENTER" spacing="5.0">
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacità Massima" />
-                <TextField fx:id="capacityField" prefHeight="16.0" prefWidth="167.0" />
+                <TextField fx:id="capacityField" prefHeight="16.0" prefWidth="167.0">
+               <VBox.margin>
+                  <Insets left="40.0" right="40.0" />
+               </VBox.margin></TextField>
                 <Text fx:id="capacityFieldError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="La capacità deve essere un intero positivo!" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
                     <font>
                         <Font size="11.0" />
@@ -124,10 +128,19 @@
                 <ChoiceBox fx:id="scanMethodMenu" prefWidth="150.0" />
             </VBox>
             <VBox fx:id="additionalParams" alignment="TOP_CENTER" spacing="5.0">
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Parametri Aggiuntivi" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Parametri Aggiuntivi">
+               <VBox.margin>
+                  <Insets bottom="25.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Hiragino Sans W3" size="20.0" />
+               </font></Text>
                 <VBox fx:id="stepFieldContainer" alignment="TOP_CENTER" spacing="5.0">
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Passo" />
-                    <TextField fx:id="stepField" />
+                    <TextField fx:id="stepField">
+                  <VBox.margin>
+                     <Insets left="40.0" right="40.0" />
+                  </VBox.margin></TextField>
                     <Text fx:id="stepFieldError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Il passo deve essere un intero positivo!" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
                         <font>
                             <Font size="11.0" />
@@ -138,11 +151,17 @@
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Funzione Hash 2" />
                     <ChoiceBox fx:id="secondHasherMenu" prefWidth="150.0" />
                 </VBox>
+            <VBox.margin>
+               <Insets top="100.0" />
+            </VBox.margin>
             </VBox>
             <Button fx:id="lockButton" minWidth="80.0" mnemonicParsing="false" onAction="#lockButtonPressed" text="Lock" />
             <padding>
                 <Insets left="30.0" right="30.0" />
             </padding>
+         <BorderPane.margin>
+            <Insets top="75.0" />
+         </BorderPane.margin>
         </VBox>
     </right>
     <center>
@@ -153,7 +172,10 @@
          <children>
             <HBox alignment="CENTER">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Messaggi di Errore" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Messaggi di Errore">
+                     <font>
+                        <Font name="Hiragino Sans W3" size="20.0" />
+                     </font></Text>
                </children>
                <padding>
                   <Insets bottom="10.0" top="10.0" />
@@ -182,6 +204,9 @@
          <padding>
             <Insets left="30.0" right="30.0" />
          </padding>
+         <BorderPane.margin>
+            <Insets top="150.0" />
+         </BorderPane.margin>
       </VBox>
    </left>
 </BorderPane>
