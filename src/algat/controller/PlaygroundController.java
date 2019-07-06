@@ -254,7 +254,7 @@ public class PlaygroundController implements Initializable {
     public void fastForwardButtonPressed(ActionEvent event) {
         hashTableController.getAnimation().play();
     }
-    
+
     public void setStage (Stage stage) {
         this.stage = stage;
     }

@@ -11,6 +11,7 @@
 .red-radio-button .text {
 -fx-fill: red;
 }
+
 .green-radio-button .text {
 -fx-fill: green;
 }
