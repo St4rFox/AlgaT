@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
-<AnchorPane fx:controller="algat.controller.UploadDataDialogController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="378.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<AnchorPane maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.UploadDataDialogController">
     <children>
         <VBox alignment="TOP_CENTER" layoutX="220.0" layoutY="122.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
             <children>
@@ -35,7 +36,7 @@
                         <Insets bottom="20.0" />
                     </VBox.margin>
                 </HBox>
-                <TableView fx:id="tableView" editable="true" prefHeight="200.0" prefWidth="200.0">
+                <TableView fx:id="tableView" editable="true" prefWidth="200.0">
                     <columns>
                         <TableColumn fx:id="keyColumn" prefWidth="200.0" sortable="false" text="Key" />
                         <TableColumn fx:id="valueColumn" prefWidth="75.0" sortable="false" text="Value" />
@@ -49,7 +50,7 @@
                 </TableView>
                 <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
                     <children>
-                        <Button onAction="#finishButtonPressed" defaultButton="true" mnemonicParsing="false" prefWidth="80.0" text="Finish" />
+                        <Button defaultButton="true" mnemonicParsing="false" onAction="#finishButtonPressed" prefWidth="80.0" text="Finish" />
                     </children>
                 </HBox>
             </children>
