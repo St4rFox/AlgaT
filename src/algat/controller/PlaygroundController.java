@@ -9,6 +9,7 @@ import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
 import javafx.animation.Animation;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +35,7 @@ public class PlaygroundController implements Initializable {
     // Toolbar
     @FXML private Button playButton;
     @FXML private CheckBox animationsSettings;
+    @FXML private RadioButton radioAnimation;
 
     @FXML private TextArea errorMessages;
 
@@ -79,11 +81,11 @@ public class PlaygroundController implements Initializable {
                 stage.showAndWait();
 
                 ArrayList<Bucket> initialData = dialogController.getData();
-                int capacity = dialogController.getCapacity();
-                Hasher hasher = dialogController.getHasher();
-                this.capacityField.setText(Integer.toString(capacity));
-                this.hasherMenu.setValue(hasher);
-                this.hashTableController.init(new Config(capacity, hasher), initialData);
+                Config initialConfig = dialogController.getInitialConfig();
+                this.capacityField.setText(Integer.toString(initialConfig.getInt(Config.Key.CAPACITY)));
+                this.hasherMenu.setValue(initialConfig.getHasher(Config.Key.HASHER));
+                this.scanMethodMenu.setValue(initialConfig.getScanMethod(Config.Key.SCAN_METHOD));
+                this.hashTableController.init(initialConfig, initialData);
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,10 +130,21 @@ public class PlaygroundController implements Initializable {
             playButton.setGraphic(graphic);
         });
 
-        animationsSettings.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+        radioAnimation.selectedProperty().addListener(((observableValue, oldValue, newValue) -> {
             hashTableController.setAnimationsEnabled(newValue);
-            animationsSettings.setText(newValue ? "Animazioni abilitate" : "Animazioni disabilitate");
+            radioAnimation.setText(newValue ? "Animazioni abilitate" : "Animazioni disabilitate");
+        } ));
+
+        hashTableController.getErrors().addListener((ListChangeListener<? super ErrorCodes>) change -> {
+            while (change.next()) {
+                for (ErrorCodes code : change.getAddedSubList()) {
+                    String text = errorMessages.getText();
+                    errorMessages.setText((text.isEmpty() ? "" : text + "\n") +  "> " + code);
+                    errorMessages.setStyle("-fx-text-fill: red;");
+                }
+            }
         });
+
 
         capacityField.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER)
@@ -182,16 +195,7 @@ public class PlaygroundController implements Initializable {
                 "Remove an entry from the table"
         );
 
-        dialog.showAndWait().ifPresent(result -> {
-               try {
-                   hashTableController.remove(result.getKey());
-               } catch (NoSuchKeyException e) {
-                   String text = errorMessages.getText();
-                   errorMessages.setText((text.isEmpty() ? "" : text + "\n") +  "> " + ErrorCodes.KEY_NOT_FOUND.toString());
-                   errorMessages.setStyle("-fx-text-fill: red;");
-
-               }
-        });
+        dialog.showAndWait().ifPresent(result -> hashTableController.remove(result.getKey()));
     }
 
     public void hasKeyButtonPressed(ActionEvent event) {
@@ -248,10 +252,7 @@ public class PlaygroundController implements Initializable {
         if (isCapacityInvalid || isStepInvalid)
             return null;
 
-        Config config = new Config();
-        config.set(Config.Key.CAPACITY, Integer.parseInt(capacity));
-        config.set(Config.Key.HASHER, hasherMenu.getValue());
-        config.set(Config.Key.SCAN_METHOD, scanMethodMenu.getValue());
+        Config config = new Config(Integer.parseInt(capacity), hasherMenu.getValue(), scanMethodMenu.getValue());
         config.set(Config.Key.STEP, Integer.parseInt(step));
         config.set(Config.Key.SECOND_HASHER, secondHasherMenu.getValue());
 

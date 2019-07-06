@@ -1,13 +1,14 @@
 package algat.controller;
 
 import algat.Config;
+import algat.lib.ErrorCodes;
 import algat.lib.ProbeAnimation;
 import algat.lib.ScanMethod;
 import algat.lib.Util;
 import algat.lib.exceptions.NoSuchKeyException;
-import algat.lib.exceptions.NotEnoughSpaceException;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,9 +28,13 @@ public class HashTableController {
     private Config config;
     private ArrayList<Bucket> buckets = new ArrayList<>();
     private int[] probeSequence;
+    private ObservableList<ErrorCodes> errors = FXCollections.observableArrayList();
 
     private ProbeAnimation currentAnimation = new ProbeAnimation();
     private boolean animationsEnabled = true;
+
+    public ObservableList<ErrorCodes> getErrors() { return errors; }
+    public void clearErrors() { errors.clear(); }
 
     ProbeAnimation getAnimation() { return currentAnimation; }
 
@@ -103,8 +108,10 @@ public class HashTableController {
     void insert(String key, String value) {
         int probeIndex = this.probe(key);
 
-        if (probeIndex == capacity)
-            throw new NotEnoughSpaceException("Maximum table capacity (=" + capacity + ") was reached");
+        if (probeIndex == capacity) {
+            errors.add(ErrorCodes.FULL_TABLE);
+            return;
+        }
 
         Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
         this.animate(probeIndex, event -> {
@@ -119,11 +126,18 @@ public class HashTableController {
     void remove(String key) {
         int probeIndex = this.probe(key);
 
-        if (probeIndex == capacity)
-            throw new NoSuchKeyException("Key " + key + " does not exist");
+        if (probeIndex == capacity) {
+            errors.add(ErrorCodes.KEY_NOT_FOUND);
+            return;
+        }
 
         Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
-        this.animate(probeIndex, event -> selectedBucket.setDeleted(true));
+        this.animate(probeIndex, event -> {
+            if (selectedBucket.getKey().equals(key))
+                selectedBucket.setDeleted(true);
+            else
+                errors.add(ErrorCodes.KEY_NOT_FOUND);
+        });
     }
 
     void hasKey(String key) {
@@ -169,8 +183,6 @@ public class HashTableController {
         Hasher hasher = this.config.getHasher(Config.Key.HASHER);
         ScanMethod scanMethod = this.config.getScanMethod(Config.Key.SCAN_METHOD);
         int hash = hasher.hash(key, capacity);
-
-
 
         switch (scanMethod) {
             case LINEAR:
