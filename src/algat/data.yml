@@ -20,6 +20,17 @@ questions:                           #NBB questa grafia descrive un "array" di n
   - "Nella scrittura intera della rappresentazione binaria di k"
   - "Nella divisione della scrittura intera di k per m, il tutto mod m"
   - "Nella scrittura intera della rappresentazione binaria di k, il tutto mod m"
+- text: "Il fenomeno di collisione si verifica quando sono presenti lunghe sequenze ininterrotte di chiavi."
+  answer: 1
+  answers:
+  - "Vero"
+  - "Falso"
+- text: "Che cos'è il principio di Uniformità Semplice?"
+  answer: 2
+  answers:
+  - "L'uguaglianza del numero di chiavi da inserire e del numero di celle disponibili"
+  - "La probabilità che le chiavi abbiano tutte lo stesso H(k) associato"
+  - "L'equiprobabilità per ogni cella di contenere una chiave"
 ---
 title: "Lezione 2"
 fileName: "lesson2.html"
@@ -43,6 +54,17 @@ questions:
   - "Per minimizzare il costo delle operazioni"
   - "Per evitare l'overflow della tabella"
   - "Per grantire l'esistenza di valori reali di H(k)"
+- text: "Le liste di trabocco conservano un puntatore alla testa ed uno alla coda di ogni lista di chiavi."
+  answer: 1
+  answers:
+  - "Vero"
+  - "Falso"
+- text: "Qual è la funzione delle Tecniche di Scansione?"
+  answer: 2
+  answers:
+  - "Impedire l'overflow della tabella"
+  - "Mantenere C tra 0 e 1"
+  - "Gestire le collisioni"
 ---
 title: "Lezione 3"
 fileName: "lesson3.html"
@@ -65,3 +87,15 @@ questions:
   answers:
   - "Vero"
   - "Falso"
+- text: "Ogni funzione hash genera al più m permutazioni distinte."
+  answer: 1
+  answers:
+  - "Vero"
+  - "Falso"
+- text: "Come agisce la scansione con doppio hashing?"
+  answer: 0
+  answers:
+  - "La funzione hash base riceve un offset calcolato da una seconda"
+  - "La funzione hash base viene raddoppiata"
+  - "La funzione hash base viene elevata al quadrato per poi essere sottoposta a mod m"
+  - "La funzione hash base viene composta con una seconda funzione hash per generare m^2 chiavi"

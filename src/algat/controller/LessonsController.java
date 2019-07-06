@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
@@ -122,36 +121,61 @@ public class LessonsController implements Initializable {
             boxDomandeEBottone.getChildren().add(checkAnswers);
             questionsPane.setContent(boxDomandeEBottone);
 
+            int domandaVisibile = 0;    //BLOCCO NUOVO
+            for(Node question : questionsVBox.getChildren()) {
+                if (domandaVisibile !=0) {
+                    question.setVisible(false);
+                    question.setDisable(true);
+                }
+                domandaVisibile++;
+            }
+
             checkAnswers.setOnAction(actionEvent1 -> {
                 int c = 0;
                 boolean allGood = true;
                 for(Node node:questionsVBox.getChildren()) {
                     VBox vbNode = (VBox) node;
                     RadioButton firstAnswer = (RadioButton) vbNode.getChildren().get(1);
+
                     int indiceRispostaCorretta = lesson.getQuestions().get(c).getAnswer();
-                    System.out.println(indiceRispostaCorretta);
-                    if (firstAnswer.getToggleGroup().getToggles().get(indiceRispostaCorretta).isSelected()){
+
+                    try {
+                    if (firstAnswer.getToggleGroup().getToggles().get(indiceRispostaCorretta).isSelected() && questionsVBox.getChildren().get(c).isVisible() && questionsVBox.getChildren().get(c+1) != null && questionsVBox.getChildren().get(c) != null){
                         //Reazione se la risposta è corretta: colora di verde il pulsanteù
                         RadioButton rispostaScelta = (RadioButton) firstAnswer.getToggleGroup().getSelectedToggle();
                         rispostaScelta.getStyleClass().add("green-radio-button");
-
-
+                        questionsVBox.getChildren().get(c+1).setDisable(false);
+                        questionsVBox.getChildren().get(c+1).setVisible(true);
                     }
-                    else {
+                    else if(questionsVBox.getChildren().get(c).isVisible() && (firstAnswer.getToggleGroup().getSelectedToggle() != null)) {
                         //Reazione se la risposta è sbagliata: colora di rosso il pulsante
                         RadioButton rispostaScelta = (RadioButton) firstAnswer.getToggleGroup().getSelectedToggle();
                         allGood = false;
                         rispostaScelta.getStyleClass().add("red-radio-button");
+                    }
+                    else {
+                    allGood = false;
+                    }
+                    }
 
+                    catch (Exception e) {
+                        e.printStackTrace();
                     }
                     c++;
                 }
+
+
                 if (allGood) {
                     //sblocca pulsanti successivi
+                    try {
                     leftbar.getChildren().get(i+2).setDisable(false);
                     leftbar.getChildren().get(i+3).setDisable(false);
                     leftbar.getChildren().get(i+2).setVisible(true);
                     leftbar.getChildren().get(i+3).setVisible(true);
+                    }
+                    catch(IndexOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -166,7 +190,7 @@ public class LessonsController implements Initializable {
     public void goToPlayground(ActionEvent evento) {
         try {
             Parent playground = FXMLLoader.load(getClass().getResource("/algat/view/Playground.fxml"));
-            stage.setScene(new Scene(playground));
+            stage.getScene().setRoot(playground); //NON creiamo una nuova scena: cambiamo solo la partenza
             stage.setMaximized(true);
         } catch (IOException e) {
             e.printStackTrace();
