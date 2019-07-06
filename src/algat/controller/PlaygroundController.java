@@ -54,6 +54,8 @@ public class PlaygroundController implements Initializable {
     // Table
     @FXML private HashTableController hashTableController;
 
+    private Stage stage;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.initUI();
@@ -79,6 +81,7 @@ public class PlaygroundController implements Initializable {
                 ArrayList<Bucket> initialData = dialogController.getData();
                 Config initialConfig = dialogController.getInitialConfig();
                 this.capacityBar.setValue(initialConfig.getInt(Config.Key.CAPACITY));
+                this.stepBar.setValue(initialConfig.getInt(Config.Key.STEP));
                 this.hasherMenu.setValue(initialConfig.getHasher(Config.Key.HASHER));
                 this.scanMethodMenu.setValue(initialConfig.getScanMethod(Config.Key.SCAN_METHOD));
                 this.hashTableController.init(initialConfig, initialData);
@@ -179,22 +182,16 @@ public class PlaygroundController implements Initializable {
         dialog.showAndWait().ifPresent(result -> hashTableController.remove(result.getKey()));
     }
 
-    public void hasKeyButtonPressed(ActionEvent event) {
-        if (this.hasToSkipAction())
-            return;
-
-        ActionDialog dialog = new ActionDialog(
-                "Has Key Dialog",
-                "Check if the table contains a given key"
-        );
-
-        dialog.showAndWait().ifPresent(result -> {
-            try {
-                hashTableController.hasKey(result.getKey());
-            } catch (NoSuchKeyException e) {
-                //TODO
-            }
-        });
+    public void lessonButtonPressed(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/algat/view/Lessons.fxml"));
+            Parent lessonContent = loader.load();
+            LessonsController controller = loader.getController();
+            controller.setStage(stage);
+            stage.getScene().setRoot(lessonContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void lockButtonPressed(ActionEvent event) {
@@ -257,4 +254,7 @@ public class PlaygroundController implements Initializable {
         hashTableController.getAnimation().play();
     }
 
+    public void setStage (Stage stage) {
+        this.stage = stage;
+    }
 }

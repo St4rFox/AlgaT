@@ -163,9 +163,12 @@ public class LessonsController implements Initializable {
 
     }
 
-    public void goToPlayground(ActionEvent evento) {
+    public void goToPlayground(ActionEvent event) {
         try {
-            Parent playground = FXMLLoader.load(getClass().getResource("/algat/view/Playground.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/algat/view/Playground.fxml"));
+            Parent playground = loader.load();
+            PlaygroundController controller = loader.getController();
+            controller.setStage(stage);
             stage.getScene().setRoot(playground);
         } catch (IOException e) {
             e.printStackTrace();

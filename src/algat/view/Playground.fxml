@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.PlaygroundController">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -55,7 +64,7 @@
             </Button>
          <RadioButton fx:id="radioAnimation" mnemonicParsing="false" selected="true" text="Animazioni abilitate ">
             <HBox.margin>
-               <Insets left="100.0" right="100.0" />
+               <Insets left="100.0" right="50.0" />
             </HBox.margin>
          </RadioButton>
             <Region HBox.hgrow="ALWAYS" />
@@ -68,12 +77,12 @@
             </padding></Button>
             <Button mnemonicParsing="false" onAction="#removeButtonPressed" prefHeight="30.0" prefWidth="120.0" text="Remove">
             <HBox.margin>
-               <Insets />
+               <Insets right="75.0" />
             </HBox.margin>
             <padding>
                <Insets left="15.0" right="15.0" />
             </padding></Button>
-            <Button mnemonicParsing="false" onAction="#hasKeyButtonPressed" prefHeight="30.0" prefWidth="120.0" text="Has Key?">
+            <Button mnemonicParsing="false" onAction="#lessonButtonPressed" prefHeight="30.0" prefWidth="180.0" text="Torna alle Lezioni">
             <HBox.margin>
                <Insets />
             </HBox.margin>
@@ -86,7 +95,7 @@
         </HBox>
     </top>
     <right>
-        <VBox fx:id="configSideBar" alignment="TOP_CENTER" prefWidth="400.0" spacing="30.0" BorderPane.alignment="CENTER">
+        <VBox fx:id="configSideBar" alignment="TOP_CENTER" minWidth="400.0" spacing="30.0" BorderPane.alignment="CENTER">
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Configurazione Tabella" wrappingWidth="225.22900390625">
                 <VBox.margin>
                     <Insets top="10.0" />
@@ -95,9 +104,15 @@
                <Font size="20.0" />
             </font>
             </Text>
-            <VBox alignment="CENTER" spacing="5.0">
+            <VBox alignment="CENTER" prefHeight="59.0" prefWidth="303.0" spacing="5.0">
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacità Massima" />
-            <Slider fx:id="capacityBar" />
+            <Slider fx:id="capacityBar" blockIncrement="1.0" majorTickUnit="1.0" max="20.0" min="1.0" minorTickCount="0" prefWidth="400.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="30.0" right="30.0" />
+               </padding></Slider>
                 <VBox.margin>
                     <Insets />
                 </VBox.margin>
@@ -110,6 +125,7 @@
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Metodo di Scansione" />
                 <ChoiceBox fx:id="scanMethodMenu" prefWidth="150.0" />
             </VBox>
+         <Region maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
             <VBox fx:id="additionalParams" alignment="TOP_CENTER" spacing="5.0">
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Parametri Aggiuntivi">
                <VBox.margin>
@@ -120,22 +136,22 @@
                </font></Text>
                 <VBox fx:id="stepFieldContainer" alignment="TOP_CENTER" spacing="5.0">
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Passo" />
-               <Slider fx:id="stepBar" />
+               <Slider fx:id="stepBar" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" maxWidth="150.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="3.0" />
                 </VBox>
                 <VBox fx:id="secondHasherContainer" alignment="TOP_CENTER" spacing="5.0">
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Funzione Hash 2" />
                     <ChoiceBox fx:id="secondHasherMenu" prefWidth="150.0" />
                 </VBox>
             <VBox.margin>
-               <Insets top="100.0" />
+               <Insets />
             </VBox.margin>
             </VBox>
             <Button fx:id="lockButton" minWidth="80.0" mnemonicParsing="false" onAction="#lockButtonPressed" text="Lock" />
             <padding>
-                <Insets left="30.0" right="30.0" />
+                <Insets bottom="125.0" top="75.0" />
             </padding>
          <BorderPane.margin>
-            <Insets top="75.0" />
+            <Insets />
          </BorderPane.margin>
         </VBox>
     </right>
