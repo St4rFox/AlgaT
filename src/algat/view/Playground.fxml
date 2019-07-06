@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -53,20 +52,20 @@
                     <Insets bottom="4.0" left="10.0" right="10.0" top="4.0" />
                 </padding>
             </Button>
-         <RadioButton fx:id="radioAnimation" mnemonicParsing="false" selected="true" text="Animazioni abilitate ">
+         <RadioButton fx:id="radioAnimation" mnemonicParsing="false" selected="true" text="Animazioni abilitate">
             <HBox.margin>
                <Insets left="100.0" right="100.0" />
             </HBox.margin>
          </RadioButton>
             <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#insertButtonPressed" prefHeight="30.0" prefWidth="120.0" text="Insert">
+            <Button mnemonicParsing="false" onAction="#insertButtonPressed" prefHeight="30.0" prefWidth="120.0" text="Inserisci">
             <HBox.margin>
                <Insets />
             </HBox.margin>
             <padding>
                <Insets left="15.0" right="15.0" />
             </padding></Button>
-            <Button mnemonicParsing="false" onAction="#removeButtonPressed" prefHeight="30.0" prefWidth="120.0" text="Remove">
+            <Button mnemonicParsing="false" onAction="#removeButtonPressed" prefHeight="30.0" prefWidth="120.0" text="Rimuovi">
             <HBox.margin>
                <Insets />
             </HBox.margin>
@@ -97,7 +96,7 @@
             </Text>
             <VBox alignment="CENTER" spacing="5.0">
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Capacità Massima" />
-            <Slider fx:id="capacityBar" />
+            <Slider fx:id="capacityBar" blockIncrement="1.0" majorTickUnit="1.0" max="20.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="10.0" />
                 <VBox.margin>
                     <Insets />
                 </VBox.margin>
@@ -120,7 +119,7 @@
                </font></Text>
                 <VBox fx:id="stepFieldContainer" alignment="TOP_CENTER" spacing="5.0">
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Passo" />
-               <Slider fx:id="stepBar" />
+               <Slider fx:id="stepBar" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="3.0" />
                 </VBox>
                 <VBox fx:id="secondHasherContainer" alignment="TOP_CENTER" spacing="5.0">
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Funzione Hash 2" />
@@ -163,7 +162,7 @@
             </TextArea>
             <HBox prefHeight="50.0" prefWidth="50.0">
                <children>
-                  <Button fx:id="trashButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0">
+                  <Button mnemonicParsing="false" onAction="#trashButtonPressed" prefHeight="40.0" prefWidth="40.0">
                         <graphic>
                             <ImageView fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                 <Image url="@../resources/icons/trash.png" />

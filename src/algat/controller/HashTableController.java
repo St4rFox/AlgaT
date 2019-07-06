@@ -33,8 +33,8 @@ public class HashTableController {
     private ProbeAnimation currentAnimation = new ProbeAnimation();
     private boolean animationsEnabled = true;
 
-    public ObservableList<ErrorCodes> getErrors() { return errors; }
-    public void clearErrors() { errors.clear(); }
+    ObservableList<ErrorCodes> getErrors() { return errors; }
+    void clearErrors() { errors.clear(); }
 
     ProbeAnimation getAnimation() { return currentAnimation; }
 

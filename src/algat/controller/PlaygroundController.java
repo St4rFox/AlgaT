@@ -19,9 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -129,6 +127,9 @@ public class PlaygroundController implements Initializable {
         } ));
 
         hashTableController.getErrors().addListener((ListChangeListener<? super ErrorCodes>) change -> {
+            if (change.getList().isEmpty())
+                errorMessages.setText("");
+
             while (change.next()) {
                 for (ErrorCodes code : change.getAddedSubList()) {
                     String text = errorMessages.getText();
@@ -255,6 +256,10 @@ public class PlaygroundController implements Initializable {
 
     public void fastForwardButtonPressed(ActionEvent event) {
         hashTableController.getAnimation().play();
+    }
+
+    public void trashButtonPressed(ActionEvent event) {
+        hashTableController.clearErrors();
     }
 
 }
