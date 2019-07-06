@@ -1,7 +1,10 @@
 package algat.controller;
 
+import algat.Config;
+import algat.lib.ScanMethod;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,25 +24,46 @@ public class InitialConfigDialogController implements Initializable {
     // FXML Variables
     @FXML private TextField capacityField;
     @FXML private ChoiceBox<Hasher> hashingSelect;
+    @FXML private ChoiceBox<ScanMethod> scanMethodSelect;
     @FXML private ToggleGroup initialDataOption;
     @FXML private Button nextButton;
+
+    @FXML private VBox additionalParams;
+    @FXML private TextField stepField;
+    @FXML private ChoiceBox<Hasher> secondHasher;
 
     // Instance fields
     private Stage stage;
     private ArrayList<Bucket> data = null;
     private String selectedOption = "noData";
     private int capacity;
-    private Hasher hasher;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<Hasher> hashingItems = this.hashingSelect.getItems();
-        hashingItems.addAll(Hasher.values());
-        hashingSelect.setValue(Hasher.values()[0]);
+        ObservableList<Hasher> hashers = FXCollections.observableArrayList(Hasher.values());
+        hashingSelect.setItems(hashers);
+        hashingSelect.setValue(Hasher.NAIVE);
+        secondHasher.setItems(hashers);
+        secondHasher.setValue(Hasher.NAIVE);
+
+        scanMethodSelect.setItems(FXCollections.observableArrayList(ScanMethod.values()));
+        scanMethodSelect.setValue(ScanMethod.LINEAR);
+
+        additionalParams.managedProperty().bind(additionalParams.visibleProperty());
+        stepField.managedProperty().bind(stepField.visibleProperty());
+        secondHasher.managedProperty().bind(secondHasher.visibleProperty());
+        secondHasher.setVisible(false);
+
         this.initListeners();
     }
 
     private void initListeners() {
+        scanMethodSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            additionalParams.setVisible(newValue != ScanMethod.RANDOM);
+            stepField.setVisible(newValue == ScanMethod.LINEAR || newValue == ScanMethod.QUADRATIC);
+            secondHasher.setVisible(newValue == ScanMethod.DOUBLE_HASHING);
+        });
+
         this.initialDataOption.selectedToggleProperty().addListener((observableValue, oldToggle, newToggle) -> {
             RadioButton selectedToggle = (RadioButton) newToggle.getToggleGroup().getSelectedToggle();
             this.selectedOption = selectedToggle.getId();
@@ -67,9 +92,12 @@ public class InitialConfigDialogController implements Initializable {
         return this.data;
     }
 
-    int getCapacity() { return capacity; }
-
-    Hasher getHasher() { return hashingSelect.getValue(); }
+    Config getInitialConfig() {
+        Config config = new Config(capacity, hashingSelect.getValue(), scanMethodSelect.getValue());
+        config.set(Config.Key.STEP, Integer.parseInt(stepField.getText()));
+        config.set(Config.Key.SECOND_HASHER, secondHasher.getValue());
+        return config;
+    }
 
     private boolean isCapacityValid() {
         try {

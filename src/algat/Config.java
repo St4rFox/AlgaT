@@ -18,9 +18,10 @@ public class Config {
 
     public Config() {}
 
-    public Config(int capacity, Hasher hasher) {
+    public Config(int capacity, Hasher hasher, ScanMethod scanMethod) {
         storage.put(Key.CAPACITY, capacity);
         storage.put(Key.HASHER, hasher);
+        storage.put(Key.SCAN_METHOD, scanMethod);
     }
 
     public void set(Key key, Object value) {

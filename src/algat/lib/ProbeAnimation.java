@@ -48,8 +48,10 @@ public class ProbeAnimation extends Transition {
         cursor = cursor >= sequenceLength ? cursor : cursor + 1;
         if (cursor < sequenceLength)
             animSequence.get(cursor).getStyleClass().add("selected");
-        else
+        else {
             getOnFinished().handle(new ActionEvent());
+            setOnFinished(null);
+        }
     }
 
     public void stepBackward() {
