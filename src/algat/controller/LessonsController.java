@@ -140,12 +140,17 @@ public class LessonsController implements Initializable {
                     int indiceRispostaCorretta = lesson.getQuestions().get(c).getAnswer();
 
                     try {
-                    if (firstAnswer.getToggleGroup().getToggles().get(indiceRispostaCorretta).isSelected() && questionsVBox.getChildren().get(c).isVisible() && questionsVBox.getChildren().get(c+1) != null && questionsVBox.getChildren().get(c) != null){
+                    if (firstAnswer.getToggleGroup().getToggles().get(indiceRispostaCorretta).isSelected() && questionsVBox.getChildren().get(c).isVisible() && questionsVBox.getChildren().get(c) != null) {
                         //Reazione se la risposta è corretta: colora di verde il pulsanteù
                         RadioButton rispostaScelta = (RadioButton) firstAnswer.getToggleGroup().getSelectedToggle();
                         rispostaScelta.getStyleClass().add("green-radio-button");
-                        questionsVBox.getChildren().get(c+1).setDisable(false);
-                        questionsVBox.getChildren().get(c+1).setVisible(true);
+                        try {
+                            questionsVBox.getChildren().get(c + 1).setDisable(false);
+                            questionsVBox.getChildren().get(c + 1).setVisible(true);
+                    }
+                        catch (Exception q){
+                            q.printStackTrace();
+                        }
                     }
                     else if(questionsVBox.getChildren().get(c).isVisible() && (firstAnswer.getToggleGroup().getSelectedToggle() != null)) {
                         //Reazione se la risposta è sbagliata: colora di rosso il pulsante
