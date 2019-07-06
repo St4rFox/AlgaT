@@ -1,7 +1,6 @@
 package algat.controller;
 
 import algat.Config;
-import algat.lib.ErrorCodes;
 import algat.lib.ScanMethod;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
@@ -14,7 +13,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,21 +22,20 @@ import java.util.ResourceBundle;
 
 public class InitialConfigDialogController implements Initializable {
     // FXML Variables
-    @FXML private Slider capacityBar;
+    @FXML private Slider capacitySlider;
     @FXML private ChoiceBox<Hasher> hashingSelect;
     @FXML private ChoiceBox<ScanMethod> scanMethodSelect;
     @FXML private ToggleGroup initialDataOption;
     @FXML private Button nextButton;
 
     @FXML private VBox additionalParams;
-    @FXML private TextField stepField;
+    @FXML private Slider stepSlider;
     @FXML private ChoiceBox<Hasher> secondHasher;
 
     // Instance fields
     private Stage stage;
     private ArrayList<Bucket> data = null;
     private String selectedOption = "noData";
-    private int capacity;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -52,7 +49,7 @@ public class InitialConfigDialogController implements Initializable {
         scanMethodSelect.setValue(ScanMethod.LINEAR);
 
         additionalParams.managedProperty().bind(additionalParams.visibleProperty());
-        stepField.managedProperty().bind(stepField.visibleProperty());
+        stepSlider.managedProperty().bind(stepSlider.visibleProperty());
         secondHasher.managedProperty().bind(secondHasher.visibleProperty());
         secondHasher.setVisible(false);
 
@@ -62,7 +59,7 @@ public class InitialConfigDialogController implements Initializable {
     private void initListeners() {
         scanMethodSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             additionalParams.setVisible(newValue != ScanMethod.RANDOM);
-            stepField.setVisible(newValue == ScanMethod.LINEAR || newValue == ScanMethod.QUADRATIC);
+            stepSlider.setVisible(newValue == ScanMethod.LINEAR || newValue == ScanMethod.QUADRATIC);
             secondHasher.setVisible(newValue == ScanMethod.DOUBLE_HASHING);
         });
 
@@ -74,18 +71,18 @@ public class InitialConfigDialogController implements Initializable {
     }
 
     public void nextButtonPressed(ActionEvent event) throws IOException {
-            if (this.selectedOption.equals("customData")) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/algat/view/UploadDataDialog.fxml"));
-                Parent content = loader.load();
-                UploadDataDialogController dialogController = loader.getController();
-                dialogController.onConfigCompleted(data -> {
-                    this.data = data;
-                    this.stage.close();
-                });
-                this.stage.getScene().setRoot(content);
-            } else {
+        if (this.selectedOption.equals("customData")) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/algat/view/UploadDataDialog.fxml"));
+            Parent content = loader.load();
+            UploadDataDialogController dialogController = loader.getController();
+            dialogController.onConfigCompleted(data -> {
+                this.data = data;
                 this.stage.close();
-            }
+            });
+            this.stage.getScene().setRoot(content);
+        } else {
+            this.stage.close();
+        }
     }
 
     ArrayList<Bucket> getData() {
@@ -93,8 +90,8 @@ public class InitialConfigDialogController implements Initializable {
     }
 
     Config getInitialConfig() {
-        Config config = new Config(capacity, hashingSelect.getValue(), scanMethodSelect.getValue());
-        config.set(Config.Key.STEP, Integer.parseInt(stepField.getText()));
+        Config config = new Config((int) capacitySlider.getValue(), hashingSelect.getValue(), scanMethodSelect.getValue());
+        config.set(Config.Key.STEP, (int) stepSlider.getValue());
         config.set(Config.Key.SECOND_HASHER, secondHasher.getValue());
         return config;
     }
