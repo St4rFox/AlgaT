@@ -6,28 +6,42 @@
     <meta charset="UTF-8">
     <title>Lesson 1</title>
 </head>
-<body>
-    <h1>Tabelle Hash</h1>
-    <b1>Una tabella hash è composta da un vettore A[m] ed una funzione hash H:
-    qust'ultima associa ad ogni chiave k un valore numerico H(k), che sarà la
-    cella di A assegnata a k.<br>
-    Nel caso in cui due H(k) coincidano, si verifica una collisione.<br>
-    Una buona funzione hash gode di Uniformità Semplice: ogni elemento ha uguale
-    probabilità di essere inserito in ciascun alloggiamento disponibile.<br>
+    <h1 align="center"><font size="20"> Tabelle Hash</font></h1>
+    <b1><font size="6">Una tabella hash è una struttura dati utile a rappresentare dizionari e insiemi.<br>
+        Essa è realizzata tramite un vettore <i>A[m]</i> ed una funzione hash <i>H</i>, il cui utilizzo è quello di
+        associare ad ogni stringa detta chiave <i>(K)</i> un valore numerico <i>H(K)</i> che sarà l'indice nel quale
+        la chiave sarà immagazzinata.<br>
+        Uno dei principali problemi legati all'utilizzo di Tabelle Hash è certamente la gestione delle collisioni che
+        si vengono a creare quando a due chiavi diverse viene associato lo stessa valore Hash.<br>
+        Per questo motivo il nostro compito è quello di trovare una funzione Hash che goda di <b>Uniformità Semplice</b>, per cui
+        ogni chiave ha uguale probabilità di essere associata ad ogni cella del vettore disponibile.<br>
+        Tra le <b>funzioni hash</b> più utilizzate andiamo a presentare le seguenti: <br>
+    </font>
     </b1>
-    <h1>
-    Funzioni Hash
-    </h1>
-    <b1>
-    L'Estrazione rende H(k) la rappresentazione intera di un sottoinsieme di bit della
-    rappresentazione binaria di k;<br>
-    lo XOR rende la parte intera della somma bit a bit modulo 2 di molteplici sottoinsiemi
-    di bit della rappresentazione binaria di k;<br>
-    la Divisione rende la scrittura intera della rappresentazione binaria di k, il tutto
-    modulo m (è richiesto un m dispari e distante da potenze di 2 onde evitare collisioni)<br>
 
-    Questi accorgimenti riducono il problema delle collisioni, pur senza eliminarlo completamente:
-    due tecniche di risoluzione sono le Liste di Trabocco e l'Indirizzamento Aperto.
+    <h3 align="center"><font size="18">Estrazione</font></h3>
+<b1><font size="6">L'<b>Estrazione</b> associa ad una chiave <i>K</i> la rappresentazione intera di un sottoinsieme di bit della propria
+        rappresentazione binaria.<br>
+        Tuttavia, prendere parti diverse dal suffisso o dal prefisso può generare collisioni.
+        <br>
+    </font>
+    </b1>
+    <h3 align="center"><font size="18">Xor</font></h3>
+    <b1><font size="6">Lo <b>XOR</b> associa ad una chiave <i>K</i> la parte intera della somma bit a bit modulo 2 di molteplici sottoinsiemi
+        della rappresentazione binaria di <i>K</i>.<br>
+        Tuttavia, permutazioni (anagrammi) della stessa stringa possono generare lo stesso valore hash.
+        <br>
+    </font>
+    </b1>
+    <h3 align="center"><font size="18">Divisione</font></h3>
+<b1><font size="6">la <b>Divisione</b> associa ad una chiave <i>K</i> la conversione ad intero della sua rappresentazione binaria, il tutto
+    modulo <i>m</i>.<br>
+        Al fine di limitare collisioni è richiesto un <i>m</i> dispari e distante da potenze di 2.
+        <br>
+        <br>
+</font>
+    </b1>
+<font size="6">Queste funzioni appena presentate non risolvono completamente il problema delle collisioni,<br>ma lo riducono.</font>
     </b1>
 <!--hN con N <7 è la taglia del font in ordine decrescente-->
 </body>

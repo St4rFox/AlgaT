@@ -5,53 +5,61 @@
     <title>Lesson 3</title>
 </head>
 <body>
-<h1>Tecniche di scansione
-</h1>
-<b1>
-    Date:<br>
-    -k la chiave;<br>
-    -i il numero di ispezione;<br>
-    -H(k) la funzione hash base:;<br>
+<h1 align="center"><font size="20">Metodi di scansione</font></h1>
+<b1><font size="6">
+    I <b>Metodi di Scansione</b> che andremo ad analizzare sono i più conosciuti, <i>H(K,i)</i> rappresenta la posizione
+    della chiave <i>K</i> dopo <i>i</i> ispezioni fallite.<br>
+    Ovviamente la funzione <i>H(K,i)</i> va scelta in modo che si tocchino tutte le posizioni <i>m</i> del vettore <i>A</i> una e
+    una sola volta, così, se il vettore <i>A</i> è completamente occupato e la chiave <i>K</i> non vi è contenuta, la ricerca
+    si può arrestare non appena verrà toccata per la seconda volta la posizione di partenza <i>H(K)</i>
+    <br>
 
-    SCANSIONE LINEARE
-    H(k,i) = (H(k)+ h*i) % m<br>
+    <h2 align="center"><font size="8">Scansione Lineare</font></h2>
+    <h5 align="center">H(K,i) = (H(K)+ h*i) % m</h5><br>
 
-    Il primo elemento determina l'intera sequenza.<br>
-    Sono possibili esattamente m sequenze di ispezione distinte.<br>
-    Questo metodo comporta l'insorgere di Agglomerazione Primaria (lunghe catene di
-    celle occupate seguite da ampie sezioni vuote), generando un aumento nei tempi
-    medi di inserimento e cancellazione.
+    Uno dei problemi principali di questo metodo è che il primo elemento determina l'intera sequenza.<br>
+    Questa scansione ci permette di avere m sequenza distinte, ma contemporaneamente comporta l'insorgere
+    di Agglomerazione Primaria, cioè la formazione di lunghe catene di
+    celle occupate seguite da ampie sezioni vuote, generando così un aumento nei tempi
+    medi delle operazioni di inserimento e cancellazione.
 
-    SCANSIONE QUADRATICA
-    H(k,i) = (H(k) + h*i^2) mod m
+    <h2 align="center"><font size="8">Scansione Quadratica</font></h2>
+    <h5 align="center">H(K,i) = (H(K) + h*i^2) mod m</h5>
 
-    L'ispezione inizia in H(k) e prosegue quadraticamente in base a (i); permette m
-    sequenze differenti.<br>
-    Questo metodo non restituisce una permutazione e assegna la medesima sequenza a chiavi
-    con la stessa ispezione iniziale (Agglomerazione Secondaria).
+    L'ispezione inizia in <i>H(K)</i> e prosegue quadraticamente in base al Passo di Scansione <i>i</i>;<br>
+    Allo stesso modo della Scansione Lineare, questo metodo ci consente di creare <i>m</i> sequenze distinte, ma sfortunatamente
+    non restituisce una permutazione e assegna la medesima sequenza a chiavi
+    con la stessa ispezione iniziale andando a creare un errore di Agglomerazione Secondaria.
 
-    SCANSIONE PSEUDO-CASUALE
-    H(k,i)=(H(k)+r) mod m<br>
+    <h2 align="center"><font size="8">Scansione Pseudo-Casuale</font></h2>
+    <h5 align="center">H(K,i)=(H(K)+r) mod m</h5>
 
-    Si parte da H(k) per poi scorrere su base r (numero casuale tra 0 e m-1); sono
-    possibili m sequenze distinte, ma questa volta la sequenza risultante è una
+    Partendo dal valore <i>H(K)</i> si scorre successivamente sulla base del valore r che rappresenta un numero casuale compreso tra 0 e <i>m-1</i>;<br>
+    In questo modo sono possibili m sequenze distinte, ottenendo in questo caso come sequenza risultante una
     permutazione.<br>
-    Permane l'Agglomerazione Secondaria.
+    Permane il problema di Agglomerazione Secondaria.
 
-    SCANSIONE CON DOPPIO HASHING
-    H(k,i)=(H(k)+ i * H'(k)) mod m<br>
+    <h2 align="center"><font size="8">Scansione con Doppio Hashing</font></h2>
+    <h5 align="center">H(K,i)=(H(K)+ i * H'(K)) mod m</h5>
 
-    Gli sforzi congiunti di due funzioni hash (la base e l'ausiliaria, destinata a calcolare l'offset)
+    L'utilizzo contemporaneo di due funzioni hash (una di base e l'altra ausiliaria, destinata a calcolare l'offset)
     permettono di generare m^2 sequenze di ispezione distinte.<br>
-
-    Notevolmente, per garantire una permutazione quanto più completa possibile, H'(k)
+    Al fine di garantire una permutazione quanto più completa possibile,<br> <i>H'(K)</i>
     ed m devono essere primi tra loro.
+</font>
 
-    <h1>Cancellazione</h1>
-
-    Non si può sostituire la chiave da cancellare con un nil: ciò comporterebbe
-    il fallimento della ricerca di una chiave di sequenza passante per quella locazione.<br>
-    Si adotta un valore Deleted, letto come pieno dalla ricerca e vuoto dall'inserimento.
+    <h1 align="center"><font size="20">Cancellazione</font></h1>
+<b1><font size="6">
+    Un ulteriore problema nel caso di utilizzo di una tabella a Indirizzamento Aperto è rappresentato dalla
+    cancellazione di un valore, infatti sostituendo la chiave da cancellare con un nil andremmo a creare un problema legato
+    alla scansione della tabella.<br>
+    Infatti, nel caso di una ricerca di una chiave con sequenza passante per la locazione appartenente precedentemente alla
+    chiave cancellata, la funzione di scansione andrebbe a bloccarsi in questa posizione facendo credere all'utente che la
+    chiave ricercata non è presente nella tabella.<br>
+    Al fine di risolvere questo problema viene adottato un valore <i>Deleted</i>, in modo che risulti una posizione vuota durante
+    l'operazione di inserimento e, invece, risulti una posizione occupata durante l'operazione di ricerca.
+</font>
+</b1>
 </b1>
 </body>
 </html>

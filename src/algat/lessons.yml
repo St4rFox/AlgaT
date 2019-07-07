@@ -59,7 +59,7 @@ questions:
   answers:
   - "Vero"
   - "Falso"
-- text: "Qual è la funzione delle Tecniche di Scansione?"
+- text: "Qual è la funzione dei Metodi di Scansione?"
   answer: 2
   answers:
   - "Impedire l'overflow della tabella"

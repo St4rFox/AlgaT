@@ -1,35 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Lesson 2</title>
 </head>
 <body>
-    <h1>Liste di Trabocco ed Indirizzamento Aperto</h1>
+<h1 align="center"><font size="20">Liste di Trabocco ed Indirizzamento Aperto</font></h1>
 <b1>
-    Le Liste di Trabocco raccolgono in una lista tutte le chiavi col medesimo valore
-    hash per poi memorizzare un puntatore alla testa di tale lista; consentono l'
-    inserimento in testa, la ricerca di una chiave e la sua eliminazione (queste ultime
-    due richiedono una scansione completa della lista, mentre l'Insert ha costo costante).<br>
-    Posti n il numero di chiavi memorizzate nella tabella, m la dimensione della stessa e
-    C il Fattore di Carico n/m:
-
-    <h1>Complessità delle liste di Trabocco</h1>
-    Nel caso pessimo, tutte le chiavi sono in un'unica lista: mentre Insert richiede
-    O(1), Search e Delete impiegano O(n).<br>
-    Una ricerca con insuccesso richiede mediamente 1 + C accessi; in caso di successo,
-    il numero medio scende a 1 + C/2.<br>
-    Il Fattore di Carico, quindi, determina il costo computazionale delle operazioni
-    sulla tabella - indipendentemente dall'effettiva taglia.<br>
-    Se n=O(m), è=O(1) - e così il tempo medio di tutte le operazioni.<br>
-
-    <h1>Indirizzamento aperto</h1>
-    L'indirizzamento aperto consiste nel memorizzare tutte le chiavi nella tabella stessa.<br>
-    Il fattore di carico C è compreso tra 0 e 1 (per evitare l'overflow della tabella);
-    solitamente si sceglie un m tale che C = 0,5.
-
-    L'eventualità che più chiavi possano concorrere alla stessa posizione rende necessario
-    distribuire efficientemente questi doppioni: entrano in gioco le Tecniche di Scansione.
+    <font size="6">
+        Due metodi di realizzazione delle Tabelle Hash sono:<br>
+        &emsp; &emsp;• Liste di Trabocco<br>
+        &emsp; &emsp;• Indirizzamento Aperto<br>
+        <br>
+        Le <b>Liste di Trabocco</b> raccolgono in una lista tutte le chiavi col medesimo valore
+        hash per poi memorizzare un puntatore alla testa di tale lista, inserendo volta per volta in testa i nuovi valori aggiunti.
+        Le operazioni ammesse sono: inserimento di una coppia chiave-valore (complessità costante), ricerca e rimozione di una chiave (complessità
+        lineare).<br>
+        Posto n il numero di chiavi memorizzate nella tabella ed m la dimensione della stessa siamo in grado di calcolare il valore del
+        <b>Fattore di Carico</b> come il quoziente tra <i>n</i> ed <i>m</i>, questo numero andrà a rappresentare lo stato di riempimento della tabella.<br>
+        L'<b>indirizzamento aperto</b> consiste, invece, nel memorizzare tutte le chiavi nella tabella stessa.<br>
+        Il fattore di carico <i>C</i> è compreso tra 0 e 1 (per evitare l'overflow della tabella);
+        solitamente, attraverso la ristrutturazione, si fa in modo da conservare un m tale che il Fattore di Carico non superi<br>
+        il valore di 0,5.<br>
+        </font>
+    <h1 align="center"><font size="18">Complessità delle liste di Trabocco</font></h1>
+    <font size="6">
+        La realizzazione con liste di trabocco rende necessario uno studio attento della complessità.<br>
+        Nel caso pessimo, tutte le chiavi sono in un'unica lista, per questo motivo mentre Insert richiede
+        O(1), Search e Delete impiegano O(<i>n</i>).<br>
+        Una ricerca con insuccesso richiede mediamente 1 + <i>C</i> accessi; in caso di successo,
+        il numero medio scende a 1 + <i>C</i>/2.<br>
+        Il Fattore di Carico, quindi, determina il costo computazionale delle operazioni
+        sulla tabella indipendentemente dall'effettiva taglia.<br>
+        Se <i>n</i> è lineare ad <i>m</i>, il Fattore di Carico <i>C</i> vale all'incirca 1 e così il tempo medio di tutte le operazioni.<br>
+    </font>
+    <br><br>
+    <b1><font size="6">Nell'utilizzo di Indirizzamento aperto, l'eventualità che più chiavi possano concorrere alla stessa posizione rende necessario
+        gestire efficientemente questo genere di situazione: entrano in gioco le Tecniche di Scansione.</font></b1>
 
 </b1>
 </body>
