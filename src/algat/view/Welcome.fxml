@@ -5,73 +5,79 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.WelcomeController">
-   <bottom>
-      <Button fx:id="startButton" mnemonicParsing="false" onAction="#startButtonPressed" prefHeight="45.0" prefWidth="147.0" text="Iniziamo" BorderPane.alignment="CENTER" />
-   </bottom>
+<BorderPane style="-fx-background-color: white" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="algat.controller.WelcomeController">
    <right>
-      <VBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER_RIGHT">
+      <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="AlgaT" wrappingWidth="275.2060546875">
-               <font>
-                  <Font size="100.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tutorial sull'apprendimento e utilizzo">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="della struttura dati: Tabelle Hash" wrappingWidth="315.59375">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
+            <VBox>
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="200.0" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="AlgaT" textAlignment="RIGHT" wrappingWidth="798.1177978515625">
+                     <font>
+                        <Font name="Georgia" size="180.0" />
+                     </font>
+                  </Text>
+                  <Pane prefHeight="39.0" prefWidth="830.0" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tutorial sull'apprendimento e utilizzo della struttura dati:" textAlignment="RIGHT" wrappingWidth="794.699462890625">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets right="30.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tabelle Hash" textAlignment="RIGHT" wrappingWidth="791.314208984375">
+                     <font>
+                        <Font name="Rockwell" size="50.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Text>
+               </children>
+               <HBox.margin>
+                  <Insets right="30.0" />
+               </HBox.margin>
+            </VBox>
          </children>
-         <BorderPane.margin>
-            <Insets right="50.0" />
-         </BorderPane.margin>
-      </VBox>
+      </HBox>
    </right>
    <left>
-      <VBox prefHeight="344.0" prefWidth="514.0" BorderPane.alignment="CENTER">
+      <Pane BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Credits to:" textAlignment="CENTER" wrappingWidth="85.3271484375">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Hiragino Sans W0" size="13.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="       • Filippo Dardi" wrappingWidth="192.2060546875">
-               <font>
-                  <Font name="Bodoni 72 Book" size="18.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="           • Mirko Tritella">
-               <font>
-                  <Font name="Bodoni 72 Oldstyle Book" size="18.0" />
-               </font>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="               • Mattia Guazzaloca" wrappingWidth="378.69398498535156">
-               <font>
-                  <Font name="Bodoni 72 Book" size="18.0" />
-               </font>
-            </Text>
+            <VBox prefHeight="344.0" prefWidth="514.0" />
          </children>
-      </VBox>
+      </Pane>
    </left>
    <center>
-      <ImageView fitHeight="500.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@../resources/images/0.png" />
-         </image>
-      </ImageView>
+      <Pane>
+         <children>
+            <ImageView fitHeight="900.0" fitWidth="900.0" layoutX="-601.0" layoutY="18.0" opacity="0.35" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/images/uniBO.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </center>
+   <bottom>
+      <HBox alignment="TOP_RIGHT" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="startButton" mnemonicParsing="false" onAction="#startButtonPressed" prefHeight="26.0" prefWidth="163.0" text="Iniziamo">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
