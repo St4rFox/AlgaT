@@ -4,7 +4,6 @@ import algat.Config;
 import algat.lib.ErrorCodes;
 import algat.lib.ProbeAnimation;
 import algat.lib.ScanMethod;
-import algat.lib.exceptions.NoSuchKeyException;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
 import javafx.animation.Animation;
@@ -32,7 +31,6 @@ import java.util.ResourceBundle;
 public class PlaygroundController implements Initializable {
     // Toolbar
     @FXML private Button playButton;
-    @FXML private CheckBox animationsSettings;
     @FXML private RadioButton radioAnimation;
 
     @FXML private TextArea errorMessages;
@@ -116,9 +114,6 @@ public class PlaygroundController implements Initializable {
                 case RUNNING:
                     graphic.setImage(stopIcon);
                     break;
-                case PAUSED:
-                    graphic.setImage(pauseIcon);
-                    break;
             }
 
             playButton.setGraphic(graphic);
@@ -150,15 +145,13 @@ public class PlaygroundController implements Initializable {
     }
 
     private final Image playIcon = new Image(getClass().getResourceAsStream("/algat/resources/icons/play.png"));
-    private final Image pauseIcon = new Image(getClass().getResourceAsStream("/algat/resources/icons/pause.png"));
     private final Image stopIcon = new Image(getClass().getResourceAsStream("/algat/resources/icons/stop.png"));
 
     // ==================================
     // === LISTENERS ====================
     // ==================================
     public void insertButtonPressed(ActionEvent event) {
-        if (this.hasToSkipAction())
-            return;
+        this.prepareForAction();
 
         ActionDialog dialog = new ActionDialog(
                 "Insert Dialog",
@@ -172,8 +165,7 @@ public class PlaygroundController implements Initializable {
     }
 
     public void removeButtonPressed(ActionEvent event) {
-        if (this.hasToSkipAction())
-            return;
+        this.prepareForAction();
 
         ActionDialog dialog = new ActionDialog(
                 "Remove Dialog",
@@ -205,17 +197,14 @@ public class PlaygroundController implements Initializable {
         });
     }
 
-    private boolean hasToSkipAction() {
-        lockButton.fire();
-        Config config = createConfig();
+    private void prepareForAction() {
+        boolean isLocked = lockButton.getText().equals("Unlock");
 
-        if (config != null) {
-            hashTableController.setConfig(config);
-            return false;
-        } else {
+        Config config = createConfig();
+        hashTableController.setConfig(config);
+
+        if (!isLocked)
             lockButton.fire();
-            return true;
-        }
     }
 
     private Config createConfig() {
@@ -231,6 +220,9 @@ public class PlaygroundController implements Initializable {
 
     public void playButtonPressed(ActionEvent event) {
         ProbeAnimation animation = hashTableController.getAnimation();
+        if (!animation.isStartable())
+            return;
+
         Animation.Status status = animation.getStatus();
 
         if (status == Animation.Status.RUNNING)
@@ -240,22 +232,30 @@ public class PlaygroundController implements Initializable {
     }
 
     public void rewindButtonPressed(ActionEvent event) {
-        hashTableController.getAnimation().rewind();
+        ProbeAnimation animation = hashTableController.getAnimation();
+        if (animation.isStartable())
+            animation.rewind();
     }
 
     public void stepBackwardButtonPressed(ActionEvent event) {
-        hashTableController.getAnimation().stepBackward();
+        ProbeAnimation animation = hashTableController.getAnimation();
+        if (animation.isStartable())
+            animation.stepBackward();
     }
 
     public void stepForwardButtonPressed(ActionEvent event) {
-        hashTableController.getAnimation().stepForward();
+        ProbeAnimation animation = hashTableController.getAnimation();
+        if (animation.isStartable())
+            animation.stepForward();
     }
 
     public void fastForwardButtonPressed(ActionEvent event) {
-        hashTableController.getAnimation().play();
+        ProbeAnimation animation = hashTableController.getAnimation();
+        if (animation.isStartable())
+            animation.play();
     }
 
-    public void setStage (Stage stage) {
+    void setStage (Stage stage) {
         this.stage = stage;
     }
 

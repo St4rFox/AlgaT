@@ -23,6 +23,8 @@ public class ProbeAnimation extends Transition {
         this.cursor = -1;
     }
 
+    public boolean isStartable() { return animSequence != null; }
+
     @Override
     public void play() {
         Duration restartTime = getTotalDuration()
@@ -31,6 +33,12 @@ public class ProbeAnimation extends Transition {
 
         this.jumpTo(restartTime);
         super.play();
+    }
+
+    @Override
+    public void stop() {
+        animSequence = null;
+        super.stop();
     }
 
     @Override
@@ -48,10 +56,8 @@ public class ProbeAnimation extends Transition {
         cursor = cursor >= sequenceLength ? cursor : cursor + 1;
         if (cursor < sequenceLength)
             animSequence.get(cursor).getStyleClass().add("selected");
-        else {
+        else
             getOnFinished().handle(new ActionEvent());
-            setOnFinished(null);
-        }
     }
 
     public void stepBackward() {

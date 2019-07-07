@@ -5,7 +5,6 @@ import algat.lib.ErrorCodes;
 import algat.lib.ProbeAnimation;
 import algat.lib.ScanMethod;
 import algat.lib.Util;
-import algat.lib.exceptions.NoSuchKeyException;
 import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
 import javafx.collections.FXCollections;
@@ -140,18 +139,6 @@ public class HashTableController {
         });
     }
 
-    void hasKey(String key) {
-        int probeIndex = this.probe(key);
-
-        if (probeIndex == capacity)
-            throw new NoSuchKeyException("Key " + key + " does not exist");
-
-        Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
-        this.animate(probeIndex, event -> {
-            System.out.println(!selectedBucket.isEmpty() && !selectedBucket.isDeleted() && selectedBucket.getKey().equals(key));
-        });
-    }
-
     private int probe(String key) {
         this.createSequence(key);
         boolean deletedFound = false;
@@ -228,26 +215,26 @@ public class HashTableController {
             probeSequence[i] = (hash + (i * step)) % capacity;
     }
 
-        private void quadratic(int hash) {
-            int step = this.config.getInt(Config.Key.STEP);
+    private void quadratic(int hash) {
+        int step = this.config.getInt(Config.Key.STEP);
 
-            for (int i = 0; i * i < capacity; i++)
-                probeSequence[i] = (hash + (i * i * step)) % capacity;
-        }
+        for (int i = 0; i * i < capacity; i++)
+            probeSequence[i] = (hash + (i * i * step)) % capacity;
+    }
 
-        private void random(int hash) {
-            int[] sequence = Util.getShuffledRange(capacity);
+    private void random(int hash) {
+        int[] sequence = Util.getShuffledRange(capacity);
 
-            for (int i = 0; i < capacity; i++)
-                probeSequence[i] = (hash + sequence[i]) % capacity;
+        for (int i = 0; i < capacity; i++)
+            probeSequence[i] = (hash + sequence[i]) % capacity;
 
-        }
+    }
 
-        private void doubleHashing(int hash, String key) {
-            Hasher secondHasher = this.config.getHasher(Config.Key.SECOND_HASHER);
-            int step = secondHasher.hash(key, capacity);
+    private void doubleHashing(int hash, String key) {
+        Hasher secondHasher = this.config.getHasher(Config.Key.SECOND_HASHER);
+        int step = secondHasher.hash(key, capacity);
 
-            for (int i = 0; i < capacity; i++)
-                probeSequence[i] = (hash + i * step) % capacity;
+        for (int i = 0; i < capacity; i++)
+            probeSequence[i] = (hash + i * step) % capacity;
     }
 }

@@ -2,6 +2,7 @@ package algat.controller;
 
 import algat.model.Lesson;
 import algat.model.Question;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,172 +25,99 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LessonsController implements Initializable {
-    //Dichiarazione oggetti parte della view
-    //Come private
-    //Davanti serve un'annotazione perché il compilatore lo colleghi con fxml
-    @FXML private VBox leftbar;
-    @FXML private WebView webView;      //Collegato all'id apposito in fxml; SB li trae dal controller
+    @FXML private VBox leftBar;
+    @FXML private WebView webView;
     @FXML private ScrollPane questionsPane;
+
     private Stage stage;
-
-    //associo la scene al controller e poi i controller ai singoli elementi
-    //aggiungo il controller nell'.fxml per poi associare in sb gli elemeti agli id della classe controller
-    //NB in fxml il controller è associato solo alla "radice" (borderpane, in qs caso)
-
+    private List<Lesson> lessons = new LinkedList<>();
+    private int lessonEnable = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         questionsPane.setVisible(false);
         webView.visibleProperty().addListener((observableValue, oldValue, newValue) -> questionsPane.setVisible(!newValue));
 
-        //NB la funzione Constructor(ciccio.class) permette di lavorare con la classe ciccio senza conoscerne
-        //preventivamente i campi
         Yaml yaml = new Yaml(new Constructor(Lesson.class));
-        //La riga successiva prende il testo dal file di cui il path a dx
-        InputStream inputStream = this.getClass().getResourceAsStream("/algat/data.yml");
+        InputStream inputStream = this.getClass().getResourceAsStream("/algat/lessons.yml");
 
-        //loadAll MAPPA i campi di ogni dato di tipo lessons dopo che IS ha "letto"
-        int i=0;
+        int lessonIndex = 1;
         for (Object object: yaml.loadAll(inputStream)) {
-            if (object instanceof Lesson) {                     //SE il dato lessons ha i campi del TIPO Lesson va avanti
-                Lesson lesson = (Lesson) object;                //Cast
-                //Creo un bottone
-                Button button = new Button(lesson.getTitle());  //NB NON uso this perchè porta a LessonController, dove sono ora
-                //Aggiungo il bottone alla lista di figli di leftbar
-                if (i != 0) {
-                    button.setVisible(false);
-                    button.setDisable(true);
+            Lesson lesson = (Lesson) object;
+            Button lessonButton = new Button(lesson.getTitle());
+
+            lessonButton.setOnAction(actionEvent -> {
+                try {
+                    String filePath = getClass().getResource("/algat/lessons/" + lesson.getFileName()).getPath().replaceAll("%20", " ");
+                    String content = new String(Files.readAllBytes(new File(filePath).toPath()));
+                    webView.getEngine().loadContent(content, "text/html");
+                    webView.setVisible(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                button.setOnAction(actionEvent -> {             //NB Lambda functions;passare f come parametri; actionevent ha una classe sua;
-                    //Corpo della funzione associata all'ActionEvent
-                    try {
-                        String filePath = getClass().getResource("/algat/lessons/" + lesson.getFileName()).getPath().replaceAll("%20", " ");
-                        String content = new String(Files.readAllBytes(new File(filePath).toPath()));
-                        webView.getEngine().loadContent(content, "text/html");
-                        webView.setVisible(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+            });
 
-                Button button2 = SetQuestions(lesson, i);
-                leftbar.getChildren().addAll(button, button2); //Aggiunge un figlio al nodo leftbar dell'albero SceneTree
-            }
-            i = i+2;
+            Button questionsButton = createQuestionsButton(lesson, lessonIndex);
 
+            VBox buttons = new VBox();
+            buttons.getChildren().addAll(lessonButton, questionsButton);
+            if (lessonIndex == 1)
+                lessonButton.fire();
+            else
+                buttons.setVisible(false);
 
+            leftBar.getChildren().add(buttons);
+            lessons.add(lesson);
+            lessonIndex++;
         }
-
-        Button firstButton = (Button) leftbar.getChildren().get(0); //Io bottone per Ia lez
-
-        firstButton.fire(); //Evento su bottone
-
     }
-    //Chiamato in auto da jfx quando è caricato il controller; a differenza del costruttore, dà già valori ai campi
-    //Non si incorre in nullpointer
 
 
-    private Button SetQuestions (Lesson lesson, int i) {
-        Button button2 = new Button("Domande " + (i/2 + 1));
-        if (i != 0) {
-            button2.setVisible(false);
-            button2.setDisable(true);
-        }
-        button2.setOnAction(actionEvent -> {
+    private Button createQuestionsButton(Lesson lesson, int lessonIndex) {
+        Button questionsButton = new Button("Domande " + lessonIndex);
+
+        questionsButton.setOnAction(actionEvent -> {
             webView.setVisible(false);
-            VBox questionsVBox = new VBox();
-            for (Question question : lesson.getQuestions()) {
-                VBox qsContainer = new VBox();
-                qsContainer.getChildren().add(new Text(question.getText()));
+            VBox questionsBox = new VBox();
+            List<Question> questions = lesson.getQuestions();
+
+            for (int i = 0; i < questions.size(); i++) {
+                Question question = questions.get(i);
+                VBox questionBox = new VBox();
+                questionBox.getChildren().add(new Text(question.getText()));
+                if (i != 0)
+                    questionBox.setVisible(false);
 
                 ToggleGroup answersGroup = new ToggleGroup();
                 for (String answer : question.getAnswers()) {
                     RadioButton radioButton = new RadioButton(answer);
                     radioButton.setToggleGroup(answersGroup);
-                    qsContainer.getChildren().add(radioButton);
+                    radioButton.selectedProperty().addListener((observableValue, oldValue, selected) -> {
+                        String correctAnswer = question.getAnswers().get(question.getAnswer());
+
+                        if (!selected)
+                            radioButton.getStyleClass().removeAll("green-radio-button", "red-radio-button");
+                        else if (correctAnswer.equals(radioButton.getText())) {
+                            radioButton.getStyleClass().add("green-radio-button");
+                            this.unlockNextQuestion(questionBox);
+                        } else
+                            radioButton.getStyleClass().add("red-radio-button");
+                    });
+                    questionBox.getChildren().add(radioButton);
                 }
 
-                questionsVBox.getChildren().add(qsContainer);
-            }
-            Button checkAnswers = new Button("Correzione");
-
-            VBox boxDomandeEBottone = new VBox();
-            boxDomandeEBottone.getChildren().add(questionsVBox);
-            boxDomandeEBottone.getChildren().add(checkAnswers);
-            questionsPane.setContent(boxDomandeEBottone);
-
-            int domandaVisibile = 0;    //BLOCCO NUOVO
-            for(Node question : questionsVBox.getChildren()) {
-                if (domandaVisibile !=0) {
-                    question.setVisible(false);
-                    question.setDisable(true);
-                }
-                domandaVisibile++;
+                questionsBox.getChildren().add(questionBox);
             }
 
-            checkAnswers.setOnAction(actionEvent1 -> {
-                int c = 0;
-                boolean allGood = true;
-                for(Node node:questionsVBox.getChildren()) {
-                    VBox vbNode = (VBox) node;
-                    RadioButton firstAnswer = (RadioButton) vbNode.getChildren().get(1);
-
-                    int indiceRispostaCorretta = lesson.getQuestions().get(c).getAnswer();
-
-                    try {
-                    if (firstAnswer.getToggleGroup().getToggles().get(indiceRispostaCorretta).isSelected() && questionsVBox.getChildren().get(c).isVisible() && questionsVBox.getChildren().get(c) != null) {
-                        //Reazione se la risposta è corretta: colora di verde il pulsanteù
-                        RadioButton rispostaScelta = (RadioButton) firstAnswer.getToggleGroup().getSelectedToggle();
-                        rispostaScelta.getStyleClass().add("green-radio-button");
-                        try {
-                            questionsVBox.getChildren().get(c + 1).setDisable(false);
-                            questionsVBox.getChildren().get(c + 1).setVisible(true);
-                    }
-                        catch (Exception q){
-                            q.printStackTrace();
-                        }
-                    }
-                    else if(questionsVBox.getChildren().get(c).isVisible() && (firstAnswer.getToggleGroup().getSelectedToggle() != null)) {
-                        //Reazione se la risposta è sbagliata: colora di rosso il pulsante
-                        RadioButton rispostaScelta = (RadioButton) firstAnswer.getToggleGroup().getSelectedToggle();
-                        allGood = false;
-                        rispostaScelta.getStyleClass().add("red-radio-button");
-                    }
-                    else {
-                    allGood = false;
-                    }
-                    }
-
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    c++;
-                }
-
-
-                if (allGood) {
-                    //sblocca pulsanti successivi
-                    try {
-                    leftbar.getChildren().get(i+2).setDisable(false);
-                    leftbar.getChildren().get(i+3).setDisable(false);
-                    leftbar.getChildren().get(i+2).setVisible(true);
-                    leftbar.getChildren().get(i+3).setVisible(true);
-                    }
-                    catch(IndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-
-
-
+            questionsPane.setContent(questionsBox);
         });
-        return button2;
 
+        return questionsButton;
     }
 
     public void goToPlayground(ActionEvent event) {
@@ -203,7 +131,24 @@ public class LessonsController implements Initializable {
             e.printStackTrace();
         }
     }
-    public void setStage (Stage stage) {
+
+    void setStage (Stage stage) {
         this.stage = stage;
+    }
+
+    private void unlockNextQuestion(VBox questionBox) {
+        VBox questionsBox = (VBox) questionsPane.getContent();
+        ObservableList<Node> questions = questionsBox.getChildren();
+        int currentQuestionIndex = questions.indexOf(questionBox);
+
+        if (currentQuestionIndex + 1 < questions.size())
+            questions.get(currentQuestionIndex + 1).setVisible(true);
+        else {
+            questions.add(new Text("Congratulazioni! Hai risposto correttamente a tutte le domande!"));
+            lessonEnable++;
+            if (lessonEnable < lessons.size()) {
+                leftBar.getChildren().get(lessonEnable).setVisible(true);
+            }
+        }
     }
 }
