@@ -51,6 +51,7 @@ public class PlaygroundController implements Initializable {
     @FXML private HashTableController hashTableController;
 
     private Stage stage;
+    private int lessonProgress;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -181,6 +182,7 @@ public class PlaygroundController implements Initializable {
             Parent lessonContent = loader.load();
             LessonsController controller = loader.getController();
             controller.setStage(stage);
+            controller.setLessonCursor(lessonProgress);
             stage.getScene().setRoot(lessonContent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -258,6 +260,7 @@ public class PlaygroundController implements Initializable {
     void setStage (Stage stage) {
         this.stage = stage;
     }
+    void setLessonProgress(int lessonProgress) { this.lessonProgress = lessonProgress; }
 
     public void trashButtonPressed(ActionEvent event) {
         hashTableController.clearErrors();

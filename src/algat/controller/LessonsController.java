@@ -36,7 +36,7 @@ public class LessonsController implements Initializable {
 
     private Stage stage;
     private List<Lesson> lessons = new LinkedList<>();
-    private int lessonEnable = 0;
+    private int lessonCursor = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,7 +46,7 @@ public class LessonsController implements Initializable {
         Yaml yaml = new Yaml(new Constructor(Lesson.class));
         InputStream inputStream = this.getClass().getResourceAsStream("/algat/lessons.yml");
 
-        int lessonIndex = 1;
+        int lessonIndex = 0;
         for (Object object: yaml.loadAll(inputStream)) {
             Lesson lesson = (Lesson) object;
             Button lessonButton = new Button(lesson.getTitle());
@@ -66,7 +66,7 @@ public class LessonsController implements Initializable {
 
             VBox buttons = new VBox();
             buttons.getChildren().addAll(lessonButton, questionsButton);
-            if (lessonIndex == 1)
+            if (lessonIndex == 0)
                 lessonButton.fire();
             else
                 buttons.setVisible(false);
@@ -79,7 +79,7 @@ public class LessonsController implements Initializable {
 
 
     private Button createQuestionsButton(Lesson lesson, int lessonIndex) {
-        Button questionsButton = new Button("Domande " + lessonIndex);
+        Button questionsButton = new Button("Domande " + (lessonIndex + 1));
 
         questionsButton.setOnAction(actionEvent -> {
             webView.setVisible(false);
@@ -126,14 +126,25 @@ public class LessonsController implements Initializable {
             Parent playground = loader.load();
             PlaygroundController controller = loader.getController();
             controller.setStage(stage);
+            controller.setLessonProgress(lessonCursor);
             stage.getScene().setRoot(playground);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    void setStage (Stage stage) {
+    void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    void setLessonCursor(int lessonCursor) {
+        this.lessonCursor = lessonCursor;
+
+        ObservableList<Node> children = leftBar.getChildren();
+        for (int i = 0; i < children.size(); i++) {
+            if (i <= lessonCursor)
+                children.get(i).setVisible(true);
+        }
     }
 
     private void unlockNextQuestion(VBox questionBox) {
@@ -145,9 +156,9 @@ public class LessonsController implements Initializable {
             questions.get(currentQuestionIndex + 1).setVisible(true);
         else {
             questions.add(new Text("Congratulazioni! Hai risposto correttamente a tutte le domande!"));
-            lessonEnable++;
-            if (lessonEnable < lessons.size()) {
-                leftBar.getChildren().get(lessonEnable).setVisible(true);
+            lessonCursor++;
+            if (lessonCursor < lessons.size()) {
+                leftBar.getChildren().get(lessonCursor).setVisible(true);
             }
         }
     }
