@@ -1,8 +1,8 @@
 package algat.controller;
 
 import algat.Config;
+import algat.lib.Hasher;
 import algat.lib.ScanMethod;
-import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

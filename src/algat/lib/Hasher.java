@@ -1,6 +1,4 @@
-package algat.lib.hashtable;
-
-import algat.lib.Util;
+package algat.lib;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.floor;
@@ -52,7 +50,7 @@ public enum Hasher {
     MULTIPLICATION {
         @Override
         public int hash(String key, int modulus) {
-            Integer i = 0;
+            int i = 0;
             for (int j = 0; j < key.length(); j++) {
                 i = (64 * i + key.charAt(j));
             }

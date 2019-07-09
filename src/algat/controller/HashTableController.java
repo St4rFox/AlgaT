@@ -2,10 +2,9 @@ package algat.controller;
 
 import algat.Config;
 import algat.lib.ErrorCodes;
+import algat.lib.Hasher;
 import algat.lib.ProbeAnimation;
 import algat.lib.ScanMethod;
-import algat.lib.Util;
-import algat.lib.hashtable.Hasher;
 import algat.model.Bucket;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

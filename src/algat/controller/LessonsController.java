@@ -20,11 +20,9 @@ import javafx.stage.Stage;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -52,14 +50,9 @@ public class LessonsController implements Initializable {
             Button lessonButton = new Button(lesson.getTitle());
 
             lessonButton.setOnAction(actionEvent -> {
-                try {
-                    String filePath = getClass().getResource("/algat/lessons/" + lesson.getFileName()).getPath().replaceAll("%20", " ");
-                    String content = new String(Files.readAllBytes(new File(filePath).toPath()));
-                    webView.getEngine().loadContent(content, "text/html");
-                    webView.setVisible(true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                String uri = getClass().getResource("/algat/resources/lessons/" + lesson.getFileName()).toExternalForm();
+                webView.getEngine().load(uri);
+                webView.setVisible(true);
             });
 
             Button questionsButton = createQuestionsButton(lesson, lessonIndex);

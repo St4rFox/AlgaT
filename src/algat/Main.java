@@ -1,6 +1,5 @@
 package algat;
 
-import algat.controller.LessonsController;
 import algat.controller.WelcomeController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

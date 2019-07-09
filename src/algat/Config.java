@@ -1,7 +1,7 @@
 package algat;
 
+import algat.lib.Hasher;
 import algat.lib.ScanMethod;
-import algat.lib.hashtable.Hasher;
 
 import java.util.HashMap;
 
