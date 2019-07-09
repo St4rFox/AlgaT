@@ -58,7 +58,6 @@ public class InitialConfigDialogController implements Initializable {
 
     private void initListeners() {
         scanMethodSelect.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            additionalParams.setVisible(newValue != ScanMethod.RANDOM);
             stepSlider.setVisible(newValue == ScanMethod.LINEAR || newValue == ScanMethod.QUADRATIC);
             secondHasher.setVisible(newValue == ScanMethod.DOUBLE_HASHING);
         });

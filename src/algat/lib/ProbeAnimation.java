@@ -3,6 +3,7 @@ package algat.lib;
 import algat.controller.BucketComponent;
 import javafx.animation.Transition;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -46,17 +47,17 @@ public class ProbeAnimation extends Transition {
         int nextIndex = (int) Math.floor(this.animSequence.size() * v);
 
         if (nextIndex != cursor)
-            stepForward();
+            stepForward(false);
     }
 
-    public void stepForward() {
+    public void stepForward(boolean callHandler) {
         if (cursor > -1 && cursor < sequenceLength)
             animSequence.get(cursor).getStyleClass().remove("selected");
 
         cursor = cursor >= sequenceLength ? cursor : cursor + 1;
         if (cursor < sequenceLength)
             animSequence.get(cursor).getStyleClass().add("selected");
-        else
+        else if (callHandler)
             getOnFinished().handle(new ActionEvent());
     }
 

@@ -18,19 +18,4 @@ public class Util {
         }
         return binary.toString();
     }
-
-    // Returns a shuffled range of type 0..<ofLength
-    public static int[] getShuffledRange(int ofLength) {
-        Random random = new Random();
-        int[] ints = IntStream.range(0, ofLength).toArray();
-
-        for (int i = ofLength - 1; i > 0; i--) {
-            int index = random.nextInt(i + 1);
-            int tmp = ints[index];
-            ints[index] = ints[i];
-            ints[i] = tmp;
-        }
-
-        return ints;
-    }
 }

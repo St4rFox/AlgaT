@@ -74,7 +74,7 @@
                   <Insets left="25.0" right="1000.0" />
                </HBox.margin>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Credits to:" wrappingWidth="121.3271484375">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Realizzato da:" wrappingWidth="121.3271484375">
                      <font>
                         <Font name="Rockwell" size="20.0" />
                      </font>

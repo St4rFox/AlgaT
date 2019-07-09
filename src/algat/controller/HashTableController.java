@@ -132,7 +132,7 @@ public class HashTableController {
 
         Bucket selectedBucket = buckets.get(probeSequence[probeIndex]);
         this.animate(probeIndex, event -> {
-            if (selectedBucket.getKey().equals(key))
+            if (selectedBucket.getKey().equals(key) && !selectedBucket.isDeleted())
                 selectedBucket.setDeleted(true);
             else
                 errors.add(ErrorCodes.KEY_NOT_FOUND);
@@ -178,9 +178,6 @@ public class HashTableController {
             case QUADRATIC:
                 this.quadratic(hash);
                 break;
-            case RANDOM:
-                this.random(hash);
-                break;
             case DOUBLE_HASHING:
                 this.doubleHashing(hash, key);
                 break;
@@ -220,14 +217,6 @@ public class HashTableController {
 
         for (int i = 0; i * i < capacity; i++)
             probeSequence[i] = (hash + (i * i * step)) % capacity;
-    }
-
-    private void random(int hash) {
-        int[] sequence = Util.getShuffledRange(capacity);
-
-        for (int i = 0; i < capacity; i++)
-            probeSequence[i] = (hash + sequence[i]) % capacity;
-
     }
 
     private void doubleHashing(int hash, String key) {

@@ -141,7 +141,6 @@ public class PlaygroundController implements Initializable {
         scanMethodMenu.getSelectionModel().selectedItemProperty().addListener((observable, oldMethod, newMethod) -> {
             stepFieldContainer.setVisible(newMethod == ScanMethod.LINEAR || newMethod == ScanMethod.QUADRATIC);
             secondHasherContainer.setVisible(newMethod == ScanMethod.DOUBLE_HASHING);
-            additionalParams.setVisible(newMethod != ScanMethod.RANDOM);
         });
     }
 
@@ -248,7 +247,7 @@ public class PlaygroundController implements Initializable {
     public void stepForwardButtonPressed(ActionEvent event) {
         ProbeAnimation animation = hashTableController.getAnimation();
         if (animation.isStartable())
-            animation.stepForward();
+            animation.stepForward(true);
     }
 
     public void fastForwardButtonPressed(ActionEvent event) {
