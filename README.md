@@ -1,17 +1,17 @@
 # AlgaT
-Progetto per il corso di Algoritmi e Strutture di Dati dell'A.A. 2018/19
+AlgaT è un'applicazione stand-alone basata su JavaFX che consiste
+in un tutorial interattivo su funzionamento e utilizzo della
+struttura dati Tabelle Hash.
+<br><br>
+Per ulteriori dettagli clicca [qui](https://github.com/St4rFox/AlgaT/blob/master/report.pdf).
 
-# Sezione Interattiva
-## Parametri configurazione
-- Selezione funzione hash
-- Selezione fra liste di trabocco/indirizzamento aperto
-- Selezione tipologia scansione (disabilitata per liste di trabocco)
+##Usage
+Scaricare il file `AlgaT.jar` ed eseguirlo da terminale tramite il comando `java -jar AlgaT.jar`
 
-## Toolbar interattività
-- Bottoni per andare avanti/indietro di un passo
-- Slider per velocità + bottoni per andare avanti/indietro secondo lo slider
-- Bottone per precaricare dati nella tabella
-- Campi per editare la tabella:
-    - Inserimento con pop-up attraverso campi chiave/valore
-    - Cancellazione con pop-up attraverso campi chiave
-    - Ricerca valore uguale a cancellazione
+##Contributors
+- [Filippo Dardi](https://github.com/ClettoArrighi)
+- [Mattia Guazzaloca](https://github.com/St4rFox)
+- [Mirko Tritella](https://github.com/Emeierkeio)
+
+##License
+[MIT](https://github.com/St4rFox/AlgaT/blob/master/LICENSE.md)
