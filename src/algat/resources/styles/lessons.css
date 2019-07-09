@@ -1,0 +1,57 @@
+.red-radio-button .dot {
+    -fx-mark-highlight-color: red;
+    -fx-mark-color: red;
+}
+
+.green-radio-button .dot {
+    -fx-mark-highlight-color: #46d636;
+    -fx-mark-color: #46d636;
+}
+
+.red-radio-button .text {
+    -fx-fill: red;
+}
+
+.green-radio-button .text {
+    -fx-fill: #46d636;
+}
+
+.left-bar {
+    -fx-spacing: 5;
+}
+
+.left-bar .button {
+    -fx-padding: 10;
+    -fx-end-margin: 5;
+    -fx-background-radius: 0;
+    -fx-background-color: #2b3340;
+    -fx-pref-width: 200;
+    -fx-border-color: #45b9f7;
+    -fx-border-width: 0 0 0 4;
+    -fx-border-style: solid;
+    -fx-text-fill: white;
+}
+
+.left-bar .button:focused, .left-bar .button:hover {
+    -fx-text-fill: #45b9f7;
+}
+
+.question {
+    -fx-padding: 0 0 20 30;
+}
+
+.question-text {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+.congrats-text {
+    -fx-font-size: 20;
+    -fx-fill: #46d636;
+}
+
+.question .radio-button {
+    -fx-font-size: 14;
+    -fx-padding: 5 0 5 15;
+}

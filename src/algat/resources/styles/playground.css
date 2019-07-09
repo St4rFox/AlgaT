@@ -1,15 +1,19 @@
 .Key {
-    -fx-background-color: #ff8916;
+    -fx-background-color: #2b3340;
 }
 
-.selected > .Key {
-    -fx-background-color: yellow;
+.Key Text {
+    -fx-fill: white;
+}
+
+.selected .Key {
+    -fx-background-color: #45b9f7;
 }
 
 Line {
-    -fx-stroke: #ff8916;
+    -fx-stroke: #2b3340;
 }
 
-.selected > Line {
-    -fx-stroke: yellow;
+.selected Line {
+    -fx-stroke: #45b9f7;
 }

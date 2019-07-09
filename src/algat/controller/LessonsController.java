@@ -82,7 +82,10 @@ public class LessonsController implements Initializable {
             for (int i = 0; i < questions.size(); i++) {
                 Question question = questions.get(i);
                 VBox questionBox = new VBox();
-                questionBox.getChildren().add(new Text(question.getText()));
+                questionBox.getStyleClass().add("question");
+                Text questionText = new Text(question.getText());
+                questionText.getStyleClass().add("question-text");
+                questionBox.getChildren().add(questionText);
                 if (i != 0)
                     questionBox.setVisible(false);
 
@@ -148,7 +151,9 @@ public class LessonsController implements Initializable {
         if (currentQuestionIndex + 1 < questions.size())
             questions.get(currentQuestionIndex + 1).setVisible(true);
         else {
-            questions.add(new Text("Congratulazioni! Hai risposto correttamente a tutte le domande!"));
+            Text congratsText = new Text("Congratulazioni! Hai risposto correttamente a tutte le domande!");
+            congratsText.getStyleClass().add("congrats-text");
+            questions.add(congratsText);
             lessonCursor++;
             if (lessonCursor < lessons.size()) {
                 leftBar.getChildren().get(lessonCursor).setVisible(true);

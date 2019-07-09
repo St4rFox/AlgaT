@@ -5,9 +5,9 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="algat.controller.LessonsController">
+<BorderPane stylesheets="@../resources/styles/lessons.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="algat.controller.LessonsController">
     <left>
-        <VBox fx:id="leftBar" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+        <VBox styleClass="left-bar" fx:id="leftBar" BorderPane.alignment="CENTER" />
     </left>
     <top>
         <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
@@ -18,12 +18,13 @@
         </HBox>
     </top>
     <center>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../resources/styles/buttonstyle.css" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <WebView fx:id="webView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <ScrollPane fx:id="questionsPane" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <padding>
                <Insets right="50.0" />
-            </padding></ScrollPane>
+            </padding>
+            </ScrollPane>
         </AnchorPane>
     </center>
 </BorderPane>
