@@ -15,7 +15,7 @@
     <br>
 
     <h2 align="center"><font size="8">Scansione Lineare</font></h2>
-    <h5 align="center">H(K,i) = (H(K)+ h*i) % m</h5><br>
+    <h5 align="center"><i>H(K,i) = (H(K)+ h &#215; i) % m</i></h5><br>
 
     Uno dei problemi principali di questo metodo è che il primo elemento determina l'intera sequenza.<br>
     Questa scansione ci permette di avere m sequenza distinte, ma contemporaneamente comporta l'insorgere
@@ -24,7 +24,7 @@
     medi delle operazioni di inserimento e cancellazione.
 
     <h2 align="center"><font size="8">Scansione Quadratica</font></h2>
-    <h5 align="center">H(K,i) = (H(K) + h*i^2) mod m</h5>
+    <h5 align="center"><i>H(K,i) = (H(K) + h &#215; i<SUP>2</SUP>) mod m</i></h5>
 
     L'ispezione inizia in <i>H(K)</i> e prosegue quadraticamente in base al Passo di Scansione <i>i</i>;<br>
     Allo stesso modo della Scansione Lineare, questo metodo ci consente di creare <i>m</i> sequenze distinte, ma sfortunatamente
@@ -32,7 +32,7 @@
     con la stessa ispezione iniziale andando a creare un errore di Agglomerazione Secondaria.
 
     <h2 align="center"><font size="8">Scansione Pseudo-Casuale</font></h2>
-    <h5 align="center">H(K,i)=(H(K)+r) mod m</h5>
+    <h5 align="center"><i>H(K,i)=(H(K)+r) mod m</i></h5>
 
     Partendo dal valore <i>H(K)</i> si scorre successivamente sulla base del valore r che rappresenta un numero casuale compreso tra 0 e <i>m-1</i>;<br>
     In questo modo sono possibili m sequenze distinte, ottenendo in questo caso come sequenza risultante una
@@ -40,10 +40,10 @@
     Permane il problema di Agglomerazione Secondaria.
 
     <h2 align="center"><font size="8">Scansione con Doppio Hashing</font></h2>
-    <h5 align="center">H(K,i)=(H(K)+ i * H'(K)) mod m</h5>
+    <h5 align="center"><i>H(K,i)=(H(K)+ i &#215; H'(K)) mod m</i></h5>
 
     L'utilizzo contemporaneo di due funzioni hash (una di base e l'altra ausiliaria, destinata a calcolare l'offset)
-    permettono di generare m^2 sequenze di ispezione distinte.<br>
+    permettono di generare <i>m<SUP>2</SUP></i> sequenze di ispezione distinte.<br>
     Al fine di garantire una permutazione quanto più completa possibile,<br> <i>H'(K)</i>
     ed m devono essere primi tra loro.
 </font>
